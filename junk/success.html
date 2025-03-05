@@ -1,0 +1,284 @@
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5" id="distinctions-container">
+    <h2 class="text-center text-primary mb-3">Manage Your Application Data</h2>
+    <h3 class="text-center text-secondary mb-4">Add distinctions</h3>
+
+    {% with distinction_count=distinctions|length %}
+    {% if distinction_count > 5 %}
+    <div class="alert alert-warning" role="alert">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+        You have exceeded the maximum limit of 5 distinctions. The form is now read-only.
+    </div>
+    {% endif %}
+
+    <!-- distinction Form Section -->
+    <div id="distinction-form" class="my-4" {% if distinction_count > 5 %}data-readonly="true"{% endif %}>
+        {% include 'partials/distinctions.html' %}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button type="button" 
+                class="btn btn-success px-4 py-2 d-flex align-items-center {% if distinction_count >= 5 %}disabled{% endif %}"
+                id="add-distinction-btn"
+                hx-get="{% url 'create_distinction' %}" 
+                hx-target="#distinction-form" 
+                hx-swap="beforeend"
+                {% if distinction_count >= 5 %}disabled{% endif %}>
+            <i class="fa-solid fa-circle-plus me-2"></i> Add distinction
+            {% if distinction_count > 5 %}
+            <span class="badge bg-warning ms-2">Max Limit</span>
+            {% endif %}
+        </button>
+        <button class="btn btn-primary px-4 py-2 {% if distinction_count > 5 %}disabled{% endif %}" 
+                type="button" 
+                id="submit-all"
+                {% if distinction_count >= 5 %}disabled{% endif %}>
+            <i class="fa-regular fa-circle-check me-2"></i> Submit All
+            {% if distinction_count > 5 %}
+            <span class="badge bg-warning ms-2">Max Limit</span>
+            {% endif %}
+        </button>
+    </div>
+
+    <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="fw-semibold">Distinction</th>
+                <th scope="col" class="fw-semibold text-center">Level</th>
+                <th scope="col" class="fw-semibold text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="distinction-list">
+            {% for distinction in distinctions %}
+            {% include 'partials/distinctions_list.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Counter Display -->
+    <div class="text-end mt-3">
+        <small class="text-muted">
+            Distinctions: <span id="distinction-counter">{{ distinction_count }}</span>/5
+        </small>
+    </div>
+    {% endwith %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const MAX_DISTINCTIONS = 5;
+    const container = document.getElementById('distinctions-container');
+    const addButton = document.getElementById('add-distinction-btn');
+    const submitButton = document.getElementById('submit-all');
+    const distinctionForm = document.getElementById('distinction-form');
+
+    function makeFormsReadOnly() {
+        const forms = document.querySelectorAll('#distinction-form form');
+        forms.forEach(form => {
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.setAttribute('readonly', true);
+                input.classList.add('bg-light');
+            });
+            const buttons = form.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.setAttribute('disabled', true);
+                button.classList.add('disabled');
+            });
+        });
+    }
+
+    function checkAndEnforceLimit() {
+        const currentCount = document.querySelectorAll('#distinction-list tr').length;
+        const counter = document.getElementById('distinction-counter');
+        counter.textContent = currentCount;
+
+        if (currentCount > MAX_DISTINCTIONS) {
+            // Disable all forms and make them read-only
+            distinctionForm.setAttribute('data-readonly', 'true');
+            makeFormsReadOnly();
+            
+            // Disable buttons
+            addButton.classList.add('disabled');
+            addButton.setAttribute('disabled', 'disabled');
+            submitButton.classList.add('disabled');
+            submitButton.setAttribute('disabled', 'disabled');
+
+            // Show warning if not already shown
+            if (!document.querySelector('.alert-warning')) {
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-warning';
+                alert.innerHTML = `
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    You have exceeded the maximum limit of 5 distinctions. The form is now read-only.
+                `;
+                container.insertBefore(alert, container.firstChild);
+            }
+        }
+    }
+
+    // Initial check
+    checkAndEnforceLimit();
+
+    // Monitor for new forms being added
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                checkAndEnforceLimit();
+                if (distinctionForm.getAttribute('data-readonly') === 'true') {
+                    makeFormsReadOnly();
+                }
+            }
+        });
+    });
+
+    observer.observe(distinctionForm, { childList: true, subtree: true });
+
+    // Prevent form submissions when over limit
+    submitButton.addEventListener('click', function(e) {
+        const currentCount = document.querySelectorAll('#distinction-list tr').length;
+        if (currentCount > MAX_DISTINCTIONS) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    });
+
+    // Handle HTMX events
+    document.body.addEventListener('htmx:beforeSend', function(evt) {
+        const currentCount = document.querySelectorAll('#distinction-list tr').length;
+        if (currentCount > MAX_DISTINCTIONS) {
+            evt.preventDefault();
+        }
+    });
+
+    document.body.addEventListener('htmx:afterSettle', checkAndEnforceLimit);
+    document.body.addEventListener('htmx:afterDelete', checkAndEnforceLimit);
+});
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    
+    <h3 class="text-center text-secondary mb-4">Add dependents</h3>
+
+    <!-- dependent Form Section -->
+    <div id="dependent-form" class="my-4">
+        {% include 'partials/dependents.html' %}
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button id='add-dependent-btn' type="button" class="btn btn-success px-4 py-2 d-flex align-items-center {% if dependent_count >= 5 %}disabled{% endif %}" 
+            hx-get="{% url 'create_dependent' %}" hx-target="#dependent-form" hx-swap="beforeend">
+            <i class="fa-solid fa-circle-plus me-2"></i> Add dependent
+        </button>
+        <button {% if dependent_count >= 5 %} disabled {% endif %} class="btn btn-primary px-4 py-2" type="button" id="submit-all">
+            <i class="fa-regular fa-circle-check me-2"></i> Submit All
+        </button>
+    </div>
+
+    <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="fw-semibold">dependent</th>
+                <th scope="col" class="fw-semibold text-center">School</th>
+                <th scope="col" class="fw-semibold text-center">Institute</th>
+                <th scope="col" class="fw-semibold text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="dependent-list">
+            {% for dependent in dependents %}
+            {% include 'partials/dependents_list.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between mt-7">
+        <a href="{{ previous_url }}" class="btn btn-outline-secondary btn-lg me-2">
+            <i class="fas fa-arrow-left me-2"></i> Previous
+        </a>
+        <a href="{{ next_url }}" class="btn btn-outline-secondary btn-lg me-2">
+            Next <i class="fas fa-arrow-right me-2"></i>
+        </a>
+    </div>
+</div><script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const MAX_dependentS = 4;
+        let clickCounter = 0;
+        
+        const addButton = document.getElementById('add-dependent-btn');
+        const submitButton = document.getElementById('submit-all');
+        
+        // Function to update the button state and handle click count
+        function updateButtonState() {
+            if (clickCounter >= MAX_dependentS) {
+                addButton.disabled = true;
+                addButton.classList.add('disabled');
+            } 
+            else {
+                // addButton.disabled = false;
+                // addButton.classList.remove('disabled');
+                // submitButton.disabled = false;
+                // submitButton.classList.remove('disabled');
+            }
+        }
+
+        // Add click event to the "Add dependent" button
+        addButton.addEventListener('click', function() {
+            clickCounter++;
+            updateButtonState();
+        });
+
+        // Initial call to set button state based on the initial count
+        updateButtonState();
+    });
+</script>
+{% endblock %}

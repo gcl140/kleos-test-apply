@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ES2015",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./static/js",
+    "rootDir": "./static/js",
+    "lib": ["ES2015", "DOM"],
+    "moduleResolution": "node"
+  },
+  "include": [
+    "static/js/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

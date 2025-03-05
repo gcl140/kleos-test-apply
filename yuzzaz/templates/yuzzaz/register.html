@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanSAF - Register</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="{% url 'homepage' %}" class="nav-brand">
+                <!-- <i class="fas fa-graduation-cap"></i> -->
+                <img src="{% static 'fav-1-150x150.png' %}" alt="" width="40px" style="margin: 0;">
+
+                TanSAF
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="nav-links">
+                <a href="{% url 'homepage' %}" class="nav-link">
+                    <i class="fas fa-home"></i> Homepage
+                </a>
+                <a href="{% url 'homepage' %}" class="nav-link">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{% url 'homepage' %}" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                {% endif %}
+                
+            </div>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <!-- Animated Background -->
+        <div class="animated-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+        </div>
+
+        <!-- Illustration Side -->
+        <div class="illustration-side">
+            <img src="{% static 'images/fadhili.jpg' %}" alt="Education Illustration" class="illustration">
+        </div>
+        <div class="form-side">
+            <form method="POST" enctype="multipart/form-data" class="login-form">
+                {% csrf_token %}
+                <div class="form-header">
+                    <h2>Create an Account</h2>
+                    <p>Fill out the details below to register.</p>
+                </div>
+
+                {% for field in form %}
+                <div class="form-group">
+                    <input 
+                        type="{{ field.field.widget.input_type|default:'text' }}" 
+                        id="{{ field.id_for_label }}" 
+                        name="{{ field.html_name }}" 
+                        class="form-input" 
+                        placeholder=" "
+                        {% for attr, value in field.field.widget.attrs.items %}
+                            {{ attr }}="{{ value }}"
+                        {% endfor %}
+                        required
+                    >
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Register</span>
+                </button>
+
+                <div class="form-footer">
+                    <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form Side -->
+    </div>
+
+    <!-- Toast Messages -->
+    {% if messages %}
+    <div class="fixed-toast-container">
+        {% for message in messages %}
+        <div class="toast-message {% if message.tags %}{{ message.tags }}{% endif %}">
+            <div class="toast-content">
+                <div class="toast-text">{{ message }}</div>
+                <button type="button" class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+            </div>
+            <div class="toast-progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <style>
+
+        /* Toast Messages */
+        .fixed-toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .toast-message {
+            min-width: 300px;
+            max-width: 400px;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .toast-message.success {
+            border-left: 4px solid #10B981;
+        }
+        
+        .toast-message.error {
+            border-left: 4px solid #EF4444;
+        }
+        
+        .toast-message.warning {
+            border-left: 4px solid #F59E0B;
+        }
+        
+        .toast-message.info {
+            border-left: 4px solid #3B82F6;
+        }
+        
+        .toast-content {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toast-text {
+            margin-right: 1rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #9CA3AF;
+            cursor: pointer;
+            padding: 0.25rem;
+            line-height: 1;
+        }
+        
+        .toast-close:hover {
+            color: #4B5563;
+        }
+        
+        .toast-progress {
+            height: 3px;
+            background: #E5E7EB;
+        }
+        
+        .toast-progress .progress-bar {
+            height: 100%;
+            width: 0;
+            transition: width 5s linear;
+        }
+        
+        .success .progress-bar {
+            background-color: #10B981;
+        }
+        
+        .error .progress-bar {
+            background-color: #EF4444;
+        }
+        
+        .warning .progress-bar {
+            background-color: #F59E0B;
+        }
+        
+        .info .progress-bar {
+            background-color: #3B82F6;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Dark mode support */
+        .dark .toast-message {
+            background: #1F2937;
+        }
+        
+        .dark .toast-text {
+            color: #E5E7EB;
+        }
+        
+        .dark .toast-close {
+            color: #9CA3AF;
+        }
+        
+        .dark .toast-close:hover {
+            color: #E5E7EB;
+        }
+        
+        .dark .toast-progress {
+            background: #374151;
+        }
+        
+        /* Dark mode styles */
+        .dark {
+            @apply bg-gray-900 text-white;
+        }
+        
+        .dark .glass {
+            @apply bg-gray-900/80 border-gray-700/20;
+        }
+        </style>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

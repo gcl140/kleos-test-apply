@@ -1,0 +1,159 @@
+<div class="distinction-card">
+    <div class="distinction-header">
+        <div class="distinction-avatar">
+            <i class="fas fa-clipboard-list"></i>
+        </div>
+        <div class="distinction-info">
+            <h3 class="text-truncate">{{ distinction.distinction_name }}</h3>
+            <span class="year"> <h4 style="color: rgb(194, 194, 194);">{{ distinction.level_of_rec }} </h4></span>
+            <span class="year">{{ distinction.year }} </span>
+        </div>
+        <div class="distinction-actions">
+            <a href="{% url 'update_distinction' distinction.id %}" class="btn-action edit" title="Edit">
+                <i class="fas fa-pencil-alt"></i>
+            </a>            <a href="{% url 'delete_distinction' distinction.id %}" class="btn-action delete" title="Delete">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </div>
+    </div>
+
+
+</div>
+<style>
+    .distinction-card {
+        background: rgba(255, 255, 255, 0);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .distinction-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .distinction-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .distinction-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--tansaf-blue-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .distinction-avatar i {
+        font-size: 1.2rem;
+        color: var(--tansaf-blue);
+    }
+
+    .distinction-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .distinction-info h3 {
+        /* color: var(--tansaf-blue); */
+        color: wheat;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .year {
+        color: rgb(214, 214, 214);
+        font-size: 0.8rem;
+    }
+
+    .distinction-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-action.edit {
+        background: var(--tansaf-gold);
+        color: white;
+    }
+
+    .btn-action.edit:hover {
+        background: var(--tansaf-gold-light);
+        transform: scale(1.1);
+    }
+
+    .btn-action.delete {
+        /* background: rgba(220, 53, 70, 0.205); */
+        background: rgb(230, 43, 43);
+        color: white;
+    }
+
+    .btn-action.delete:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .distinction-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .detail-item i {
+        color: var(--tansaf-gold);
+        font-size: 0.9rem;
+        width: 16px;
+        flex-shrink: 0;
+    }
+
+    .detail-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .detail-content span {
+        color: rgb(214, 214, 214);
+        font-size: 0.9rem;
+        display: block;
+    }
+
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .distinction-card {
+            padding: 0.75rem;
+        }
+    }
+</style>

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "../js",     // Compiled JS files
+    "rootDir": "./ts",    // TypeScript source files
+    "target": "ES6",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "static/ts/**/*"
+  ]
+}

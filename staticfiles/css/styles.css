@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.glass {
+    @apply bg-white/80 dark:bg-black/80 backdrop-blur-[8px] border border-white/20 dark:border-white/10;
+}
+
+.nav-link {
+    @apply text-gray-700 hover:text-tansaf-blue transition-colors;
+}
+
+.dark .nav-link {
+    @apply text-gray-300 hover:text-white;
+}
+
+.progress-bar {
+    animation: progress 4.5s linear;
+}
+
+@keyframes progress {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Dark mode styles */
+.dark {
+    @apply bg-gray-900 text-white;
+}
+
+.dark .glass {
+    @apply bg-gray-900/80 border-gray-700/20;
+}

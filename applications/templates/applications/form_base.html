@@ -1,0 +1,49 @@
+{% extends 'applications/base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/form_shared.css' %}">
+{% block form_specific_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        {% for section, data in progress_data.items %}
+        <a href="{{ data.url }}" class="progress-item {% if section == current_section %}active{% endif %} {% if data.completed %}completed{% endif %}">
+            {{ data.label }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Main Form Content -->
+    <div class="form-content">
+        <div class="form-section">
+            <h2>{{ title }}</h2>
+            {% block form_content %}{% endblock %}
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-navigation">
+            {% if previous_url %}
+            <a href="{{ previous_url }}" class="btn btn-secondary">Previous</a>
+            {% endif %}
+            {% block form_navigation %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- Helpful Information -->
+    <div class="info-section">
+        <h3>Helpful Information</h3>
+        {% block helpful_info %}
+        <div class="info-content">
+            <p>Please fill out all required fields marked with *</p>
+            <p>Your progress is automatically saved</p>
+            <p>You can return to any previous section using the progress bar above</p>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

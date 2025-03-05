@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div id="preview-contenti">
+        <nav class="nav-container __web-inspector-hide-shortcut__">
+            <div class="nav-content">
+                <a href="/" class="nav-brand">
+                    <!-- <i class="fas fa-graduation-cap"></i> -->
+                    <img src="/static/fav-1-150x150.png" alt="" width="40px" style="margin: 0;">
+
+                    TanSAF Application Preview
+                </a>
+
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+        </nav>
+        <div class="login-container">
+            <div class="form-side">
+                <div class="form-header">
+                    <h2>Hi, {{application.first_name}}!
+                    </h2>
+                    <p>
+                        Congratulations on making it this far. Feel free to preview your application before submitting
+                        it.
+                    </p>
+                    <br>
+                    <h3>
+                        Application Status:
+                        {% if application.intro_completed and application.general_info_completed and application.contact_info_completed and application.school_info_completed and application.family_info_completed and application.siblings_completed and application.dependents_completed and application.financial_info_completed and application.activities_completed and application.distinctions_completed and application.other_inquiries_completed and application.writing_completed and application.files_signature %}
+                        <span class="completed">Completed</span>
+                        {% else %}
+                        <span class="incomplete">Incomplete</span>
+                        {% endif %}
+                    </h3>
+                </div>
+                <form class="login-form" method="POST">
+                    <h2>General Information
+                    </h2>
+                    <br>
+
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">Agreed to the terms and conditions?</td>
+                                <td class="info-response">{{ application.agreed }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Signature</td>
+                                <td class="info-response">{{ application.signature }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Signature Date</td>
+                                <td class="info-response">{{ application.signdate }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Applicant's Full Name</td>
+                                <td class="info-response">{{ application.first_name }} {{ application.middle_name }}
+                                    {{application.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Date of Birth</td>
+                                <td class="info-response">{{ application.dob }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Gender</td>
+                                <td class="info-response">{{ application.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Nationality</td>
+                                <td class="info-response">{{ application.nationality }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Place of Birth</td>
+                                <td class="info-response">{{ application.place_of_birth }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Residency</td>
+                                <td class="info-response">{{ application.residency }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Phone Number 1</td>
+                                <td class="info-response">{{ application.tel1 }}</td>
+                            </tr>
+                            {% if application.tel2 %}
+
+                            <tr>
+                                <td class="info-label">Phone Number 2</td>
+                                <td class="info-response">{{ application.tel2 }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td class="info-label">Primary Email</td>
+                                <td class="info-response">{{ application.email1 }}</td>
+                            </tr>
+                            {% if application.email2 %}
+                            <tr>
+                                <td class="info-label">Secondary Email</td>
+                                <td class="info-response">{{ application.email2 }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Educational Information</h2>
+                    <br>
+
+                    <!-- A'level School Information -->
+                    <h5 class="mb-3">A'level School Education</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">Advanced School Name:</td>
+                                <td class="info-response">{{ application.adv_school_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Advanced School Phone Number:</td>
+                                <td class="info-response">{{ application.adv_school_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Advanced School Email:</td>
+                                <td class="info-response">{{ application.adv_school_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Advanced School Curriculum:</td>
+                                <td class="info-response">{{ application.adv_curriculum }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Report another Advanced School:</td>
+                                <td class="info-response">{{ application.report_other_adv }}</td>
+                            </tr>
+                            {% if application.report_other_adv %}
+                            <tr>
+                                <td class="info-label">Other Advanced School Name:</td>
+                                <td class="info-response">{{ application.other_adv_school_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other Advanced School Phone Number:</td>
+                                <td class="info-response">{{ application.other_adv_school_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other Advanced School Email:</td>
+                                <td class="info-response">{{ application.other_adv_school_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other Advanced School Curriculum:</td>
+                                <td class="info-response">{{ application.other_adv_curriculum }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+
+                    <!-- O'level School Information -->
+                    <h5 class="mb-3">O'level School Education</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">O'level School Name:</td>
+                                <td class="info-response">{{ application.olv_school_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">O'level School Phone:</td>
+                                <td class="info-response">{{ application.olv_school_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">O'level School Email:</td>
+                                <td class="info-response">{{ application.olv_school_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">O'level School Curriculum:</td>
+                                <td class="info-response">{{ application.olv_curriculum }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Report another O'level School:</td>
+                                <td class="info-response">{{ application.report_other_olv }}</td>
+                            </tr>
+                            {% if application.report_other_olv %}
+                            <tr>
+                                <td class="info-label">Other O'level School Name:</td>
+                                <td class="info-response">{{ application.other_olv_school_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other O'level School Phone:</td>
+                                <td class="info-response">{{ application.other_olv_school_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other O'level School Email:</td>
+                                <td class="info-response">{{ application.other_olv_school_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Other O'level School Curriculum:</td>
+                                <td class="info-response">{{ application.other_olv_curriculum }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Family Information</h2>
+                    <br>
+                    <h3 class="mb-5">Parents Information</h3>
+                    <br>
+
+                    <!-- Parent 1 Information -->
+                    <h5 class="mb-3">Parent/Guardian 1</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">First Name:</td>
+                                <td class="info-response">{{ application.par1_fname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Middle Name:</td>
+                                <td class="info-response">{{ application.par1_mname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Last Name:</td>
+                                <td class="info-response">{{ application.par1_lname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Phone Number:</td>
+                                <td class="info-response">{{ application.par1_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Email:</td>
+                                <td class="info-response">{{ application.par1_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Occupation:</td>
+                                <td class="info-response">{{ application.par1_jobbusy }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Job Title:</td>
+                                <td class="info-response">{{ application.par1_jobtitle }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Employment Status:</td>
+                                <td class="info-response">{{ application.par1_employmentstatus }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Retirement Date:</td>
+                                <td class="info-response">{{ application.par1_retire }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Years Served:</td>
+                                <td class="info-response">{{ application.par1_served }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Highest Education Level:</td>
+                                <td class="info-response">{{ application.par1_levedu }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Highest Educational Institute Attended:</td>
+                                <td class="info-response">{{ application.par1_institute }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Degree:</td>
+                                <td class="info-response">{{ application.par1_degree }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Degree Year:</td>
+                                <td class="info-response">{{ application.par1_degreeyear }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Parent 2 Information -->
+                    {% if application.report_other_par %}
+                    <h5 class="mb-3 mt-4">Parent/Guardian 2</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">First Name:</td>
+                                <td class="info-response">{{ application.par2_fname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Middle Name:</td>
+                                <td class="info-response">{{ application.par2_mname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Last Name:</td>
+                                <td class="info-response">{{ application.par2_lname }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Phone Number:</td>
+                                <td class="info-response">{{ application.par2_phone }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Email:</td>
+                                <td class="info-response">{{ application.par2_email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Occupation:</td>
+                                <td class="info-response">{{ application.par2_jobbusy }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Job Title:</td>
+                                <td class="info-response">{{ application.par2_jobtitle }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Employment Status:</td>
+                                <td class="info-response">{{ application.par2_employmentstatus }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Retirement Date:</td>
+                                <td class="info-response">{{ application.par2_retire }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Years Served:</td>
+                                <td class="info-response">{{ application.par2_served }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Highest Education Level:</td>
+                                <td class="info-response">{{ application.par2_levedu }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Highest Educational Institute Attended:</td>
+                                <td class="info-response">{{ application.par2_institute }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Degree:</td>
+                                <td class="info-response">{{ application.par2_degree }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Degree Year:</td>
+                                <td class="info-response">{{ application.par2_degreeyear }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endif %}
+                    <br>
+                    <h3 class="mb-5">Siblings Information</h3>
+                    <br>
+                    <!-- Sibling Information Loop -->
+                    {% for sibling in application.application_siblings.all %}
+                    <h5 class="mb-3 mt-4">Sibling #{{ forloop.counter }}</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">Sibling Name:</td>
+                                <td class="info-response">{{ sibling.sibling_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Age:</td>
+                                <td class="info-response">{{ sibling.age }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Education Level:</td>
+                                <td class="info-response">{{ sibling.education }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Institute Attended:</td>
+                                <td class="info-response">{{ sibling.institute }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Degree:</td>
+                                <td class="info-response">{{ sibling.degree }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Occupation:</td>
+                                <td class="info-response">{{ sibling.occupation }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endfor %}
+
+                    <!-- Dependent Information Loop -->
+                    <br>
+                    <h3 class="mb-5">Dependents Information</h3>
+                    <br>
+
+                    {% for dependent in application.application_dependents.all %}
+                    <h5 class="mb-3 mt-4">Dependent #{{ forloop.counter }}</h5>
+                    <table class="info-table">
+                        <tbody>
+                            <tr>
+                                <td class="info-label">Dependent Name:</td>
+                                <td class="info-response">{{ dependent.dependent_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="info-label">Relationship:</td>
+                                <td class="info-response">{{ dependent.relationship }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% endfor %}
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Financial Information</h2>
+                    <br>
+
+                    <!-- Financial Information Section -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="info-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="info-label">O'level Fees:</td>
+                                        <td class="info-response">{{ application.o_fee }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label">O'level Fee Payer:</td>
+                                        <td class="info-response">{{ application.f_payer_olevel }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label">A'level Fees:</td>
+                                        <td class="info-response">{{ application.a_fee }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label">A'level Fee Payer:</td>
+                                        <td class="info-response">{{ application.f_payer_alevel }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label">Receives Support:</td>
+                                        <td class="info-response">{{ application.suprt }}</td>
+                                    </tr>
+
+                                    <!-- Support Information (if applicable) -->
+                                    {% if application.suprt %}
+                                    <tr>
+                                        <td class="info-label">Support Amount:</td>
+                                        <td class="info-response">{{ application.suprt_amnt }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label">Supporter Name:</td>
+                                        <td class="info-response">{{ application.suprt_name }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    <tr>
+                                        <td class="info-label">Taken home for school fees?:</td>
+                                        <td class="info-response">{{ application.home_fees }}</td>
+                                    </tr>
+
+                                    <!-- Support Comments (if applicable) -->
+                                    {% if application.home_fees %}
+                                    <tr>
+                                        <td class="info-label">Elaboration:</td>
+                                        <td class="info-response">{{ application.suprtc }}</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Activity and Distinction Information</h2>
+                    <br>
+
+                    <!-- Activities Section -->
+                    <div class="preview-section">
+                        <h3 class="mb-5">Extracurricular Activities</h3>
+
+                        {% for activity in application.application_activities.all %}
+                        <h5 class="mb-3 mt-4">Activity #{{ forloop.counter }}</h5>
+                        <h4>{{ activity.activity_type }}</h4>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="info-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="info-label">Leadership Position:</td>
+                                            <td class="info-response">{{ activity.leadership_position }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Organization Name:</td>
+                                            <td class="info-response">{{ activity.organization_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Weeks Per Year:</td>
+                                            <td class="info-response">{{ activity.weeksperyear }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Activity Description:</td>
+                                            <td class="info-response">{{ activity.activity_description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Outside School Activity:</td>
+                                            <td class="info-response">{{ activity.outside_school }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Start Year:</td>
+                                            <td class="info-response">{{ activity.start_year }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">End Year:</td>
+                                            <td class="info-response">{{ activity.end_year }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Distinctions Section -->
+                    <div class="preview-section">
+                        <h3 class="mb-5">Distinctions</h3>
+
+                        {% for distinction in application.application_distinctions.all %}
+                        <h5 class="mb-3 mt-4">Distinction #{{ forloop.counter }}</h5>
+                        <h4>{{ distinction.distinction_name }}</h4>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="info-table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="info-label">Level of Recognition:</td>
+                                            <td class="info-response">{{ distinction.level_of_rec }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="info-label">Year:</td>
+                                            <td class="info-response">{{ distinction.year }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <br>
+                        {% endfor %}
+                    </div>
+
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Additional Information</h2>
+                    <br>
+
+                    <!-- Additional Information Section -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="info-table">
+                                <tbody>
+                                    {% if application.fav_hobby %}
+                                    <tr>
+                                        <td class="info-label">Favorite Hobby:</td>
+                                        <td class="info-response">{{ application.fav_hobby }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.form4_holiday %}
+                                    <tr>
+                                        <td class="info-label">Form 4 Holiday Details:</td>
+                                        <td class="info-response">{{ application.form4_holiday }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if application.sat_for_sat %}
+                                    <tr>
+                                        <td class="info-label">Has taken SAT:</td>
+                                        <td class="info-response">{{ application.sat_for_sat }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.sat_type %}
+                                    <tr>
+                                        <td class="info-label">SAT Type:</td>
+                                        <td class="info-response">{{ application.sat_type }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.sat_score %}
+                                    <tr>
+                                        <td class="info-label">SAT Score:</td>
+                                        <td class="info-response">{{ application.sat_score }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.sat_date %}
+                                    <tr>
+                                        <td class="info-label">SAT Date:</td>
+                                        <td class="info-response">{{ application.sat_date }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.sat_for_eng %}
+                                    <tr>
+                                        <td class="info-label">Has taken English Proficiency Test:</td>
+                                        <td class="info-response">{{ application.sat_for_eng }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.eng_type %}
+                                    <tr>
+                                        <td class="info-label">English Test Type:</td>
+                                        <td class="info-response">{{ application.eng_type }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.eng_score %}
+                                    <tr>
+                                        <td class="info-label">English Test Score:</td>
+                                        <td class="info-response">{{ application.eng_score }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.eng_date %}
+                                    <tr>
+                                        <td class="info-label">English Test Date:</td>
+                                        <td class="info-response">{{ application.eng_date }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.has_passport %}
+                                    <tr>
+                                        <td class="info-label">Has Passport:</td>
+                                        <td class="info-response">{{ application.has_passport }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.passport_purpose %}
+                                    <tr>
+                                        <td class="info-label">Passport Purpose:</td>
+                                        <td class="info-response">{{ application.passport_purpose }}</td>
+                                    </tr>
+                                    {% endif %}
+
+
+                                    {% if application.owns_phone %}
+                                    <tr>
+                                        <td class="info-label">Owns a Phone:</td>
+                                        <td class="info-response">{{ application.owns_phone }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.phone_maker %}
+                                    <tr>
+                                        <td class="info-label">Phone Maker:</td>
+                                        <td class="info-response">{{ application.phone_maker }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.phone_model %}
+                                    <tr>
+                                        <td class="info-label">Phone Model:</td>
+                                        <td class="info-response">{{ application.phone_model }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_ig %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through Instagram:</td>
+                                        <td class="info-response">{{ application.known_tansaf_ig }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_fb %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through Facebook:</td>
+                                        <td class="info-response">{{ application.known_tansaf_fb }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_int %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through Internet:</td>
+                                        <td class="info-response">{{ application.known_tansaf_int }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_tans %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through TanSAF Alumni:</td>
+                                        <td class="info-response">{{ application.known_tansaf_tans }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_fam %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through Family:</td>
+                                        <td class="info-response">{{ application.known_tansaf_fam }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_other %}
+                                    <tr>
+                                        <td class="info-label">Knows TanSAF through Other Means:</td>
+                                        <td class="info-response">{{ application.known_tansaf_other }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.known_tansaf_other_write %}
+                                    <tr>
+                                        <td class="info-label">Other Means Details:</td>
+                                        <td class="info-response">{{ application.known_tansaf_other_write }}</td>
+                                    </tr>
+                                    {% endif %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Essays</h2>
+                    <br>
+
+                    <!-- Additional Information Section -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="info-table">
+                                <tbody>
+                                    {% if application.extrac %}
+                                    <tr>
+                                        <td class="info-label">Most Meaningful ExtraCurricular Activity Essay:</td>
+                                        <td class="info-response">{{ application.extrac }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.chlg %}
+                                    <tr>
+                                        <td class="info-label">Challenge Essay:</td>
+                                        <td class="info-response">{{ application.chlg }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.cohort %}
+                                    <tr>
+                                        <td class="info-label">Fellow Cohort to know about you:</td>
+                                        <td class="info-response">{{ application.cohort }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.teach %}
+                                    <tr>
+                                        <td class="info-label">A class you'd teach:</td>
+                                        <td class="info-response">{{ application.teach }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.why_tansaf %}
+                                    <tr>
+                                        <td class="info-label">Why TanSAF?:</td>
+                                        <td class="info-response">{{ application.why_tansaf }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.why_you %}
+                                    <tr>
+                                        <td class="info-label">Why You?:</td>
+                                        <td class="info-response">{{ application.why_you }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.has_disciplinary_violation %}
+                                    <tr>
+                                        <td class="info-label">Has disciplinary violations:</td>
+                                        <td class="info-response">{{ application.has_disciplinary_violation }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.disciplinary_details %}
+                                    <tr>
+                                        <td class="info-label">Elaboration, disciplinary violation:</td>
+                                        <td class="info-response">{{ application.disciplinary_details }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.covid_impact %}
+                                    <tr>
+                                        <td class="info-label">Has covid-19, etc, impacted you?:</td>
+                                        <td class="info-response">{{ application.covid_impact }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.covid_impact_details %}
+                                    <tr>
+                                        <td class="info-label">Covid-19, etc impact:</td>
+                                        <td class="info-response">{{ application.covid_impact_details }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.additional_circumstances %}
+                                    <tr>
+                                        <td class="info-label">Has additional circumstances:</td>
+                                        <td class="info-response">{{ application.additional_circumstances }}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.additional_circumstances_details %}
+                                    <tr>
+                                        <td class="info-label">The additional circumstances:</td>
+                                        <td class="info-response">{{ application.additional_circumstances_details }}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <form class="login-form" method="POST">
+                    <h2>Documents Information</h2>
+                    <br>
+
+                    <!-- Documents Information Section -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="info-table">
+                                <tbody>
+                                    {% if application.financial %}
+                                    <tr>
+                                        <td class="info-label">Financial Documents:</td>
+                                        <td class="info-response"><a href="{{ application.financial.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.rec_letter1 %}
+                                    <tr>
+                                        <td class="info-label">Recommendation Letter 1:</td>
+                                        <td class="info-response"><a href="{{ application.rec_letter1.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.rec_letter2 %}
+                                    <tr>
+                                        <td class="info-label">Recommendation Letter 2:</td>
+                                        <td class="info-response"><a href="{{ application.rec_letter2.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.ib_scores %}
+                                    <tr>
+                                        <td class="info-label">IB Scores:</td>
+                                        <td class="info-response"><a href="{{ application.ib_scores.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.csee_results %}
+                                    <tr>
+                                        <td class="info-label">CSEE Results:</td>
+                                        <td class="info-response"><a href="{{ application.csee_results.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.school_transcripts %}
+                                    <tr>
+                                        <td class="info-label">School Transcripts:</td>
+                                        <td class="info-response"><a href="{{ application.school_transcripts.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.official_id %}
+                                    <tr>
+                                        <td class="info-label">Official ID:</td>
+                                        <td class="info-response"><a href="{{ application.official_id.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if application.supps %}
+                                    <tr>
+                                        <td class="info-label">Supplementary Documents:</td>
+                                        <td class="info-response"><a href="{{ application.supps.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+    
+    </div>
+    <button onclick="downloadPDF()">Download PDF</button>
+
+    <script src="{% static 'js/login.js' %}"></script>
+    <script>
+        // Function to download the PDF
+        function downloadPDF() {
+            const element = document.getElementById('preview-contenti');
+            const opt = {
+                margin: 0.5, // Adjust margin as needed
+                filename: 'TanSAF_Application.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true, // Allow cross-origin images/fonts
+                    logging: true, // Enable logging for debugging
+                    scrollY: 0, // Start capturing from the top of the page
+                    windowHeight: document.documentElement.scrollHeight, // Capture the full height of the page
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'a4',
+                    orientation: 'portrait',
+                },
+                fontFaces: true, // Embed custom fonts
+            };
+
+            // Generate PDF
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // Function to show/hide the 'Back to Top' button based on scroll position
+        window.onscroll = function () {
+            const backToTopBtn = document.getElementById("backToTop");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopBtn.style.display = "block";
+            } else {
+                backToTopBtn.style.display = "none";
+            }
+        };
+
+        // Function to scroll back to the top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+    </script>
+
+</body>
+</html>

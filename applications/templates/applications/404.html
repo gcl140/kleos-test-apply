@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p>{{ message }}</p>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'programs' %}">Our Programs</a></li>
+            <li><a href="{% url 'events' %}">Events</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+        <h2>About Us</h2>
+        <p>TanSAF is a non-profit organization dedicated to helping Tanzanian students secure admission and financial aid at universities abroad. Its resource center offers free access to university materials, guidance, and support, including assistance with registration for standardized tests like the ACT, SAT, TOEFL, and IELTS.</p>
+        <h2>Quick Links</h2>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'programs' %}">Our Programs</a></li>
+            <li><a href="{% url 'events' %}">Events</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+        <h2>Contacts</h2>
+        <p>Address: Golden Tulip Hotel, Oysterbay</p>
+        <p>Phone: +255 658 129 202</p>
+        <p>Email: info@tansaf.or.tz</p>
+        <p>Facebook Instagram X-twitter</p>
+        <footer>
+            <p>© 2025 · Tanzania Students Achievement Foundation</p>
+            <p>Website by Khaki Developers</p>
+        </footer>
+    </div>
+</body>
+</html>

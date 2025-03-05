@@ -1,0 +1,161 @@
+<div class="dependent-card">
+    <div class="dependent-header">
+        <div class="dependent-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="dependent-info">
+            <h3 class="text-truncate">{{ dependent.dependent_name }}</h3>
+            <span class="age">
+            <i class="fa-solid fa-heart"></i> {{ dependent.relationship|default:"Relationship: N/A" }}</span>
+
+        </div>
+        <div class="dependent-actions">
+            <a href="{% url 'update_dependent' dependent.id %}" class="btn-action edit" title="Edit">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <a href="{% url 'delete_dependent' dependent.id %}" class="btn-action delete" title="Delete">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </div>
+    </div>
+
+
+</div>
+
+<style>
+    .dependent-card {
+        background: rgba(255, 255, 255, 0);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .dependent-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .dependent-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .dependent-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--tansaf-blue-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .dependent-avatar i {
+        font-size: 1.2rem;
+        color: var(--tansaf-blue);
+    }
+
+    .dependent-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dependent-info h3 {
+        /* color: var(--tansaf-blue); */
+        color: wheat;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .age {
+        color: rgb(214, 214, 214);
+        font-size: 0.8rem;
+    }
+
+    .dependent-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-action.edit {
+        background: var(--tansaf-gold);
+        color: white;
+    }
+
+    .btn-action.edit:hover {
+        background: var(--tansaf-gold-light);
+        transform: scale(1.1);
+    }
+
+    .btn-action.delete {
+        background: rgb(221, 26, 26);
+        color: white;
+    }
+
+    .btn-action.delete:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .dependent-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .detail-item i {
+        color: var(--tansaf-gold);
+        font-size: 0.9rem;
+        width: 16px;
+        flex-shrink: 0;
+    }
+
+    .detail-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .detail-content span {
+        color: rgb(214, 214, 214);
+        font-size: 0.9rem;
+        display: block;
+    }
+
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .dependent-card {
+            padding: 0.75rem;
+        }
+    }
+</style>

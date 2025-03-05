@@ -1,0 +1,278 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Document Submission{% endblock %}
+
+{% block info_title %}Document Submission{% endblock %}
+
+{% block info_description %}
+This section allows you to submit important documents required for your application. Providing accurate and complete
+documentation is essential for the evaluation of your application.
+<p>
+    <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
+</p>
+{% endblock %}
+
+{% block info_hints %}
+<li>Ensure all documents are legible and clearly labeled.</li>
+<li>For preliminary results, a screenshot with highlighted results is acceptable if the original slip is unavailable.
+</li>
+<li>Optional documents such as high school transcripts can enhance your application but are not mandatory.</li>
+<li>If you are under 18 and do not have an official ID, ensure that your leaving certificate meets the specified
+    requirements.</li>
+<li>Review all entries and document uploads for accuracy before submission.</li>
+{% endblock %}
+{% block form_content %}
+<style>
+    .required{
+        color: rgb(255, 144, 144) !important;
+    }
+    small i {
+        font-size: small !important;
+    }
+    .mb-4{
+        color: white ;
+    }
+    a {
+        color: wheat;
+    }
+</style>
+<form method="POST" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+    <!-- Preliminary CSEE Results -->
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>Financial Aid Application</h2>
+        <p>
+            Click <button type="button" id="finf" onclick=financed()
+                style="cursor: pointer; color: var(--tansaf-blue);border: none; background-color: rgba(128, 128, 128, 0);">here</button>
+            to download the family financial form, follow the instructions, and be sure to attach the completed final version and supporting financial documents below.
+        </p>
+        <i class="fas fa-cash me-2"></i>
+        <p class="form-label">
+            <i class="fa-solid fa-money-check-dollar"></i>
+
+            Upload the completed final version and any additional financial documents here<span class="required">*</span>
+        </p>
+
+        </p>
+        {{ form.financial|add_class:"form-control" }}
+        {% if form.financial.errors %}
+        <div class="text-danger">{{ form.financial.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4" >
+        <p class="form-label">
+        <h2>Recommendations</h2>
+        <p>
+            Please upload two (2) signed and stamped teacher recommendations.<span class="required">*</span>
+
+        </p>
+        <br>
+        </p>
+        <p class="form-label">
+            <i class="fas fa-file-signature me-2"></i>
+            Recommendation Letter 1
+        </p>
+        {{ form.rec_letter1|add_class:"form-control" }}
+        {% if form.rec_letter1.errors %}
+        <div class="text-danger">{{ form.rec_letter1.errors }}</div>
+        {% endif %}
+
+        <br>
+
+        <p class="form-label">
+            <i class="fas fa-file-signature me-2"></i>
+            Recommendation Letter 2
+        </p>
+        {{ form.rec_letter2|add_class:"form-control" }}
+        {% if form.rec_letter2.errors %}
+        <div class="text-danger">{{ form.rec_letter2.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>O-Level Certification</h2>
+        <p>If you took the Cambridge curriculum for your O Levels, upload your IGCSE results certificate.
+                    If you took the NECTA curriculum for your O Levels, upload your CSEE certificate.
+                    If you followed the International Baccalaureate (IB) curriculum, upload your Middle Years Program (MYP) certificate.
+            <br>
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-file-alt me-2"></i>
+            
+            Upload the certificate and/or results here
+            <span class="required">*</span>
+        </p>
+        {{ form.olv_certificates|add_class:"form-control" }}
+        {% if form.olv_certificates.errors %}
+        <div class="text-danger">{{ form.olv_certificates.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4" >
+        <p class="form-label">
+
+            <h2>
+                A-Level Certification</h2>
+            <p>
+                    For Cambridge students, please upload your AS Level results certificate. If available, you may also upload a copy of your predicted A-level grades.
+                        For NECTA students, please upload your A-Level results slip if available.
+                        For International Baccalaureate (IB) students, please upload your most recent IB scores if available.
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-file-alt me-2"></i>
+            Upload the certificate and/or results here
+
+        </p>
+
+        {{ form.olv_certificates|add_class:"form-control" }}
+        {% if form.olv_certificates.errors %}
+        <div class="text-danger">{{ form.olv_certificates.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>O-Level Transcripts </h2>
+        <p>
+            Please upload your school transcripts for Grades 10 and 11, which are equivalent to Form 3 and 4. For IB students, please provide your school reports for the entire Middle Years .
+
+            <!-- Please upload your school transcripts. (Recommended: Form 3-Form 6/Grade 9-Grade 12; to merge the PDF documents for O'level and A'level, you could use this <a href="https://www.ilovepdf.com/merge_pdf">website</a>. )<span class="required">*</span> -->
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-file-alt me-2"></i>
+            Upload the transcripts of your results here
+            <span class="required">*</span>
+
+        </p>
+        {{ form.o_level_school_transcripts|add_class:"form-control" }}
+        {% if form.o_level_school_transcripts.errors %}
+        <div class="text-danger">{{ form.o_level_school_transcripts.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>A-Level Transcripts</h2>
+        <p>
+            Please upload your school transcripts for Grades 12 and 13, which are equivalent to Form 5 and 6. For IB students, please provide your school reports for the entire Diploma Programme.
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-file-alt me-2"></i>
+            Upload the transcripts of your results here
+            <span class="required">*</span>
+        </p>
+
+        {{ form.a_level_school_transcripts|add_class:"form-control" }}
+        {% if form.a_level_school_transcripts.errors %}
+        <div class="text-danger">{{ form.a_level_school_transcripts.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>Identification Documents (ID)</h2>
+        <p>
+            Please upload an official photo ID (such as a National ID, passport, driver's license, voting ID, or school ID). If you are under 18 or do not have any of the listed IDs, a leaving certificate with an attached school-stamped photo will be accepted. The stamp must cover part of the photo and part of the certificate.<span class="required">*</span>
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-id-card me-2"></i>
+            Upload the identification card copy of yourself here
+        </p>
+
+        {{ form.official_id|add_class:"form-control" }}
+        {% if form.official_id.errors %}
+        <div class="text-danger">{{ form.official_id.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-4" >
+        <p class="form-label">
+
+        <h2>Supplemental Materials</h2>
+        <p>
+            If you have any supplemental materials you wish to submit with your application, 
+            feel free to do so. These may include, but are not limited to, creative writings, 
+            art portfolios, scholarly articles, research papers, presentations, performances, etc.
+        </p>
+        <br>
+        <p class="form-label">
+            <i class="fas fa-file-upload me-2"></i>
+            Upload your supplemental materials here
+        </p>
+
+        {{ form.supps|add_class:"form-control" }}
+        {% if form.supps.errors %}
+        <div class="text-danger">{{ form.supps.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;
+    border-top: 1px solid rgb(255 255 255 / 10%);">
+        <br>
+        SUBMISSION
+    </h2>
+    <div class="mb-4" >
+        <b>
+            <span class="form-label" style="font-family: 'Times New Roman', Times, serif;
+             font-style: italic;">
+             By submitting this application to TanSAF, I certify that the information provided is truthful and my own. I understand that providing false or misleading information will result in disqualification and if discovered after admission, may lead to expulsion from the program. (Please write your full name in all capital letters instead of signing.)
+            </span>
+        </b><br>
+        <p class="form-label">
+            <i class="fas fa-signature me-2"></i>
+            Signature (Full Name in CAPITAL LETTERS)<span class="required">*</span>
+        </p>
+        {{ form.signature|add_class:"form-control"|attr:"style:text-transform: uppercase;" }}
+        {% if form.signature.errors %}
+        <div class="text-danger">{{ form.signature.errors }}</div>
+        {% endif %}
+
+        <p class="form-label mt-3">
+            <i class="fas fa-calendar me-2"></i>
+            Date<span class="required">*</span>
+        </p>
+        {{ form.signdate|add_class:"form-control"|attr:"type:date" }}
+        {% if form.signdate.errors %}
+        <div class="text-danger">{{ form.signdate.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{{ previous_url }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-primary">
+            PREVIEW 
+            <!-- <i class="fas fa-arrow-right"></i> -->
+            <i class="fas fa-eye"></i> 
+
+        </button>
+    </div>
+</form>
+
+ <script>
+    function financed() { 
+        const pdfUrl = 'https://drive.google.com/file/d/1umx1rz9leapkGDQsNb9X99fRQnnxZpvT/view?usp=sharing'; // Adjust file path as needed
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.download = 'International_Financial_Aid_Form.pdf';
+        document.body.appendChild(link); // Append to body to make it work in all browsers
+        link.click();
+        document.body.removeChild(link); // Clean up after download
+    }
+</script>
+
+{% endblock %}

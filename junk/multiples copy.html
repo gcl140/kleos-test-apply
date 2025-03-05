@@ -1,0 +1,39 @@
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center text-primary">Manage Your Application Data</h2>
+    <h1 class="text-center text-secondary">Add Activities</h1>
+
+    <div id="activity-form" class="my-4">
+        {% include 'partials/activities.html' %}
+    </div>
+
+    <div class="d-flex justify-content-center my-4">
+        <button 
+            type="button" 
+            class="btn btn-success px-4 py-2" 
+            hx-get="{% url 'create_activity' %}"
+            hx-target="#activity-form" 
+            hx-swap="beforeend">
+            + Add Activity
+        </button>
+        <br>
+            <button class="btn btn-primary px-4" type="button" id="submit-all">Submit All</button>
+    </div>
+
+    <ul id="activity-list" class="list-group">
+        {% for activity in activities %}
+            <li class="list-group-item my-2">
+                {% include 'partials/activities_list.html' %}
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center text-muted">
+                No activities available. Add one using the button above.
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

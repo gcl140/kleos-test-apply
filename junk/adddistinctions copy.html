@@ -1,0 +1,124 @@
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-3">Manage Your Application Data</h2>
+    <h3 class="text-center text-secondary mb-4">Add distinctions</h3>
+
+    <!-- distinction Form Section -->
+    <div id="distinction-form" class="my-4">
+        {% include 'partials/distinctions.html' %}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button type="button" class="btn btn-success px-4 py-2 d-flex align-items-center"
+            hx-get="{% url 'create_distinction' %}" hx-target="#distinction-form" hx-swap="beforeend">
+            <i class="fa-solid fa-circle-plus me-2"></i> Add distinction
+        </button>
+        <br>
+        <button class="btn btn-primary px-4 py-2" type="button" id="submit-all"><i
+                class="fa-regular fa-circle-check me-2"></i> Submit All
+        </button>
+    </div>
+
+    <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="fw-semibold">Distinction</th>
+                <th scope="col" class="fw-semibold text-center">Level</th>
+                <th scope="col" class="fw-semibold text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="distinction-list">
+            {% for distinction in distinctions %}
+            {% include 'partials/distinctions_list.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-3">Manage Your Application Data</h2>
+    <h3 class="text-center text-secondary mb-4">Add distinctions</h3>
+
+    <!-- Distinction Form Section -->
+    <div id="distinction-form" class="my-4">
+        {% include 'partials/distinctions.html' %}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button id='add-distinction-btn' type="button" class="btn btn-success px-4 py-2 d-flex align-items-center {% if distinction_count >= 5 %}disabled{% endif %}" 
+            hx-get="{% url 'create_distinction' %}" hx-target="#distinction-form" hx-swap="beforeend">
+            <i class="fa-solid fa-circle-plus me-2"></i> Add distinction
+        </button>
+        <button {% if distinction_count >= 5 %} disabled {% endif %} class="btn btn-primary px-4 py-2" type="button" id="submit-all">
+            <i class="fa-regular fa-circle-check me-2"></i> Submit All
+        </button>
+    </div>
+
+    <!-- Distinction Table -->
+    <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="fw-semibold">Distinction</th>
+                <th scope="col" class="fw-semibold text-center">Level</th>
+                <th scope="col" class="fw-semibold text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="distinction-list">
+            {% for distinction in distinctions %}
+            {% include 'partials/distinctions_list.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const MAX_DISTINCTIONS = 4;
+        let clickCounter = 0;
+        
+        const addButton = document.getElementById('add-distinction-btn');
+        const submitButton = document.getElementById('submit-all');
+        
+        // Function to update the button state and handle click count
+        function updateButtonState() {
+            if (clickCounter >= MAX_DISTINCTIONS) {
+                addButton.disabled = true;
+                addButton.classList.add('disabled');
+            } 
+            else {
+                addButton.disabled = false;
+                addButton.classList.remove('disabled');
+                // submitButton.disabled = false;
+                // submitButton.classList.remove('disabled');
+            }
+        }
+
+        // Add click event to the "Add distinction" button
+        addButton.addEventListener('click', function() {
+            clickCounter++;
+            updateButtonState();
+        });
+
+        // Initial call to set button state based on the initial count
+        updateButtonState();
+    });
+</script>
+{% endblock %}

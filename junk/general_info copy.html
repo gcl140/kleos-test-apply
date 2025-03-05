@@ -1,0 +1,96 @@
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center text-primary mb-4">General Information</h3>
+
+    <!-- General Information Form Section -->
+    <form method="POST" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        
+        <!-- Applicant’s Full Name -->
+        <div class="mb-4">
+            <p id="id_first_name" class="form-label">
+                <i style="margin-right: 10px;" class="fas fa-user"></i> Applicant’s Full Name (First, Middle, Surname) *
+            </p>
+            <div class="mb-3">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name|add_class:"form-control" }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form.middle_name.label_tag }}
+                {{ form.middle_name|add_class:"form-control" }}
+                {% if form.middle_name.errors %}
+                    <div class="text-danger">{{ form.middle_name.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name|add_class:"form-control" }}
+                {% if form.last_name.errors %}
+                    <div class="text-danger">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="mb-4">
+            <p id="id_dob" class="form-label">
+                <i style="margin-right: 10px;" class="fas fa-calendar-alt"></i> Date of Birth *
+            </p>
+            {{ form.dob|add_class:"form-control" }}
+            {% if form.dob.errors %}
+                <div class="text-danger">{{ form.dob.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Gender -->
+        <div class="mb-4">
+            <p class="form-label">
+                <i style="margin-right: 10px;" class="fas fa-venus-mars"></i> Gender *
+            </p>
+            {{ form.gender|add_class:"form-select" }}
+            {% if form.gender.errors %}
+                <div class="text-danger">{{ form.gender.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Nationality -->
+        <div class="mb-4">
+            <p id="id_nationality" class="form-label">
+                <i style="margin-right: 10px;" class="fas fa-flag"></i> Nationality *
+            </p>
+            {{ form.nationality|add_class:"form-control" }}
+            {% if form.nationality.errors %}
+                <div class="text-danger">{{ form.nationality.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Place of Birth -->
+        <div class="mb-4">
+            <p id="id_place_of_birth" class="form-label">
+                <i style="margin-right: 10px;" class="fas fa-map-marker-alt"></i> Place of Birth *
+            </p>
+            {{ form.place_of_birth|add_class:"form-control" }}
+            {% if form.place_of_birth.errors %}
+                <div class="text-danger">{{ form.place_of_birth.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="d-flex justify-content-between mt-5">
+            <a href="{{ previous_url }}" class="btn btn-outline-secondary btn-lg me-2">
+                <i style="margin-right: 10px;" class="fas fa-arrow-left"></i> Previous
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg ms-2" style="width: fit-content; padding: 10 10;">
+                Next <i style="margin-left: 10px;;" class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

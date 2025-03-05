@@ -1,0 +1,59 @@
+{% extends 'yuzzaz/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="header text-center">
+        <h1>Welcome, {{ user.first_name }}</h1>
+        <p>Track your progress, assignments, and exams all in one place!</p>
+    </div>
+
+    <div class="progress-section">
+        <h3>Your Progress</h3>
+        <div class="progress-card">
+            <div class="progress-title">Overall Progress</div>
+            <div class="progress">
+                <!-- <div class="progress-bar bg-success" style="width: {{ user.progress }}%"></div> -->
+                <div class="progress-bar bg-success" style="width: 2%"></div>
+            </div>
+            <p>{{ user.progress }}% Completed</p>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <div class="icon bg-primary">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h4>Assignments</h4>
+            <p>View and complete assignments posted by your counselor.</p>
+            <a href="{% url 'kohot' %}" class="btn btn-outline-primary">View Assignments</a>
+        </div>
+        <div class="card">
+            <div class="icon bg-warning">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <h4>Exams</h4>
+            <p>Take scheduled exams and track your results.</p>
+            <a href="{% url 'exams' %}" class="btn btn-outline-warning">Take Exam</a>
+        </div>
+        <div class="card">
+            <div class="icon bg-info">
+                <i class="fas fa-user"></i>
+            </div>
+            <h4>Counselor Notes</h4>
+            <p>Read feedback and messages from your counselor.</p>
+            <a href="{% url 'notes' %}" class="btn btn-outline-info">View Notes</a>
+        </div>
+        <div class="card">
+            <div class="icon bg-danger">
+                <i class="fas fa-book"></i>
+            </div>
+            <h4>Resources</h4>
+            <p>Access study materials and practice exercises.</p>
+            <a href="{% url 'resources' %}" class="btn btn-outline-danger">View Resources</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

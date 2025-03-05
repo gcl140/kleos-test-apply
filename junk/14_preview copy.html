@@ -1,0 +1,448 @@
+{% load static %}
+
+{% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/preview copy.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="button-container">
+    <button id="baton" onclick="downloadPDF()"> 
+        <i class="fas fa-download"></i> 
+        DOWNLOAD PDF
+    </button>
+</div>
+<div class="container mt-4" id="preview-content">
+    <h1 class="text-center mb-4" style="text-align: center;">TanSAF Application Preview</h1>
+
+    <!-- General Information Section -->
+    <div class="preview-section">
+        <h3 class="section-titlee">
+            Hi, {{application.first_name}}! Congratulations on making it this far. Feel free to preview your application before submitting it.
+        </h3>
+        
+        <h4 class="section-title">General Information</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">Agreed to the terms and conditions?:</span> {{ application.agreed }}</div>
+                <div class="info-row"><span class="info-label">Sign Date:</span> {{ application.signature }}</div>
+                <div class="info-row"><span class="info-label">Sign Date:</span> {{ application.signdate }}</div>
+                <div class="info-row"><span class="info-label">Applicant's Full Name:</span> {{ application.first_name }} {{ application.middle_name }} {{ application.last_name }}</div>
+                <div class="info-row"><span class="info-label">Date of Birth:</span> {{ application.dob }}</div>
+                <div class="info-row"><span class="info-label">Gender:</span> {{ application.gender }}</div>
+                <div class="info-row"><span class="info-label">Nationality:</span> {{ application.nationality }}</div>
+                <div class="info-row"><span class="info-label">Place of Birth:</span> {{ application.place_of_birth }}</div>
+                <div class="info-row"><span class="info-label">Residency:</span> {{ application.residency }}</div>
+                <div class="info-row"><span class="info-label">Phone Number 1:</span> {{ application.tel1 }}</div>
+                <div class="info-row"><span class="info-label">Phone Number 2:</span> {{ application.tel2 }}</div>
+                <div class="info-row"><span class="info-label">Primary Email:</span> {{ application.email1 }}</div>
+                <div class="info-row"><span class="info-label">Secondary Email:</span> {{ application.email2 }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Information -->
+    <div class="preview-section">
+        <h4 class="section-title">Educational Information</h4>
+        
+        <!-- A'level School -->
+        <h5 class="mb-3">A'level School Education</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">Advanced School Name:</span> {{ application.adv_school_name }}</div>
+                <div class="info-row"><span class="info-label">Advanced School Phone Number:</span> {{ application.adv_school_phone }}</div>
+                <div class="info-row"><span class="info-label">Advanced School Email:</span> {{ application.adv_school_email }}</div>
+                <div class="info-row"><span class="info-label">Advanced School Curriculum:</span> {{ application.adv_curriculum }}</div>
+                <div class="info-row"><span class="info-label">Report another Advanced School:</span> {{ application.report_other_adv }}</div>
+            {% if application.report_other_adv %}
+                <div class="info-row"><span class="info-label">Other Advanced School Name:</span> {{ application.other_adv_school_name }}</div>
+                <div class="info-row"><span class="info-label">Other Advanced School Phone Number:</span> {{ application.other_adv_school_phone }}</div>
+                <div class="info-row"><span class="info-label">Other Advanced School Email:</span> {{ application.other_adv_school_email }}</div>
+                <div class="info-row"><span class="info-label">Other Advanced School Curriculum:</span> {{ application.other_adv_curriculum }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- O'level School -->
+        <h5 class="mb-3">O'level School Education</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">School Name:</span> {{ application.olv_school_name }}</div>
+                <div class="info-row"><span class="info-label">Phone:</span> {{ application.olv_school_phone }}</div>
+                <div class="info-row"><span class="info-label">Email:</span> {{ application.olv_school_email }}</div>
+                <div class="info-row"><span class="info-label">Curriculum:</span> {{ application.olv_curriculum }}</div>
+                <div class="info-row"><span class="info-label">Report another O'level School:</span> {{ application.report_other_olv }}</div>
+            </div>
+            {% if application.report_other_olv %}
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">Other School Name:</span> {{ application.other_olv_school_name }}</div>
+                <div class="info-row"><span class="info-label">Other School Phone:</span> {{ application.other_olv_school_phone }}</div>
+                <div class="info-row"><span class="info-label">Other School Email:</span> {{ application.other_olv_school_email }}</div>
+                <div class="info-row"><span class="info-label">Other School Curriculum:</span> {{ application.other_olv_curriculum }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Family Information -->
+    <div class="preview-section">
+        <h4 class="section-title">Family Information</h4>
+        
+        <!-- Parent 1 -->
+        <h5 class="mb-3">Parent/Guardian 1</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">First Name:</span> {{ application.par1_fname }}</div>
+                <div class="info-row"><span class="info-label">Middle Name:</span> {{ application.par1_mname }}</div>
+                <div class="info-row"><span class="info-label">Last Name:</span> {{ application.par1_lname }}</div>
+                <div class="info-row"><span class="info-label">Phone Number:</span> {{ application.par1_phone }}</div>
+                <div class="info-row"><span class="info-label">Email:</span> {{ application.par1_email }}</div>
+                <div class="info-row"><span class="info-label">Occupation:</span> {{ application.par1_jobbusy }}</div>
+                <div class="info-row"><span class="info-label">Job Title:</span> {{ application.par1_jobtitle }}</div>
+                <div class="info-row"><span class="info-label">Employment Status:</span> {{ application.par1_employmentstatus }}</div>
+                <div class="info-row"><span class="info-label">Retirement Date:</span> {{ application.par1_retire }}</div>
+                <div class="info-row"><span class="info-label">Years Served:</span> {{ application.par1_served }}</div>
+                <div class="info-row"><span class="info-label">Highest Education Level:</span> {{ application.par1_levedu }}</div>
+                <div class="info-row"><span class="info-label">Highest Educational Institute Attended:</span> {{ application.par1_institute }}</div>
+                <div class="info-row"><span class="info-label">Degree:</span> {{ application.par1_degree }}</div>
+                <div class="info-row"><span class="info-label">Degree Year:</span> {{ application.par1_degreeyear }}</div>
+            </div>
+        </div>
+
+        <!-- Parent 2 -->
+        {% if application.report_other_par %}
+        <h5 class="mb-3 mt-4">Parent/Guardian 2</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">First Name:</span> {{ application.par2_fname }}</div>
+                <div class="info-row"><span class="info-label">Middle Name:</span> {{ application.par2_mname }}</div>
+                <div class="info-row"><span class="info-label">Last Name:</span> {{ application.par2_lname }}</div>
+                <div class="info-row"><span class="info-label">Phone Number:</span> {{ application.par2_phone }}</div>
+                <div class="info-row"><span class="info-label">Email:</span> {{ application.par2_email }}</div>
+                <div class="info-row"><span class="info-label">Occupation:</span> {{ application.par2_jobbusy }}</div>
+                <div class="info-row"><span class="info-label">Job Title:</span> {{ application.par2_jobtitle }}</div>
+                <div class="info-row"><span class="info-label">Employment Status:</span> {{ application.par2_employmentstatus }}</div>
+                <div class="info-row"><span class="info-label">Retirement Date:</span> {{ application.par2_retire }}</div>
+                <div class="info-row"><span class="info-label">Years Served:</span> {{ application.par2_served }}</div>
+                <div class="info-row"><span class="info-label">Highest Education Level:</span> {{ application.par2_levedu }}</div>
+                <div class="info-row"><span class="info-label">Highest Educational Institute Attended:</span> {{ application.par2_institute }}</div>
+                <div class="info-row"><span class="info-label">Degree:</span> {{ application.par2_degree }}</div>
+                <div class="info-row"><span class="info-label">Degree Year:</span> {{ application.par2_degreeyear }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Financial Information -->
+    <div class="preview-section">
+        <h4 class="section-title">Financial Information</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-row"><span class="info-label">O'level Fees:</span> {{ application.o_fee }}</div>
+                <div class="info-row"><span class="info-label">O'level Fee Payer:</span> {{ application.f_payer_olevel }}</div>
+                <div class="info-row"><span class="info-label">A'level Fees:</span> {{ application.a_fee }}</div>
+                <div class="info-row"><span class="info-label">A'level Fee Payer:</span> {{ application.f_payer_alevel }}</div>
+                <div class="info-row"><span class="info-label">Receives Support:</span> {{ application.suprt }}</div>
+                {% if suprt %}
+                <div class="info-row"><span class="info-label">Support Amount:</span> {{ application.suprt_amnt }}</div>
+                <div class="info-row"><span class="info-label">Supporter Name:</span> {{ application.suprt_name }}</div>
+                {% endif %}
+                <div class="info-row"><span class="info-label">Taken home for school fees?:</span> {{ application.home_fees }}</div>
+                {% if home_fees%}
+                <div class="info-row"><span class="info-label">Support Comments:</span> {{ application.suprtc }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="preview-section">
+        <h4 class="section-title">Additional Information</h4>
+        <div class="row">
+            <div class="col-12">
+                {% if application.fav_hobby %}
+                <div class="info-row"><span class="info-label">Favorite Hobby:</span> {{ application.fav_hobby }}</div>
+                {% endif %}
+                {% if application.owns_phone %}
+                <div class="info-row"><span class="info-label">Owns a Phone:</span> {{ application.owns_phone }}</div>
+                {% endif %}
+                {% if application.phone_maker %}
+                <div class="info-row"><span class="info-label">Phone Maker:</span> {{ application.phone_maker }}</div>
+                {% endif %}
+                {% if application.phone_model %}
+                <div class="info-row"><span class="info-label">Phone Model:</span> {{ application.phone_model }}</div>
+                {% endif %}
+                {% if application.social_media %}
+                <div class="info-row"><span class="info-label">Social Media:</span> {{ application.social_media }}</div>
+                {% endif %}
+                {% if application.extrac %}
+                <div class="info-row"><span class="info-label">Most Meaningful ExtraCurricular Activity Essay:</span> {{ application.extrac }}</div>
+                {% endif %}
+                {% if application.chlg %}
+                <div class="info-row"><span class="info-label">Challenge Essay:</span> {{ application.chlg }}</div>
+                {% endif %}
+                {% if application.cohort %}
+                <div class="info-row"><span class="info-label">Fellow Cohort to know about you:</span> {{ application.cohort }}</div>
+                {% endif %}
+                {% if application.teach %}
+                <div class="info-row"><span class="info-label">A class you'd teach:</span> {{ application.teach }}</div>
+                {% endif %}
+                {% if application.why_tansaf %}
+                <div class="info-row"><span class="info-label">Why TanSAF?:</span> {{ application.why_tansaf }}</div>
+                {% endif %}
+                {% if application.why_you %}
+                <div class="info-row"><span class="info-label">Why You?:</span> {{ application.why_you }}</div>
+                {% endif %}
+                {% if application.has_disciplinary_violation %}
+                <div class="info-row"><span class="info-label">Has disciplinary violations:</span> {{ application.has_disciplinary_violation }}</div>
+                {% endif %}
+                {% if application.disciplinary_details %}
+                <div class="info-row"><span class="info-label">Elaboration, disciplinary violation:</span> {{ application.disciplinary_details }}</div>
+                {% endif %}
+                {% if application.covid_impact %}
+                <div class="info-row"><span class="info-label">Has covid-19, etc, impacted you?:</span> {{ application.covid_impact }}</div>
+                {% endif %}
+                {% if application.covid_impact_details %}
+                <div class="info-row"><span class="info-label">Covid-19, etc impact:</span> {{ application.covid_impact_details }}</div>
+                {% endif %}
+                {% if application.additional_circumstances %}
+                <div class="info-row"><span class="info-label">Has additional circumstances:</span> {{ application.additional_circumstances }}</div>
+                {% endif %}
+                {% if application.additional_circumstances_details %}
+                <div class="info-row"><span class="info-label">The additional circumstances:</span> {{ application.additional_circumstances_details }}</div>
+                {% endif %}
+                {% if application.known_tansaf_ig %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through Instagram:</span> {{ application.known_tansaf_ig }}</div>
+                {% endif %}
+                {% if application.known_tansaf_fb %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through Facebook:</span> {{ application.known_tansaf_fb }}</div>
+                {% endif %}
+                {% if application.known_tansaf_int %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through Internet:</span> {{ application.known_tansaf_int }}</div>
+                {% endif %}
+                {% if application.known_tansaf_tans %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through TanSAF:</span> {{ application.known_tansaf_tans }}</div>
+                {% endif %}
+                {% if application.known_tansaf_fam %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through Family:</span> {{ application.known_tansaf_fam }}</div>
+                {% endif %}
+                {% if application.known_tansaf_other %}
+                <div class="info-row"><span class="info-label">Knows TanSAF through Other Means:</span> {{ application.known_tansaf_other }}</div>
+                {% endif %}
+                {% if application.known_tansaf_other_write %}
+                <div class="info-row"><span class="info-label">Other Means Details:</span> {{ application.known_tansaf_other_write }}</div>
+                {% endif %}
+                {% if application.sat_for_sat %}
+                <div class="info-row"><span class="info-label">Has taken SAT:</span> {{ application.sat_for_sat }}</div>
+                {% endif %}
+                {% if application.sat_type %}
+                <div class="info-row"><span class="info-label">SAT Type:</span> {{ application.sat_type }}</div>
+                {% endif %}
+                {% if application.sat_score %}
+                <div class="info-row"><span class="info-label">SAT Score:</span> {{ application.sat_score }}</div>
+                {% endif %}
+                {% if application.sat_date %}
+                <div class="info-row"><span class="info-label">SAT Date:</span> {{ application.sat_date }}</div>
+                {% endif %}
+                {% if application.sat_for_eng %}
+                <div class="info-row"><span class="info-label">Has taken English Proficiency Test:</span> {{ application.sat_for_eng }}</div>
+                {% endif %}
+                {% if application.eng_type %}
+                <div class="info-row"><span class="info-label">English Test Type:</span> {{ application.eng_type }}</div>
+                {% endif %}
+                {% if application.eng_score %}
+                <div class="info-row"><span class="info-label">English Test Score:</span> {{ application.eng_score }}</div>
+                {% endif %}
+                {% if application.eng_date %}
+                <div class="info-row"><span class="info-label">English Test Date:</span> {{ application.eng_date }}</div>
+                {% endif %}
+                {% if application.has_passport %}
+                <div class="info-row"><span class="info-label">Has Passport:</span> {{ application.has_passport }}</div>
+                {% endif %}
+                {% if application.passport_purpose %}
+                <div class="info-row"><span class="info-label">Passport Purpose:</span> {{ application.passport_purpose }}</div>
+                {% endif %}
+                {% if application.form_4_holiday %}
+                <div class="info-row"><span class="info-label">Form 4 Holiday Details:</span> {{ application.form_4_holiday }}</div>
+                {% endif %}
+                {% if application.form4_holiday %}
+                <div class="info-row"><span class="info-label">Form 4 Holiday Details (Duplicate):</span> {{ application.form4_holiday }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Files Section -->
+    <div class="preview-section">
+        <h4 class="section-title">Files</h4>
+        <div class="row">
+            <div class="col-12">
+                {% if application.financial %}
+                <div class="info-row"><span class="info-label">Financial Documents:</span> <a href="{{ application.financial.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.rec_letter1 %}
+                <div class="info-row"><span class="info-label">Recommendation Letter 1:</span> <a href="{{ application.rec_letter1.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.rec_letter2 %}
+                <div class="info-row"><span class="info-label">Recommendation Letter 2:</span> <a href="{{ application.rec_letter2.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.ib_scores %}
+                <div class="info-row"><span class="info-label">IB Scores:</span> <a href="{{ application.ib_scores.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.csee_results %}
+                <div class="info-row"><span class="info-label">CSEE Results:</span> <a href="{{ application.csee_results.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.school_transcripts %}
+                <div class="info-row"><span class="info-label">School Transcripts:</span> <a href="{{ application.school_transcripts.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.official_id %}
+                <div class="info-row"><span class="info-label">Official ID:</span> <a href="{{ application.official_id.url }}" target="_blank">View File</a></div>
+                {% endif %}
+                {% if application.supps %}
+                <div class="info-row"><span class="info-label">Supplementary Documents:</span> <a href="{{ application.supps.url }}" target="_blank">View File</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+</form>
+<!-- Download Button -->
+<button class="download-btn" onclick="downloadPDF()">
+    <i class="fas fa-download"></i> Download PDF
+</button>
+
+
+
+{% if messages %}
+<div class="fixed-toast-container">
+    {% for message in messages %}
+    <div class="toast-message {% if message.tags %}{{ message.tags }}{% endif %}">
+        <div class="toast-content">
+            <div class="toast-text">{{ message }}</div>
+            <button type="button" class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="toast-progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    // Automatically remove toast messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastMessages = document.querySelectorAll('.toast-message');
+        toastMessages.forEach(toast => {
+            setTimeout(() => {
+                toast.remove(); // Remove the toast message after 5 seconds
+            }, 5000); // 5000 milliseconds = 5 seconds
+        });
+    });
+</script>
+{% endif %}
+
+
+
+<script>
+    function downloadPDF() {
+    const element = document.getElementById('preview-content');
+    const opt = {
+        margin: 0.5, // Adjust margin as needed
+        filename: 'TanSAF_Application.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2,
+            useCORS: true, // Allow cross-origin images/fonts
+            logging: true, // Enable logging for debugging
+            scrollY: 0, // Start capturing from the top of the page
+            windowHeight: document.documentElement.scrollHeight, // Capture the full height of the page
+        },
+        jsPDF: { 
+            unit: 'in', 
+            format: 'a4', 
+            orientation: 'portrait',
+        },
+        fontFaces: true, // Embed custom fonts
+    };
+
+    // Generate PDF
+    html2pdf().set(opt).from(element).save();
+}
+// function downloadPDF() {
+//     const element = document.getElementById('preview-content');
+//     const opt = {
+//         margin: 0.5, // Reduce margin to minimize blank space
+//         filename: 'TanSAF_Application.pdf',
+//         image: { type: 'jpeg', quality: 0.98 },
+//         html2canvas: { 
+//             scale: 2,
+//             useCORS: true, // Allow cross-origin images/fonts
+//             logging: true, // Enable logging for debugging
+//         },
+//         jsPDF: { 
+//             unit: 'in', 
+//             format: 'a4', 
+//             orientation: 'portrait',
+//         },
+//         fontFaces: true, // Embed custom fonts
+//     };
+
+//     // Generate PDF
+//     html2pdf().set(opt).from(element).save();
+// }
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="button-container">
+    <button id="baton" onclick="downloadPDF()"> 
+        <i class="fas fa-download"></i> 
+        DOWNLOAD PDF
+    </button>
+</div>
+
+
+
+
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+</form>
+<!-- Download Button -->
+<button class="download-btn" onclick="downloadPDF()">
+    <i class="fas fa-download"></i> Download PDF
+</button>
+

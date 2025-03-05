@@ -1,0 +1,213 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}dependent Information{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dependents.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper" >
+    <!-- <div class="form-progress"> -->
+        <div class="form-progress">
+            <a href="{% url 'intro_view' %}" class="progress-step {% if application.intro_completed %}completed{% endif %} {% if current_section == 'intro' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.intro_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Intro</span>
+            </a>
+            <a href="{% url 'general_info_view' %}" class="progress-step {% if application.general_info_completed %}completed{% endif %} {% if current_section == 'general_info' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.general_info_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">About You</span>
+            </a>
+            <a href="{% url 'contact_info_view' %}" class="progress-step {% if application.contact_info_completed %}completed{% endif %} {% if current_section == 'contact_info' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.contact_info_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Contacts</span>
+            </a>
+            <a href="{% url 'school_info_view' %}" class="progress-step {% if application.school_info_completed %}completed{% endif %} {% if current_section == 'school_info' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.school_info_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">School Info</span>
+            </a>
+            <a href="{% url 'parent_info_view' %}" class="progress-step {% if application.family_info_completed %}completed{% endif %} {% if current_section == 'family_info' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.family_info_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Family Info</span>
+            </a>
+            <a href="{% url 'addsiblings' %}" class="progress-step {% if application.siblings_completed %}completed{% endif %} {% if current_section == 'siblings' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.siblings_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Siblings</span>
+            </a>
+            <a href="{% url 'adddependents' %}" class="progress-step {% if application.dependents_completed %}completed{% endif %} {% if current_section == 'dependents' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.dependents_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Dependents</span>
+            </a>
+            <a href="{% url 'financial_info_view' %}" class="progress-step {% if application.financial_info_completed %}completed{% endif %} {% if current_section == 'financial_info' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.financial_info_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Financial Info</span>
+            </a>
+            <a href="{% url 'addactivities' %}" class="progress-step {% if application.activities_completed %}completed{% endif %} {% if current_section == 'activities' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.activities_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Activities</span>
+            </a>
+            <a href="{% url 'adddistinctions' %}" class="progress-step {% if application.distinctions_completed %}completed{% endif %} {% if current_section == 'distinctions' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.distinctions_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Distinctions</span>
+            </a>
+            <a href="{% url 'additional_info_view' %}" class="progress-step {% if application.other_inquiries_completed %}completed{% endif %} {% if current_section == 'other_inquiries' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.other_inquiries_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Other Inquiries</span>
+            </a>
+            <a href="{% url 'writing_section_view' %}" class="progress-step {% if application.writing_completed %}completed{% endif %} {% if current_section == 'writing' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.writing_completed %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Writing</span>
+            </a>
+            <a href="{% url 'files_signature' %}" class="progress-step {% if application.files_signature %}completed{% endif %} {% if current_section == 'files_signature' %}active{% endif %}">
+                <span class="step-dot">
+                    {% if application.files_signature %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-regular fa-circle"></i>
+                    {% endif %}
+                </span>
+                <span class="step-label">Uploads</span>
+            </a>
+        </div>
+    <!-- </div> -->
+
+    <div class="form-section" style="margin: auto !important;">
+        <div class="form-container">
+            <!-- dependent Form Section -->
+            <div id="dependent-form" class="dependents-container">
+                <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+                    Dependents Information
+                    </h2>
+                    <br>
+                <div class="form-row" style="color: wheat;">
+                    <!-- dependent Name -->
+                    <div class="input-group">
+                         Please name any person other than you and your siblings, if any, whom your parents or guardians provide financial support
+                and briefly describe the relationship (e.g. cousin, grandmother, etc.)
+                    </div>
+                </div>
+                {% include 'partials/dependents.html' %}
+            </div>
+
+
+            <!-- Action Buttons Section -->
+            <div class="instr" style="color: wheat;">
+                <br>
+                Please remember to click the <b> SAVE ALL</b> button after adding dependent(s).
+            </div>
+            <div class="dependent-actions">
+                <button type="button" class="btn-add-dependent"
+                    hx-get="{% url 'create_dependent' %}" 
+                    hx-target="#dependent-form" 
+                    hx-swap="beforeend">
+                    <i class="fas fa-plus-circle"></i> Add dependent
+                </button>
+                <button class="btn-submit-all" type="button" id="submit-all">
+                    <i class="fas fa-check-circle"></i> Save All
+                </button>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="button-group">
+                <a href="{{ previous_url }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <a href="{{ next_url }}" class="btn btn-primary">
+                    Save & Continue <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="dependents-list-container">
+            <h3 class="section-title">
+                <i class="fas fa-users"></i>
+                Added dependents
+            </h3>
+            <div id="dependent-list" class="dependents-grid">
+                {% for dependent in dependents %}
+                    {% include 'partials/dependents_list.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dependents.js' %}"></script>
+{% endblock %}

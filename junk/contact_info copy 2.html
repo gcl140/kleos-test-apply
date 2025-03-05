@@ -1,0 +1,91 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Contact Information{% endblock %}
+
+{% block info_title %}Contact Information{% endblock %}
+
+{% block info_description %}
+Please provide your current contact information. This helps us stay in touch with you throughout the application process.
+{% endblock %}
+
+{% block info_hints %}
+<li>Ensure your email address is active and checked regularly</li>
+<li>Provide a phone number where we can reach you directly</li>
+<li>Double-check your postal address for accuracy</li>
+<li>Include your current residence information</li>
+{% endblock %}
+
+{% block form_content %}
+<form method="POST" class="form-container">
+    {% csrf_token %}
+    
+    <!-- Contact Information -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-envelope"></i> Email Address *
+        </label>
+        {{ form.email1|add_class:"form-control"|attr:"required"|attr:"type:email"|attr:"placeholder:Enter your email address" }}
+        {% if form.email1.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.email1.errors }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-envelope-open"></i> Secondary Email Address (Optional)
+        </label>
+        {{ form.email2|add_class:"form-control"|attr:"type:email"|attr:"placeholder:Enter your secondary email address" }}
+        {% if form.email2.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.email2.errors }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-phone"></i> Primary Phone Number *
+        </label>
+        {{ form.tel1|add_class:"form-control"|attr:"required"|attr:"type:tel"|attr:"placeholder:Enter your primary phone number" }}
+        {% if form.tel1.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.tel1.errors }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-phone-alt"></i> Secondary Phone Number (Optional)
+        </label>
+        {{ form.tel2|add_class:"form-control"|attr:"type:tel"|attr:"placeholder:Enter your secondary phone number" }}
+        {% if form.tel2.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.tel2.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Address Information -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-home"></i> Home Address *
+        </label>
+        {{ form.residency|add_class:"form-control"|attr:"required"|attr:"placeholder:Enter your home address" }}
+        {% if form.residency.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.residency.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{{ previous_url }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Previous
+        </a>
+        <button type="submit" class="btn btn-primary">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact_info.js' %}"></script>
+{% endblock %}

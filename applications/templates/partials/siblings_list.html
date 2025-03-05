@@ -1,0 +1,179 @@
+<div class="sibling-card">
+    <div class="sibling-header">
+        <div class="sibling-avatar">
+            <i class="fas fa-user"></i>
+        </div>
+        <div class="sibling-info">
+            <h3 class="text-truncate">{{ sibling.sibling_name }}</h3>
+            <span class="age">{{ sibling.age }} years old</span>
+        </div>
+        <div class="sibling-actions">
+            <a href="{% url 'update_sibling' sibling.id %}" class="btn-action edit" title="Edit">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <!-- <button class="btn-action delete" title="Delete"
+                hx-delete="{% url 'delete_sibling' sibling.id %}"
+                hx-target="closest .sibling-card"
+                hx-swap="outerHTML"
+                hx-confirm="Are you sure you want to delete this sibling?">
+                <i class="fas fa-trash-alt"></i>
+            </button> -->
+            <a href="{% url 'delete_sibling' sibling.id %}" class="btn-action delete" title="Delete">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="sibling-details">
+        <div class="detail-item">
+            <i class="fas fa-graduation-cap"></i>
+            <div class="detail-content">
+                <span class="text-truncate">{{ sibling.education|default:"Education: N/A" }}</span>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <i class="fas fa-briefcase"></i>
+            <div class="detail-content">
+                <span class="text-truncate">{{ sibling.occupation|default:"Occupation: N/A" }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .sibling-card {
+        background: rgba(255, 255, 255, 0);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .sibling-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sibling-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .sibling-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--tansaf-blue-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .sibling-avatar i {
+        font-size: 1.2rem;
+        color: var(--tansaf-blue);
+    }
+
+    .sibling-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .sibling-info h3 {
+        /* color: var(--tansaf-blue); */
+        color: wheat;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .age {
+        color: rgb(214, 214, 214);
+        font-size: 0.8rem;
+    }
+
+    .sibling-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-action.edit {
+        background: var(--tansaf-gold);
+        color: white;
+    }
+
+    .btn-action.edit:hover {
+        background: var(--tansaf-gold-light);
+        transform: scale(1.1);
+    }
+
+    .btn-action.delete {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+    .btn-action.delete:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .sibling-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .detail-item i {
+        color: var(--tansaf-gold);
+        font-size: 0.9rem;
+        width: 16px;
+        flex-shrink: 0;
+    }
+
+    .detail-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .detail-content span {
+        color: rgb(214, 214, 214);
+        font-size: 0.9rem;
+        display: block;
+    }
+
+    .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .sibling-card {
+            padding: 0.75rem;
+        }
+    }
+</style>

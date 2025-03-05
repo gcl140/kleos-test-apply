@@ -1,0 +1,33 @@
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-3">Manage Your Application Data</h2>
+    <h3 class="text-center text-secondary mb-4">Add Activities</h3>
+
+    <!-- Activity Form Section -->
+    <div id="activity-form" class="my-4">
+        {% include 'partials/activities.html' %}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button type="button" class="btn btn-success px-4 py-2 d-flex align-items-center"
+            hx-get="{% url 'create_activity' %}" hx-target="#activity-form" hx-swap="beforeend">
+            <i class="fa-solid fa-circle-plus me-2"></i> Add Activity
+        </button>
+        <br>
+        <button class="btn btn-primary px-4 py-2" type="button" id="submit-all"><i class="fa-regular fa-circle-check me-2"></i> Submit All
+        </button>
+    </div>
+
+    <!-- Here, include the activities list section -->
+    <div id="activity-list">
+        {% include 'partials/activities_list.html' %}
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Personal Information{% endblock %}
+
+{% block info_title %}Personal Information{% endblock %}
+
+{% block info_description %}
+    <p>
+        This section collects basic information about you that will help us process your application effectively.
+       <strong> Please ensure all details are accurate and match your official documents (e.g., passport, ID card).</strong>
+    </p>
+    <p>
+        <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
+    </p>
+{% endblock %}
+
+{% block info_hints %}
+    <ul>
+        <li>
+            <strong>Full Name:</strong> Enter your full name.
+            <ul>
+                <li>First Name: Your given name.</li>
+                <li>Middle Name: Optional, but include if applicable.</li>
+                <li>Last Name: Your family name or surname.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Date of Birth:</strong> Enter your date of birth in the format <strong>DD/MM/YYYY</strong>.
+        </li>
+        <li>
+            <strong>Gender:</strong> Select your gender from the dropdown menu. This information is required for identification purposes.
+        </li>
+        <li>
+            <strong>Country of Origin:</strong> From the dropdown menu, please select the country you hold citizenship in.
+        </li>
+        <li>
+            <strong>Place of Birth:</strong> Enter the city/region where you were born.
+        </li>
+        <li>
+            <strong>Double-Check:</strong> Review all entries for accuracy before proceeding to the next section.
+        </li>
+    </ul>
+{% endblock %}
+
+{% block form_content %}
+<style>
+    .required{
+        color: rgb(255, 144, 144) !important;
+    }
+</style>
+<form method="POST" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+
+    <!-- Applicant's Full Name -->
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+        Applicant's General Information
+    </h2>
+    <br>
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-user"></i> Applicant's Full Name (First, Middle, Surname)<span class="required">*</span>
+        </label>
+        <div class="form-row">
+            {{ form.first_name|add_class:"form-control"|attr:"placeholder:First Name"|attr:"required" }}
+            {% if form.first_name.errors %}
+                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.first_name.errors }}</small>
+            {% endif %}
+        </div>
+        <div class="form-row">
+            {{ form.middle_name|add_class:"form-control"|attr:"placeholder:Middle Name" }}
+            {% if form.middle_name.errors %}
+                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.middle_name.errors }}</small>
+            {% endif %}
+        </div>
+        <div class="form-row">
+            {{ form.last_name|add_class:"form-control"|attr:"placeholder:Last Name"|attr:"required" }}
+            {% if form.last_name.errors %}
+                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.last_name.errors }}</small>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-calendar-alt"></i> Date of Birth<span class="required">*</span>
+        </label>
+        {{ form.dob|add_class:"form-control"|attr:"required"|attr:"type:date" }}
+        {% if form.dob.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.dob.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-venus-mars"></i> Gender<span class="required">*</span>
+        </label>
+        {{ form.gender|add_class:"form-control"|attr:"required" }}
+        {% if form.gender.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.gender.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Nationality -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-flag"></i> Country of Origin<span class="required">*</span>
+        </label>
+        {{ form.nationality|add_class:"form-control"|attr:"required" }}
+        {% if form.nationality.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.nationality.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Place of Birth -->
+    <div class="form-group">
+        <label class="form-label">
+            <i class="fas fa-map-marker-alt"></i> Region of Birth<span class="required">*</span>
+        </label>
+        {{ form.place_of_birth|add_class:"form-control"|attr:"required" }}
+        {% if form.place_of_birth.errors %}
+            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.place_of_birth.errors }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{{ previous_url }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-primary">
+            Save & Continue <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/general_info.js' %}"></script>
+{% endblock %}

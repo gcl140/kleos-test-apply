@@ -1,0 +1,315 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}School Information{% endblock %}
+
+{% block info_title %}School Information{% endblock %}
+
+{% block info_description %}
+    <p>
+        This section collects your academic background, including details about your Advanced and Ordinary Level schools.
+        Providing accurate information ensures proper verification and processing of your application.
+    </p>
+    <p>
+        <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
+    </p>
+{% endblock %}
+
+{% block info_hints %}
+    <ul>
+        <li>
+            <strong>School Name:</strong> Enter the full name of your school as it appears in official records.
+        </li>
+        <li>
+            <strong>School Contact:</strong> Ensure the provided phone number and email address are accurate for verification purposes.
+        </li>
+        <li>
+            <strong>Curriculum:</strong> Specify the curriculum followed at your school (e.g., NECTA, Cambridge, IB).
+        </li>
+        <li>
+            <strong>Multiple Schools:</strong> If you attended more than one school, provide details for the most recent institution attended.
+        </li>
+        <li>
+            <strong>Double-Check:</strong> Review all entries for accuracy before proceeding to the next section.
+        </li>
+    </ul>
+{% endblock %}
+
+
+{% block form_content %}
+<style>
+    .required{
+        color: rgb(255, 144, 144) !important;
+    }
+</style>
+<form method="POST" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+
+    <!-- Advanced School Information -->
+
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+        Advanced Level Education
+    </h2>
+    <br>
+    <div class="mb-4">
+        <p id="id_adv_school_name" class="form-label">
+            <i class="fas fa-school me-2"></i> Advanced School Name<span class="required">*</span>
+        </p>
+        {{ form.adv_school_name|add_class:"form-control" }}
+        {% if form.adv_school_name.errors %}
+        <div class="text-danger">{{ form.adv_school_name.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_adv_school_phone" class="form-label">
+            <i class="fas fa-phone me-2"></i> Advanced School Phone<span class="required">*</span>
+        </p>
+        {{ form.adv_school_phone|add_class:"form-control" }}
+        {% if form.adv_school_phone.errors %}
+        <div class="text-danger">{{ form.adv_school_phone.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_adv_school_email" class="form-label">
+            <i class="fas fa-envelope me-2"></i> Advanced School Email<span class="required">*</span>
+        </p>
+        {{ form.adv_school_email|add_class:"form-control" }}
+        {% if form.adv_school_email.errors %}
+        <div class="text-danger">{{ form.adv_school_email.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_adv_curriculum" class="form-label">
+            <i class="fas fa-book me-2"></i> Advanced School Curriculum<span class="required">*</span>
+        </p>
+        {{ form.adv_curriculum|add_class:"form-control" }}
+        {% if form.adv_curriculum.errors %}
+        <div class="text-danger">{{ form.adv_curriculum.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Other Advanced School -->
+    <!-- <div class="mb-4">
+            <label class="form-label">
+                <i class="fas fa-question-circle me-2"></i> Would you like to report another advanced school you attended?</p>
+            </label>
+            <div class="form-check">
+                <input class="form-check-input" style="width: 5px;" type="radio" name="report_other_adv" id="report_other_adv_yes" value="yes" onclick="toggleAdvancedSchool(true)">
+                <label class="form-check-label" for="report_other_adv_yes">Yes</label>
+            </div>
+            <div class="form-check">
+                <input style="width: 30px; height: 10px;" class="form-check-input" type="radio" name="report_other_adv" id="report_other_adv_no" value="no" checked onclick="toggleAdvancedSchool(false)">
+                <label class="form-check-label" for="report_other_adv_no">No</label>
+            </div>
+        </div> -->
+    <div class="mb-4">
+        <div class="form-check mb-4">
+            <br>
+            <p class="form-label">Have you attended any other Advanced Level school besides the one mentioned above? (Not checking the checkbox below automatically means NO)</p>
+
+            <p class="form-label">
+            <input style="width: 30px; " type="checkbox" class="form-check-input"
+                id="id_report_other_adv" nmeansame="report_other_adv" {% if form.report_other_adv.value %}checked{% endif %}>
+                Yes</p>
+            {% if form.report_other_adv.errors %}
+            <div class="text-danger">{{ form.report_other_adv.errors }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div id="other-adv-school-fields" style="display: none;">
+        <div class="mb-4">
+            <p id="id_other_adv_school_name" class="form-label">
+                <i class="fas fa-school me-2"></i> Other Advanced School Name
+            </p>
+            {{ form.other_adv_school_name|add_class:"form-control" }}
+            {% if form.other_adv_school_name.errors %}
+            <div class="text-danger">{{ form.other_adv_school_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_adv_school_phone" class="form-label">
+                <i class="fas fa-phone me-2"></i> Other Advanced School Phone
+            </p>
+            {{ form.other_adv_school_phone|add_class:"form-control" }}
+            {% if form.other_adv_school_phone.errors %}
+            <div class="text-danger">{{ form.other_adv_school_phone.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_adv_school_email" class="form-label">
+                <i class="fas fa-envelope me-2"></i> Other Advanced School Email
+            </p>
+            {{ form.other_adv_school_email|add_class:"form-control" }}
+            {% if form.other_adv_school_email.errors %}
+            <div class="text-danger">{{ form.other_adv_school_email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_adv_curriculum" class="form-label">
+                <i class="fas fa-book me-2"></i> Other Advanced School Curriculum
+            </p>
+            {{ form.other_adv_curriculum|add_class:"form-control" }}
+            {% if form.other_adv_curriculum.errors %}
+            <div class="text-danger">{{ form.other_adv_curriculum.errors }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Ordinary Level School Information -->
+     
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+    <br>
+        Ordinary Level Education
+    </h2>
+    <br>
+    <div class="mb-4">
+        <p id="id_olv_school_name" class="form-label">
+            <i class="fas fa-school me-2"></i> Ordinary Level School Name<span class="required">*</span>
+        </p>
+        {{ form.olv_school_name|add_class:"form-control" }}
+        {% if form.olv_school_name.errors %}
+        <div class="text-danger">{{ form.olv_school_name.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_olv_school_phone" class="form-label">
+            <i class="fas fa-phone me-2"></i> Ordinary Level School Phone<span class="required">*</span>
+        </p>
+        {{ form.olv_school_phone|add_class:"form-control" }}
+        {% if form.olv_school_phone.errors %}
+        <div class="text-danger">{{ form.olv_school_phone.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_olv_school_email" class="form-label">
+            <i class="fas fa-envelope me-2"></i> Ordinary Level School Email<span class="required">*</span>
+        </p>
+        {{ form.olv_school_email|add_class:"form-control" }}
+        {% if form.olv_school_email.errors %}
+        <div class="text-danger">{{ form.olv_school_email.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="mb-4">
+        <p id="id_olv_curriculum" class="form-label">
+            <i class="fas fa-book me-2"></i> Ordinary Level School Curriculum<span class="required">*</span>
+        </p>
+        {{ form.olv_curriculum|add_class:"form-control" }}
+        {% if form.olv_curriculum.errors %}
+        <div class="text-danger">{{ form.olv_curriculum.errors }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Add other O-Level fields similarly -->
+    <div class="mb-4">
+
+        <div class="form-check mb-4">
+            <!-- <input style="width: 30px; " type="checkbox" class="form-check-input" id="{{ form.agreed.id_for_label }}" name="{{ form.agreed.name }}" {% if form.report_other_olv.value %}checked{% endif %}> -->
+            <br>
+
+            <p class="form-label">Have you attended any other Ordinary Level school besides the one mentioned above? (Not checking the checkbox below automatically means NO)</p>
+
+            <p class="form-label">
+            <input style="width: 30px; " type="checkbox" class="form-check-input"
+                id="id_report_other_olv" name="report_other_olv" {% if form.report_other_olv.value %}checked{% endif %}>
+                Yes</p>
+            {% if form.report_other_olv.errors %}
+            <div class="text-danger">{{ form.report_other_olv.errors }}</div>
+            {% endif %}
+        </div>
+        <!-- <div class="form-check">
+                <input class="form-check-input" style="width: 5px;" type="radio" name="report_other_olv" id="report_other_olv_yes" value="yes" onclick="toggleOrdinarySchool(true)">
+                <label class="form-check-label" for="report_other_olv_yes">Yes</label>
+            </div>
+            <div class="form-check">
+                <input style="width: 30px; height: 10px;" class="form-check-input" type="radio" name="report_other_olv" id="report_other_olv_no" value="no" checked onclick="toggleOrdinarySchool(false)">
+                <label class="form-check-label" for="report_other_olv_no">No</label>
+            </div> -->
+    </div>
+    <div id="other-olv-school-fields" style="display: none;">
+        <div class="mb-4">
+            <p id="id_other_olv_school_name" class="form-label">
+                <i class="fas fa-school me-2"></i> Other Ordinary Level School Name
+            </p>
+            {{ form.other_olv_school_name|add_class:"form-control" }}
+            {% if form.other_olv_school_name.errors %}
+            <div class="text-danger">{{ form.other_olv_school_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_olv_school_phone" class="form-label">
+                <i class="fas fa-phone me-2"></i> Other Ordinary Level School Phone
+            </p>
+            {{ form.other_olv_school_phone|add_class:"form-control" }}
+            {% if form.other_olv_school_phone.errors %}
+            <div class="text-danger">{{ form.other_olv_school_phone.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_olv_school_email" class="form-label">
+                <i class="fas fa-envelope me-2"></i> Other Ordinary Level School Email
+            </p>
+            {{ form.other_olv_school_email|add_class:"form-control" }}
+            {% if form.other_olv_school_email.errors %}
+            <div class="text-danger">{{ form.other_olv_school_email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <p id="id_other_olv_curriculum" class="form-label">
+                <i class="fas fa-book me-2"></i> Other Ordinary Level School Curriculum
+            </p>
+            {{ form.other_olv_curriculum|add_class:"form-control" }}
+            {% if form.other_olv_curriculum.errors %}
+            <div class="text-danger">{{ form.other_olv_curriculum.errors }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{{ previous_url }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-primary">
+            Save & Continue <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</form>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const olvCheckbox = document.getElementById('id_report_other_olv');
+        const advCheckbox = document.getElementById('id_report_other_adv');
+        const olvFields = document.getElementById('other-olv-school-fields');
+        const advFields = document.getElementById('other-adv-school-fields');
+
+        if (olvCheckbox) {
+            // Toggle fields on change
+            olvCheckbox.addEventListener('change', function () {
+                olvFields.style.display = olvCheckbox.checked ? 'block' : 'none';
+            });
+
+            // Initialize field visibility
+            olvFields.style.display = olvCheckbox.checked ? 'block' : 'none';
+        } else {
+            console.error("Checkbox with ID 'id_report_other_olv' not found!");
+        }
+
+        if (advCheckbox) {
+            // Toggle fields on change
+            advCheckbox.addEventListener('change', function () {
+                advFields.style.display = advCheckbox.checked ? 'block' : 'none';
+            });
+
+            // Initialize field visibility
+            advFields.style.display = advCheckbox.checked ? 'block' : 'none';
+        } else {
+            console.error("Checkbox with ID 'id_report_other_adv' not found!");
+        }
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact_info.js' %}"></script>
+{% endblock %}

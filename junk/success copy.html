@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Click Counter</title>
+</head>
+<body>
+
+<!-- Your button -->
+<button id="my-button" class="btn btn-primary">Click Me</button>
+
+<!-- Display the count -->
+<p>Button clicked <span id="click-count">0</span> times.</p>
+
+<script>
+    // Initialize the counter
+    let clickCounter = 0;
+
+    // Get the button and the element to display the count
+    const button = document.getElementById('my-button');
+    const countDisplay = document.getElementById('click-count');
+
+    // Add an event listener to the button
+    button.addEventListener('click', function() {
+        // Increment the counter each time the button is clicked
+        clickCounter++;
+
+        // Update the displayed count
+        countDisplay.textContent = clickCounter;
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+{% extends "applications/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-3">Manage Your Application Data</h2>
+    <h3 class="text-center text-secondary mb-4">Add distinctions</h3>
+
+    <!-- Distinction Form Section -->
+    <div id="distinction-form" class="my-4">
+        {% include 'partials/distinctions.html' %}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <button type="button" class="btn btn-success px-4 py-2 d-flex align-items-center {% if distinction_count >= 5 %}disabled{% endif %}"
+            hx-get="{% url 'create_distinction' %}" hx-target="#distinction-form" hx-swap="beforeend">
+            <i class="fa-solid fa-circle-plus me-2"></i> Add distinction
+        </button>
+        <button class="btn btn-primary px-4 py-2" type="button" id="submit-all" {% if distinction_count >= 5 %} disabled {% endif %}>
+            <i class="fa-regular fa-circle-check me-2"></i> Submit All
+        </button>
+    </div>
+
+    <!-- Distinction Table -->
+    <table class="table table-bordered table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th scope="col" class="fw-semibold">Distinction</th>
+                <th scope="col" class="fw-semibold text-center">Level</th>
+                <th scope="col" class="fw-semibold text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="distinction-list">
+            {% for distinction in distinctions %}
+            {% include 'partials/distinctions_list.html' %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

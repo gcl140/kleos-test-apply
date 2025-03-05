@@ -1,0 +1,27 @@
+{% extends 'yuzzaz/base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="logo">
+            <h1>TanSAF</h1>
+        </div>
+        <h2>Register</h2>
+        <form method="POST" enctype="multipart/form-data" class="form-container">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="form-group">
+                    <span>{{ field.label }}</span>
+                    {{ field }}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

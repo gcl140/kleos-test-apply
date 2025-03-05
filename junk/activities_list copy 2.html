@@ -1,0 +1,27 @@
+<tr>
+    <td>
+        <div class="d-flex align-items-center">
+            <div class="activity-icon bg-light rounded-circle p-2 me-3">
+                <i class="fa-regular fa-calendar-check text-primary"></i>
+            </div>
+            <div>
+                <strong>{{ activity.activity_type }}</strong>
+                <p class="text-muted mb-0">{{ activity.activity_descr }}</p>
+                <small class="text-muted mb-0"> <i>{{ activity.start_year }}</i>- <i>{{ activity.end_year }}</i> </small>
+                <p class="text-muted mb-0">{{ activity.organization_name }}</p>
+            </div>
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="d-flex justify-content-center gap-2" style="display: flex; flex-direction: column;">
+            <a href="{% url 'update_activity' activity.id %}"
+                class="btn btn-warning btn-sm rounded-pill px-3 d-flex align-items-center">
+                <i class="fa-solid fa-pencil-alt me-1"></i> Edit
+            </a>
+            <a href="{% url 'delete_activity' activity.id %}"
+                class="btn btn-danger btn-sm rounded-pill px-3 d-flex align-items-center">
+                <i class="fa-solid fa-trash-alt me-1"></i> Delete
+            </a>
+        </div>
+    </td>
+</tr>

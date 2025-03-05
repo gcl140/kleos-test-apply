@@ -1,0 +1,245 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Preview Application{% endblock %}
+{% block info_hints %}
+<ul>
+    <li>Ensure the dependent's name is entered correctly and is easy to understand.</li>
+    <li>Provide accurate details about the relationship between you and the dependent.</li>
+    <li>Double-check all entries for accuracy before submission.</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">All Applications</h1>
+<div class="applications-container">
+    {% for application in applications %}
+        <div class="application-card">
+            <a href="{% url 'preview_application_viewo' application.user.id %}">
+                <p class="applicant-name">{{ application.user.username }}</p>
+                <p class="applicant-name">{{ application.user.first_name }}</p>
+                <p class="applicant-name">{{ application.adv_school_name }}</p>
+                
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: wheat;
+    }
+
+    .applications-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .application-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 15px;
+        width: 300px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .application-card:hover {
+        transform: scale(1.05);
+    }
+
+    .application-card a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: block;
+    }
+
+    .applicant-name {
+        font-size: 1.2rem;
+    }
+
+    .applicant-status {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .applications-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .application-card {
+            width: 90%;
+        }
+    }
+</style>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Preview Application{% endblock %}
+{% block info_hints %}
+<ul>
+    <li>Ensure the dependent's name is entered correctly and is easy to understand.</li>
+    <li>Provide accurate details about the relationship between you and the dependent.</li>
+    <li>Double-check all entries for accuracy before submission.</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">All Applications</h1>
+<div class="applications-container">
+    {% for application in applications %}
+        <div class="application-card">
+            <a href="{% url 'preview_application_viewo' application.user.id %}">
+                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-6 shadow-lg border border-white/20 h-full">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="h-12 w-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                                <span class="text-xl text-blue-200">
+                                    {{ application.user.first_name|first|upper }}
+                                </span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-white">
+                                    {{ application.user.first_name }} {{ application.user.last_name }}
+                                </h3>
+                                <p class="text-gray-300 text-sm">
+                                    @{{ application.user.username }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex items-center text-gray-200">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                                <span>{{ application.adv_school_name }}</span>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-300 text-sm">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span>Applied {{ application.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-end">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-500/20 text-blue-200">
+                            View Details →
+                        </span>
+                    </div>
+                </div>            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: wheat;
+    }
+
+    .applications-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .application-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 15px;
+        width: 300px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .application-card:hover {
+        transform: scale(1.05);
+    }
+
+    .application-card a {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: block;
+    }
+
+    .applicant-name {
+        font-size: 1.2rem;
+    }
+
+    .applicant-status {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .applications-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .application-card {
+            width: 90%;
+        }
+    }
+    i{
+        height: 20px;
+    }
+</style>
+{% endblock %}

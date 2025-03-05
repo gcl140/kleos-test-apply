@@ -1,0 +1,154 @@
+{% extends "yuzzaz/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <h2>Manage Your Application Data</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Sibling Section -->
+        <div id="siblings-section">
+            <h3>Siblings</h3>
+            <label for="num_siblings" aria-label="Select the number of siblings">How many siblings do you want to report?</label>
+            <select name="num_siblings" id="num_siblings" class="form-control" onchange="generateForms('siblings')">
+                {% for i in range_siblings %}
+                <option value="{{ i }}" {% if i == sibling_formset.total_form_count %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <div id="siblings-forms">
+                {{ sibling_formset.management_form }}
+                {% for form in sibling_formset %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Dependent Section -->
+        <div id="dependents-section">
+            <h3>Dependents</h3>
+            <label for="num_dependents" aria-label="Select the number of dependents">How many dependents do you want to report?</label>
+            <select name="num_dependents" id="num_dependents" class="form-control" onchange="generateForms('dependents')">
+                {% for i in range_dependents %}
+                <option value="{{ i }}" {% if i == dependent_formset.total_form_count %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <div id="dependents-forms">
+                {{ dependent_formset.management_form }}
+                {% for form in dependent_formset %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Activity Section -->
+        <div id="activities-section">
+            <h3>Activities</h3>
+            <label for="num_activities" aria-label="Select the number of activities">How many activities do you want to report?</label>
+            <select name="num_activities" id="num_activities" class="form-control" onchange="generateForms('activities')">
+                {% for i in range_activities %}
+                <option value="{{ i }}" {% if i == activity_formset.total_form_count %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <div id="activities-forms">
+                {{ activity_formset.management_form }}
+                {% for form in activity_formset %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Distinction Section -->
+        <div id="distinctions-section">
+            <h3>Distinctions</h3>
+            <label for="num_distinctions" aria-label="Select the number of distinctions">How many distinctions do you want to report?</label>
+            <select name="num_distinctions" id="num_distinctions" class="form-control" onchange="generateForms('distinctions')">
+                {% for i in range_distinctions %}
+                <option value="{{ i }}" {% if i == distinction_formset.total_form_count %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <div id="distinctions-forms">
+                {{ distinction_formset.management_form }}
+                {% for form in distinction_formset %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="reset" class="btn btn-warning">Reset</button>
+    </form>
+</div>
+
+<script>
+function generateForms(section) {
+    const numForms = document.getElementById(`num_${section}`).value;
+    const container = document.getElementById(`${section}-forms`);
+    const totalForms = document.getElementById(`id_${section}-TOTAL_FORMS`);
+    const initialForms = document.getElementById(`id_${section}-INITIAL_FORMS`);
+    const fields = {
+        siblings: `
+            <label for="${section}-name[]">Name:</label>
+            <input type="text" name="${section}-name[]" class="form-control">
+            <label for="${section}-age[]">Age:</label>
+            <input type="number" name="${section}-age[]" class="form-control">
+            <label for="${section}-education[]">Education:</label>
+            <input type="text" name="${section}-education[]" class="form-control">
+            <label for="${section}-institute[]">Institute:</label>
+            <input type="text" name="${section}-institute[]" class="form-control">
+            <label for="${section}-degree[]">Degree:</label>
+            <input type="text" name="${section}-degree[]" class="form-control">
+            <label for="${section}-occupation[]">Occupation:</label>
+            <input type="text" name="${section}-occupation[]" class="form-control">`,
+        dependents: `
+            <label for="${section}-name[]">Name:</label>
+            <input type="text" name="${section}-name[]" class="form-control">
+            <label for="${section}-relationship[]">Relationship:</label>
+            <input type="text" name="${section}-relationship[]" class="form-control">`,
+        activities: `
+            <label for="${section}-activity_type[]">Activity Type:</label>
+            <input type="text" name="${section}-activity_type[]" class="form-control">
+            <label for="${section}-leadership_position[]">Leadership Position:</label>
+            <input type="text" name="${section}-leadership_position[]" class="form-control">
+            <label for="${section}-organization_name[]">Organization Name:</label>
+            <input type="text" name="${section}-organization_name[]" class="form-control">
+            <label for="${section}-start_year[]">Start Year:</label>
+            <input type="number" name="${section}-start_year[]" class="form-control">
+            <label for="${section}-end_year[]">End Year:</label>
+            <input type="number" name="${section}-end_year[]" class="form-control">`,
+        distinctions: `
+            <label for="${section}-title[]">Title:</label>
+            <input type="text" name="${section}-title[]" class="form-control">
+            <label for="${section}-year[]">Year:</label>
+            <input type="number" name="${section}-year[]" class="form-control">
+            <label for="${section}-level[]">Level:</label>
+            <input type="text" name="${section}-level[]" class="form-control">`,
+    };
+
+    container.innerHTML = ''; // Clear the existing forms
+
+    // Insert forms based on the selected number
+    for (let i = 0; i < numForms; i++) {
+        container.insertAdjacentHTML('beforeend', `
+            <div class="form-group">
+                <h4>${section.charAt(0).toUpperCase() + section.slice(1)} #${i + 1}</h4>
+                ${fields[section]}
+            </div>
+        `);
+    }
+
+    // Update the total number of forms in the management form
+    totalForms.value = numForms;
+    // Set the initial form count (it should always match the current number of forms)
+    initialForms.value = numForms;
+}
+</script>
+{% endblock %}
