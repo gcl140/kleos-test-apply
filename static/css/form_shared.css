@@ -380,7 +380,7 @@ body {
 
 .nav-link {
     color: var(--tansaf-bluu);
-    color: white;
+    color: #6f6d6d;
     text-decoration: none;
     font-weight: 500;
     display: flex;

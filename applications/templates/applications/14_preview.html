@@ -142,8 +142,8 @@
 
                     <br>
 
-                    <!-- A'level School Information -->
-                    <h5 class="mb-3">A'level School Education</h5>
+                    <!-- A-level School Information -->
+                    <h5 class="mb-3">A-level School Education</h5>
                     <table class="info-table">
                         <tbody>
                             <tr>
@@ -187,45 +187,45 @@
                         </tbody>
                     </table>
 
-                    <!-- O'level School Information -->
-                    <h5 class="mb-3">O'level School Education</h5>
+                    <!-- O-level School Information -->
+                    <h5 class="mb-3">O-level School Education</h5>
                     <table class="info-table">
                         <tbody>
                             <tr>
-                                <td class="info-label">O'level School Name:</td>
+                                <td class="info-label">O-level School Name:</td>
                                 <td class="info-response">{{ application.olv_school_name }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">O'level School Phone:</td>
+                                <td class="info-label">O-level School Phone:</td>
                                 <td class="info-response">{{ application.olv_school_phone }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">O'level School Email:</td>
+                                <td class="info-label">O-level School Email:</td>
                                 <td class="info-response">{{ application.olv_school_email }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">O'level School Curriculum:</td>
+                                <td class="info-label">O-level School Curriculum:</td>
                                 <td class="info-response">{{ application.olv_curriculum }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">Report another O'level School:</td>
+                                <td class="info-label">Report another O-level School:</td>
                                 <td class="info-response">{{ application.report_other_olv }}</td>
                             </tr>
                             {% if application.report_other_olv %}
                             <tr>
-                                <td class="info-label">Other O'level School Name:</td>
+                                <td class="info-label">Other O-level School Name:</td>
                                 <td class="info-response">{{ application.other_olv_school_name }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">Other O'level School Phone:</td>
+                                <td class="info-label">Other O-level School Phone:</td>
                                 <td class="info-response">{{ application.other_olv_school_phone }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">Other O'level School Email:</td>
+                                <td class="info-label">Other O-level School Email:</td>
                                 <td class="info-response">{{ application.other_olv_school_email }}</td>
                             </tr>
                             <tr>
-                                <td class="info-label">Other O'level School Curriculum:</td>
+                                <td class="info-label">Other O-level School Curriculum:</td>
                                 <td class="info-response">{{ application.other_olv_curriculum }}</td>
                             </tr>
                             {% endif %}
@@ -450,19 +450,19 @@
                             <table class="info-table">
                                 <tbody>
                                     <tr>
-                                        <td class="info-label">O'level Fees:</td>
+                                        <td class="info-label">O-level Fees:</td>
                                         <td class="info-response">{{ application.o_fee }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="info-label">O'level Fee Payer:</td>
+                                        <td class="info-label">O-level Fee Payer:</td>
                                         <td class="info-response">{{ application.f_payer_olevel }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="info-label">A'level Fees:</td>
+                                        <td class="info-label">A-level Fees:</td>
                                         <td class="info-response">{{ application.a_fee }}</td>
                                     </tr>
                                     <tr>
-                                        <td class="info-label">A'level Fee Payer:</td>
+                                        <td class="info-label">A-level Fee Payer:</td>
                                         <td class="info-response">{{ application.f_payer_alevel }}</td>
                                     </tr>
                                     <tr>
@@ -633,34 +633,42 @@ Extracurricular Activities
 
                                     {% if application.form4_holiday %}
                                     <tr>
-                                        <td class="info-label">Form 4 Holiday Details:</td>
+                                        <td class="info-label">Form 4/Post O-Level Holiday Details:</td>
                                         <td class="info-response">{{ application.form4_holiday }}</td>
                                     </tr>
                                     {% endif %}
+
+                                    {% if application.soc_challenge %}
+                                    <tr>
+                                        <td class="info-label">Society Challenge:</td>
+                                        <td class="info-response">{{ application.soc_challenge }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    
                                     {% if application.sat_for_sat %}
                                     <tr>
-                                        <td class="info-label">Has taken SAT:</td>
+                                        <td class="info-label">Has taken a standardized test:</td>
                                         <td class="info-response">{{ application.sat_for_sat }}</td>
                                     </tr>
                                     {% endif %}
 
                                     {% if application.sat_type %}
                                     <tr>
-                                        <td class="info-label">SAT Type:</td>
+                                        <td class="info-label">Standardized test Type:</td>
                                         <td class="info-response">{{ application.sat_type }}</td>
                                     </tr>
                                     {% endif %}
 
                                     {% if application.sat_score %}
                                     <tr>
-                                        <td class="info-label">SAT Score:</td>
+                                        <td class="info-label">Standardized test score:</td>
                                         <td class="info-response">{{ application.sat_score }}</td>
                                     </tr>
                                     {% endif %}
 
                                     {% if application.sat_date %}
                                     <tr>
-                                        <td class="info-label">SAT Date:</td>
+                                        <td class="info-label">Standardized test Date:</td>
                                         <td class="info-response">{{ application.sat_date }}</td>
                                     </tr>
                                     {% endif %}
@@ -938,26 +946,33 @@ Essays
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.ib_scores %}
+                                    {% if application.adv_certificates %}
                                     <tr>
-                                        <td class="info-label">IB Scores:</td>
-                                        <td class="info-response"><a href="{{ application.ib_scores.url }}"
+                                        <td class="info-label">A-Level certificates:</td>
+                                        <td class="info-response"><a href="{{ application.adv_certificates.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if application.olv_certificates %}
+                                    <tr>
+                                        <td class="info-label">O-Level certificates:</td>
+                                        <td class="info-response"><a href="{{ application.olv_certificates.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.csee_results %}
+                                    {% if application.a_level_school_transcripts %}
                                     <tr>
-                                        <td class="info-label">CSEE Results:</td>
-                                        <td class="info-response"><a href="{{ application.csee_results.url }}"
+                                        <td class="info-label">A-Level Transcripts:</td>
+                                        <td class="info-response"><a href="{{ application.a_level_school_transcripts.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.school_transcripts %}
+                                    {% if application.o_level_school_transcripts %}
                                     <tr>
-                                        <td class="info-label">School Transcripts:</td>
-                                        <td class="info-response"><a href="{{ application.school_transcripts.url }}"
+                                        <td class="info-label">O-Level Transcripts:</td>
+                                        <td class="info-response"><a href="{{ application.o_level_school_transcripts.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
