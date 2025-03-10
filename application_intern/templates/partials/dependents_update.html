@@ -1,0 +1,53 @@
+{% extends 'applications/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Distinction Update{% endblock %}
+{% block info_hints %}
+
+<ul>
+    <li>Ensure the dependent's name is entered correctly and is easy to understand.</li>
+    <li>Provide accurate details about the relationship between you and the dependent.</li>
+    <li>Double-check all entries for accuracy before submission.</li>
+</ul>
+{% endblock %}
+
+{% block form_content %}
+
+<form method="POST" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+    <div class="col-md-4">
+        <label for="{{ form.dependent_name.id_for_label }}" class="form-label">
+            {{ form.dependent_name.label }}
+        </label>
+        {{ form.dependent_name|add_class:"form-control" }}
+    </div>
+    <div class="col-md-4">
+        <label for="{{ form.relationship.id_for_label }}" class="form-label">
+            Relationship
+        </label>
+        {{ form.relationship|add_class:"form-control" }}
+    </div>
+    <div class="activity-actions">
+        <button class="btn-submit-all" type="submit" id="submit-allo">
+            <i class="fas fa-check-circle"></i> Save Changes
+        </button>
+    </div>
+</form>
+<style>
+    .btn-submit-all {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        background: var(--tansaf-gold);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TanSAF - {% block title %}{% endblock %}</title>
+    
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+    <!-- htmx -->
+      <!-- htmx -->
+    <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
+
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <a href="https://beta.tansaf.or.tz/" class="nav-brand">
+                <!-- <i class="fas fa-graduation-cap"> -->
+                    <img src="{% static 'fav-1-150x150.png' %}" alt="" width="90px">
+                <!-- </i> -->
+                TanSAF
+            </a>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="nav-links">
+                <a href="{% url 'homepage' %}" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="https://beta.tansaf.or.tz/contact/" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Base JavaScript -->
+    <script src="{% static 'js/base.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+<!-- Toast Messages -->
+{% if messages %}
+<div class="fixed-toast-container">
+    {% for message in messages %}
+    <div class="toast-message {% if message.tags %}{{ message.tags }}{% endif %}">
+        <div class="toast-content">
+            <div class="toast-text">{{ message }}</div>
+            <button type="button" class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        </div>
+        <div class="toast-progress">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastMessages = document.querySelectorAll('.toast-message');
+        toastMessages.forEach(toast => {
+            setTimeout(() => {
+                toast.remove(); }, 5000);
+        });
+    });
+</script>
+{% endif %}
+
+<script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

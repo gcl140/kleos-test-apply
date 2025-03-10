@@ -1,0 +1,293 @@
+{% extends 'application_cohort/shared_form_base.html' %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Essay Writing Section{% endblock %}
+
+{% block info_title %}Essay Writing Section{% endblock %}
+
+{% block info_description %}
+This section provides you with an opportunity to express your thoughts and experiences through written essays. Your
+responses will help us understand your perspectives, aspirations, and how you articulate your ideas.
+
+<p>
+    <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
+</p>
+
+{% endblock %}
+
+{% block info_hints %}
+<li>Reflect on your personal experiences and how they have shaped your views.</li>
+<li>Be specific and provide examples to illustrate your points effectively.</li>
+<li>Adhere to the word limits specified for each essay prompt.</li>
+<li>Proofread your essays for clarity, grammar, and coherence before submission.</li>
+<li>Take your time to think critically about each question; thoughtful responses are encouraged.</li>
+{% endblock %}
+{% block form_content %}
+<style>
+    .required{
+        color: rgb(255, 144, 144) !important;
+    }
+</style>
+<form method="POST" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+    <!-- Parent 1/Guardian Section -->
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+        Essay Writing
+        </h2>
+        <br>
+    <div class="mb-4">
+        <p class="form-label">
+            <i class="fas fa-pen-fancy me-2"></i>
+            From the activities you listed in section 9, choose the one that holds the most significance for you and explain why.[150 words max]<span class="required">*</span>
+        </p>
+        {{ form.extrac|add_class:"form-control word-count-input"|attr:"data-max-words:150" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/150 words</p>
+        {% if form.extrac.errors %}
+        <div class="text-danger">{{ form.extrac.errors }}</div>
+        {% endif %}
+    </div>
+<br>
+    <div class="mb-4">
+        <p class="form-label">
+            <i class="fas fa-mountain me-2"></i>
+            Reflect on a moment in your life when you faced a significant challenge. How did you navigate through it, and what impact, if any, has it had on shaping the person you are today?[200 words max]<span class="required">*</span>
+        </p>
+        {{ form.chlg|add_class:"form-control word-count-input"|attr:"data-max-words:200" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/200 words</p>
+        {% if form.chlg.errors %}
+        <div class="text-danger">{{ form.chlg.errors }}</div>
+        {% endif %}
+    </div>
+   <br>  
+
+    <div class="mb-4">
+        <p class="form-label">
+            <i class="fas fa-chalkboard-teacher me-2"></i>
+            If you could teach one class to your class, what would it be about?
+            [150 words max]<span class="required">*</span>
+        </p>
+        {{ form.teach|add_class:"form-control word-count-input"|attr:"data-max-words:150" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/150 words</p>
+        {% if form.teach.errors %}
+        <div class="text-danger">{{ form.teach.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    <div class="mb-4">
+        <p class="form-label">
+            <i class="fas fa-star me-2"></i>
+            The TanSAF internship selection process is highly competitive, and so is gaining admission to top universities in North America. What makes you stand out from other high-achieving Tanzanian students? Why should we choose you? You may consider factors such as your background, identity, interests, talents, or any other significant aspect of your life that you believe is essential to your application. 
+            [250 words max]<span class="required">*</span>
+        </p>
+        {{ form.why_you|add_class:"form-control word-count-input"|attr:"data-max-words:250" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/250 words</p>
+        {% if form.why_you.errors %}
+        <div class="text-danger">{{ form.why_you.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    <div class="mb-4">
+        <p class="form-label">
+            <i class="fas fa-question-circle me-2"></i>
+            TanSAF is renowned for supporting high-achieving, low-income Tanzanian students in gaining admission to prestigious universities. 
+             Other than
+            that, in one sentence, why TanSAF? [50 words max]<span class="required">*</span>
+        </p>
+        {{ form.why_tansaf|add_class:"form-control word-count-input"|attr:"data-max-words:50" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
+        {% if form.why_tansaf.errors %}
+        <div class="text-danger">{{ form.why_tansaf.errors }}</div>
+        {% endif %}
+    </div>
+    <br>
+    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+        Disciplinary Violation and Additional Circumstances Description
+        </h2>
+        <br>
+    <p class="form-label">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Have you ever been found responsible for a disciplinary violation at any educational institution you have attended from Form 3/Grade 9 onward? This may include, but is not limited to, academic misconduct or behavioral misconduct that resulted in any form of disciplinary action, such as probation, suspension, removal, dismissal, or expulsion from the institution.
+    </p>
+    <div class="form-check mb-4">
+        <p class="form-label" style="color: wheat;">
+        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="sat_for_sat"
+            name="has_disciplinary_violation" {% if form.has_disciplinary_violation.value %}checked {%endif%}>
+            Yes, I have been found responsible for a disciplinary violation.
+        </p>
+        {% if form.has_disciplinary_violation.errors %}
+        <div class="text-danger">{{ form.has_disciplinary_violation.errors }}</div>
+        {% endif %}
+    </div>
+    <div id="sat-test-fields" style="display: none;">
+        <div class="mb-4">
+            <p class="form-label">
+                <i class="fas fa-info-circle me-2"></i>If yes, please provide the approximate date(s) of each incident, explain the circumstances surrounding the situation, and reflect on what you learned from the experience. (200 words max)</p>
+            {{ form.disciplinary_details|add_class:"form-control word-count-input"|attr:"data-max-words:250" }}
+            <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/250 words</p>
+        </div>
+
+    </div>
+    <br>
+
+    <p class="form-label">
+        <i class="fa-solid fa-plus"></i>
+        Do you wish to provide any details of circumstances or qualifications not reflected in the application?
+    </p>
+    <div class="form-check mb-4">
+        <p class="form-label" style="color: wheat;">
+            <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="sat_for_eng"
+            name="additional_circumstances" {% if form.additional_circumstances.value %}checked {%endif%}>
+            Yes, I have additional circumstances or qualifications to report.
+        </p>
+
+            {% if form.additional_circumstances.errors %}
+            <div class="text-danger">{{ form.additional_circumstances.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div id="eng-test-fields" style="display: none;">
+        <p class="form-label">
+            <i class="fas fa-info-circle me-2"></i>
+            If yes, please use the space below to provide any additional information you wish to share. (250 words max)
+        </p>
+        {{ form.additional_circumstances_details|add_class:"form-control word-count-input"|attr:"data-max-words:250" }} 
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/250 words</p>
+    </div>
+    <br>
+    <p class="form-label">
+    <i class="fa-solid fa-house-crack"></i>
+        Would you like to share the impact(s) of COVID-19 or other community disruptions on your life?
+    </p>
+    <div class="form-check mb-4">
+        <p class="form-label" style="color: wheat;">
+        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="known_tansaf_other"
+            name="covid_impact" {% if form.covid_impact.value %}checked {%endif%}>
+            Yes, I would like to share the impact(s) of COVID-19 or other community disruptions.</p>
+    </div>
+    <div id="others-fields" style="display: none;">
+        <p class="form-label">
+            <i class="fas fa-virus me-2"></i>
+            Please describe how these events have impacted you personally, academically, or in any other significant way. (250 words max)</p>
+        {{ form.covid_impact_details|add_class:"form-control word-count-input"|attr:"data-max-words:250" }}
+        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/250 words</p>
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="button-group">
+        <a href="{{ previous_url }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <button type="submit" class="btn btn-primary" id="next-button" style="opacity: 1;">
+            Save & Continue <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+</form>
+
+<style>
+    button:disabled {
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+        pointer-events: all !important;
+    }
+    .word-count.exceeded {
+        color: red !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Toggle fields visibility
+        const satForSat = document.getElementById('sat_for_sat');
+        const satForSatFields = document.getElementById('sat-test-fields');
+        const satForEng = document.getElementById('sat_for_eng');
+        const satForEngFields = document.getElementById('eng-test-fields');
+        const knownTansafOther = document.getElementById('known_tansaf_other');
+        const knownTansafOtherFields = document.getElementById('others-fields');
+        const nextButton = document.getElementById('next-button');
+
+        // Word counter functionality
+        function countWords(str) {
+            str = str.trim();
+            return str === '' ? 0 : str.split(/\s+/).length;
+        }
+
+        function updateWordCount(input) {
+            const maxWords = parseInt(input.dataset.maxWords);
+            const wordCount = countWords(input.value);
+            const countDisplay = input.nextElementSibling;
+            countDisplay.textContent = `${wordCount}/${maxWords} words`;
+
+            // Check if any textarea is over its word limit
+            const allTextareas = document.querySelectorAll('.word-count-input');
+            let hasOverflow = false;
+            
+            allTextareas.forEach(textarea => {
+                if (textarea.style.display !== 'none') {  // Only check visible textareas
+                    const max = parseInt(textarea.dataset.maxWords);
+                    const count = countWords(textarea.value);
+                    if (count > max) {
+                        hasOverflow = true;
+                    }
+                }
+            });
+
+            // Disable/enable the next button based on word count
+            if (nextButton) {
+                nextButton.disabled = hasOverflow;
+                if (hasOverflow) {
+                    nextButton.setAttribute('title', 'Please fix the word count limits before proceeding');
+                } else {
+                    nextButton.removeAttribute('title');
+                }
+            }
+
+            // Visual feedback
+            if (wordCount > maxWords) {
+                countDisplay.classList.add('exceeded');
+                countDisplay.style.color = 'red';
+                input.style.borderColor = 'red';
+            } else {
+                countDisplay.classList.remove('exceeded');
+                countDisplay.style.color = 'wheat';
+                input.style.borderColor = '';
+            }
+        }
+
+        // Add event listeners to all textareas with word count
+        const textareas = document.querySelectorAll('.word-count-input');
+        textareas.forEach(textarea => {
+            // Add input event listener
+            textarea.addEventListener('input', () => updateWordCount(textarea));
+            // Add paste event listener to handle pasted content
+            textarea.addEventListener('paste', () => {
+                setTimeout(() => updateWordCount(textarea), 0);
+            });
+            // Initialize word count
+            updateWordCount(textarea);
+        });
+
+        // Toggle fields visibility and update word counts when fields are shown/hidden
+        function toggleFieldsAndUpdateCounts(checkbox, fields) {
+            if (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    fields.style.display = checkbox.checked ? 'block' : 'none';
+                    // Update word counts after toggling visibility
+                    const textareas = fields.querySelectorAll('.word-count-input');
+                    textareas.forEach(textarea => updateWordCount(textarea));
+                });
+                fields.style.display = checkbox.checked ? 'block' : 'none';
+            }
+        }
+
+        // Apply toggle functionality
+        toggleFieldsAndUpdateCounts(satForSat, satForSatFields);
+        toggleFieldsAndUpdateCounts(satForEng, satForEngFields);
+        toggleFieldsAndUpdateCounts(knownTansafOther, knownTansafOtherFields);
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact_info.js' %}"></script>
+{% endblock %}

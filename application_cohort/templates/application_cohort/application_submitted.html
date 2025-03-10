@@ -1,0 +1,43 @@
+{% extends "application_cohort/form_base.html" %}
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<div class="submission-card">
+    <h1>Application Submitted</h1>
+    <p>Your application has been successfully submitted and is under review. You can no longer edit your responses.</p>
+        </div>
+
+<style>
+    .text-danger{
+    color: red;
+}
+    .submission-card {
+        background: rgba(30, 30, 30, 0.9); /* Dark semi-transparent background */
+        color: wheat;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        max-width: 500px;
+        margin: 50px auto;
+        backdrop-filter: blur(8px);
+    }
+
+    .action-link {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: rgba(255, 222, 173, 0.2); /* Light wheat transparency */
+        color: wheat;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+    }
+
+    .action-link:hover {
+        background: wheat;
+        color: black;
+    }
+</style>
+{% endblock %}

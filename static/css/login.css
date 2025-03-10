@@ -243,7 +243,7 @@ body {
     left: 0.8rem;
     font-size: 0.8rem;
     color: var(--tansaf-gold);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgb(41 41 41 / 54%);
     padding: 0 0.5rem;
     border-radius: 4px;
 }

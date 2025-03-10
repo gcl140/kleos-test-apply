@@ -1,3 +1,22 @@
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = User.objects.filter(email=username).first()
+        if user is not None and user.check_password(password):
+            auth_login(request, user)
+            messages.success(request, "You have successfully logged in.")
+            application = Application.objects.filter(user=user).first()
+            if application and application.submitted:
+                user.is_active = False  # Restrict user from modifying the application
+                user.save()
+                return redirect('application_submitted_view')
+            return redirect('intro_view')
+        else:
+            messages.error(request, "Invalid credentials, please try again.")
+
+    return render(request, 'yuzzaz/login.html')
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
@@ -74,45 +93,42 @@ def activate(request, uidb64, token):
 
 
 
-def get_application_for_intern(user):
-    application, created = ApplicationIntern.objects.get_or_create(user=user)
-    if created:
-        print("A new Intern pplication instance was created.")
-    else:
-        print("Retrieved an existing Intern Application instance.")
-    return application
-
-def get_application_for_cohort(user):
-    application, created = ApplicationCohort.objects.get_or_create(user=user)
-    if created:
-        print("A new Cohort pplication instance was created.")
-    else:
-        print("Retrieved an existing Cohort Application instance.")
-    return application
-
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
+        # Fetch the user by email (since you're using email as the username)
         user = User.objects.filter(email=username).first()
         if user is not None and user.check_password(password):
             auth_login(request, user)
             messages.success(request, "You have successfully logged in.")
 
-            # Check if the user is an intern or cohort and create their application instance
-            if user.is_intern:
-                application = get_application_for_intern(user)
-                return redirect('intern_intro_view')  # Replace with your actual URL name
-            else:
-                application = get_application_for_cohort(user)
-                return redirect('intro_view')  # Replace with your actual URL name
+            # Check if the user is an intern or cohort, based on the model used
+            application_intern = ApplicationIntern.objects.filter(user=user).first()
+            application_cohort = ApplicationCohort.objects.filter(user=user).first()
+
+            # If user has submitted their application, deactivate their account to prevent further modification
+            if (application_intern and application_intern.submitted) or (application_cohort and application_cohort.submitted):
+                user.is_active = False  # Restrict user from modifying the application
+                user.save()
+                return redirect('application_submitted_view')
+
+            # Redirect based on whether the user is applying as an intern or cohort
+            if application_intern:
+                # Redirect to the intern introduction page
+                return redirect('intern_intro_view')  # Replace 'intern_intro_view' with your URL name
+            elif application_cohort:
+                # Redirect to the cohort introduction page
+                return redirect('intro_view')  # Replace 'intro_view' with your URL name
+
+            # If no application found, you can redirect them to a general introduction page (optional)
+            return redirect('general_intro_view')  # Optional redirection
 
         else:
             messages.error(request, "Invalid credentials, please try again.")
 
     return render(request, 'yuzzaz/login.html')
-
 
 def homepage(request):
         return render(request, 'yuzzaz/homepage.html')
