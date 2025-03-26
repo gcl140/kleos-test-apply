@@ -1,336 +1,119 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TanSAF - Home</title>
-
-    <!-- Google Fonts - Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <title>TanSAF - Student Support Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/homepagecopy.css' %}">
     <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
-</head>
 
+    <style>
+        .ukoko {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* border-radius: 50px; */
+  background-color: #ff4757;
+  border: none;
+
+  font-family: inherit;
+  color: black;
+  background-color: white;
+  border: 1px solid #535252;
+  padding: 12px 25px;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px #000000;
+  gap: 10px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  margin-top: 20px;
+
+}
+    </style>
+</head>
 <body>
     <!-- Navigation -->
-    <nav class="nav-container" style="display: flex; justify-content: space-evenly;">
-        <div class="nav-content">
-            <a href="{% url 'homepage' %}" class="nav-brand">
-                <i class="fas fa-graduation-cap"></i>
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="{% url 'homepage' %}" class="brand">
+                
+                <img src="{% static 'fav-1-150x150.png' %}" alt="" width="40px" style="margin: 0;">
                 TanSAF
             </a>
-
+            
+            <div class="nav-links">
+                <a href="https://beta.tansaf.or.tz">About</a>
+                <!-- <a href="#achievements">Achievements</a>
+                <a href="#universities">Universities</a> -->
+                <a href="https://beta.tansaf.or.tz/contact">Contact</a>
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            </div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
-
-            <div class="nav-links">
-
-                <a href="#about" class="nav-link">
-                    <i class="fas fa-info-circle"></i> About
-                </a>
-                <a href="#achievements" class="nav-link">
-                    <i class="fas fa-trophy"></i> Achievements
-                </a>
-                <a href="#universities" class="nav-link">
-                    <i class="fas fa-university"></i> Universities
-                </a>
-                <a href="#contact" class="nav-link">
-                    <i class="fas fa-envelope"></i> Contact
-                </a>
-                {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="nav-link">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-                {% else %}
-                <a href="{% url 'login' %}" class="nav-link">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </a>
-                <a href="{% url 'register' %}" class="nav-link">
-                    <i class="fas fa-sign-in-alt"></i> Register
-                </a>
-                {% endif %}
-            </div>
         </div>
     </nav>
-
-    <!-- Hero Section -->
-    <header class="hero-section">
-        <div class="hero-content">
-            <h1>Empowering Tanzanian Students</h1>
-            <p>Helping high-achieving, low-income students gain admission to prestigious universities worldwide</p>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number">76</span>
-                    <span class="stat-label">Universities Placed</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">10+</span>
-                    <span class="stat-label">Years of Service</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">Student Success</span>
-                </div>
-            </div>
-            <div class="hero-actions">
-                {% if user.is_authenticated %}
-                <a href="{% url 'intro_view' %}" class="btn btn-primary">Apply Now</a>
-                {% else %}
-                <a href="{% url 'login' %}" class="btn btn-primary"> Login
+    <div class="hero-container position-relative text-white text-center" style="color: white !important;">
+        <!-- Replaced video with image -->
+        <img src="{% static 'assets/videos/204a453366e1401480f27b5df35a5c36.jpg' %}" alt="TanSAF Students" class="hero-video w-100" style="object-fit: cover; height: 100vh;">
+        
+        <div class="hero-overlay d-flex flex-column justify-content-center align-items-center">
+            <!-- <h1>Your academic journey begins with TanSAF</h1> -->
+             
+        <div class="container">
+            <!-- <h1>Empowering Tanzanian Students Worldwide</h1> -->
+            <h1>Your future starts here</h1>
+        </div>
+            <p class="lead" style="margin-bottom: 30px;">
+                <br>
+                Empowering Tanzanian students to access world-class education 
+                opportunities through comprehensive support and guidance.
+                <br>
+            </p>
+            <div class="d-flex gap-3">
+                <a href="{% url 'login' %}" class="ukoko">
+                    Get Started
+                    <i class="fa-solid fa-rocket"></i>
                 </a>
-                {% endif %}
+                <!-- <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg mt-3">
+                    Create Account
+                </a> -->
             </div>
         </div>
-        <div class="hero-illustration">
-            <img src="{% static 'images/education-illustration.svg' %}" alt="Student Success Illustration">
-        </div>
-    </header>
-
-
-    <!-- Toast Messages -->
-    {% if messages %}
-    <div class="fixed-toast-container">
-        {% for message in messages %}
-        <div class="toast-message {% if message.tags %}{{ message.tags }}{% endif %}">
-            <div class="toast-content">
-                <div class="toast-text">{{ message }}</div>
-                <button type="button" class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
-            </div>
-            <div class="toast-progress">
-                <div class="progress-bar"></div>
-            </div>
-        </div>
-        {% endfor %}
     </div>
-    {% endif %}
+    <!-- Hero Section -->
 
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f9fafb;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
 
-        h1,
-        h2,
-        h3 {
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
 
-        .btn-primary {
-            background-color: #10B981;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #059669;
-        }
-
-        .btn-secondary {
-            background-color: #3B82F6;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #2563EB;
-        }
-
-        .btn-outline {
-            border: 2px solid #3B82F6;
-            color: #3B82F6;
-            background-color: transparent;
-        }
-
-        .btn-outline:hover {
-            background-color: #3B82F6;
-            color: white;
-        }
-
-        .site-footer {
-            background-color: #1F2937;
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .footer-logo {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-social a {
-            margin: 0 1rem;
-            font-size: 1.25rem;
-            color: white;
-        }
-
-        .footer-social a:hover {
-            color: #3B82F6;
-        }
-
-        .footer-contact p {
-            margin: 0.25rem 0;
-        }
-
-        /* Navigation */
-        .nav-container {
-            background-color: #333;
-            /* padding: 1rem 2rem; */
-        }
-
-        .nav-brand {
-            color: white;
-            font-size: 1.5rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-brand i {
-            margin-right: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: white;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-link i {
-            margin-right: 0.25rem;
-        }
-
-        .nav-link.active {
-            background-color: #10B981;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: white;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem;
-            background-color: #4B5563;
-            color: white;
-        }
-
-        .hero-content {
-            flex: 1;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            color: #ddd;
-        }
-
-        .hero-illustration img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                align-items: flex-start;
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-content') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
             }
+        });
 
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero-section {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .hero-illustration {
-                margin-top: 2rem;
-            }
-
-            .achievements-grid,
-            .universities-grid {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .nav-content {
-                display: flex;
-                justify-content: space-evenly;
-                flex-direction: column;
-                align-items: flex-end;
-            }
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-content: stretch;
-            flex-wrap: nowrap;
-            align-items: center;
-        }
-    </style>
-    <script src="{% static 'js/homepage.js' %}"></script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
-
 </html>
