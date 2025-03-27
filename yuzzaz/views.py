@@ -23,12 +23,51 @@ from django.http import HttpResponseForbidden
 User = get_user_model()
 
 # Register view: Handles user registration and sending activation email
-def register(request):
+# def register(request):
+#     if request.method == "POST":
+#         form = UserRegistrationForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = False  # Deactivate account until email verification
+#             user.save()
+
+#             # Send activation email
+#             current_site = get_current_site(request)
+#             mail_subject = "Activate your user account"
+#             message = render_to_string("yuzzaz/activate_account.html", {
+#                 'user': user,
+#                 'domain': current_site.domain,
+#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#                 'token': account_activation_token.make_token(user),
+#                 'protocol': 'https' if request.is_secure() else 'http',
+#                 'current_year': datetime.datetime.now().year,
+#             })
+#             email = EmailMessage(mail_subject, message, to=[user.email])
+#             email.content_subtype = "html"  # Ensure the email content type is HTML
+#             email.send()
+
+#             messages.success(
+#                 request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration.")
+#             return redirect('homepage')  # Redirect to login page
+#     else:
+#         form = UserRegistrationForm()
+
+#     return render(request, 'yuzzaz/register.html', {'form': form})
+
+
+def register(request, user_type):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False  # Deactivate account until email verification
+            
+            # Set user type based on URL parameter
+            if user_type == "intern":
+                user.is_intern = True
+            else:
+                user.is_intern = False  # Default to cohort
+            
             user.save()
 
             # Send activation email
@@ -47,12 +86,13 @@ def register(request):
             email.send()
 
             messages.success(
-                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration.")
+                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration."
+            )
             return redirect('homepage')  # Redirect to login page
     else:
         form = UserRegistrationForm()
 
-    return render(request, 'yuzzaz/register.html', {'form': form})
+    return render(request, 'yuzzaz/register.html', {'form': form, 'user_type': user_type})
 
 
 # Activate view: Handles the account activation via the token

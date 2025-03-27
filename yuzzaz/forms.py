@@ -12,7 +12,7 @@ class UserRegistrationForm(forms.ModelForm):
         label="Confirm Password"
     )
     is_intern = forms.BooleanField(
-        required=True, 
+        required=False, 
         widget=forms.CheckboxInput(attrs={
             'class': 'form-check-input custom-checkbox',  
             'style': 'width: 20px; height: 20px; accent-color: gold; margin-right: 8px;',

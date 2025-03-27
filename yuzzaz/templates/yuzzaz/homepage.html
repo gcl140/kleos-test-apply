@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TanSAF - Student Support Platform</title>
+    <title>TanSAF</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{% static 'css/homepagecopy.css' %}">
     <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
@@ -30,8 +33,15 @@
   box-shadow: 5px 5px 0px #000000;
   gap: 10px;
   transition: box-shadow 0.2s, transform 0.2s;
-  margin-top: 20px;
+  /* margin-top: 20px; */
+  /* margin-left: 20px; */
 
+}
+
+.row > * {
+  flex-shrink: 0;
+  width: 360px !important;
+  max-width: 500px !important;
 }
     </style>
 </head>
@@ -51,7 +61,7 @@
                 <a href="#universities">Universities</a> -->
                 <a href="https://beta.tansaf.or.tz/contact">Contact</a>
                 <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                
             </div>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
@@ -59,33 +69,55 @@
         </div>
     </nav>
     <div class="hero-container position-relative text-white text-center" style="color: white !important;">
-        <!-- Replaced video with image -->
         <img src="{% static 'assets/videos/204a453366e1401480f27b5df35a5c36.jpg' %}" alt="TanSAF Students" class="hero-video w-100" style="object-fit: cover; height: 100vh;">
         
         <div class="hero-overlay d-flex flex-column justify-content-center align-items-center">
-            <!-- <h1>Your academic journey begins with TanSAF</h1> -->
-             
-        <div class="container">
-            <!-- <h1>Empowering Tanzanian Students Worldwide</h1> -->
-            <h1>Your future starts here</h1>
-        </div>
-            <p class="lead" style="margin-bottom: 30px;">
+            <div class="container">
+                <h1>Your Future Starts Here</h1>
+                <!-- <p class="lead" style="margin-bottom: 30px; text-align: center;">
+                    Empowering Tanzanian students to access world-class education opportunities through comprehensive support and guidance.
+                </p> -->
+    
+                <!-- Cards Section -->
+                <div class="row g-4 justify-content-center">
+                    <!-- Intern Card -->
+                    <div class="col-md-5">
+                        <div class="card text-center shadow-lg border-0">
+                            <div class="card-body" style="  padding-bottom: 40px;   background-color: #25254da6;">
+                                <i class="fas fa-briefcase fa-3x  mb-3"></i>
+                                <h5 class="card-title">Apply as an Intern</h5>
+                                <p class="card-text">
+                                    Collaborate, learn, and grow—become a TanSAF Intern!
+                                </p>
+                                <a href="{% url 'login'  %}" class="ukoko">Login</a>
+                                <a href="{% url 'register' 'intern' %}" class="ukoko">Register</a>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Cohort Card -->
+                    <div class="col-md-5">
+                        <div class="card text-center shadow-lg border-0">
+                            <div class="card-body" style="  padding-bottom: 40px;   background-color: #25254da6;">
+                                <i class="fas fa-users fa-3x mb-3"></i>
+                                <h5 class="card-title">Join as a Cohort</h5>
+                                <p class="card-text">
+                                    Become part of a learning community and grow your skills.
+                                </p>
+                                <a href="{% url 'login' %}" class="ukoko">Login</a>
+                                <a href="{% url 'register' 'cohort' %}" class="ukoko">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <br>
-                Empowering Tanzanian students to access world-class education 
-                opportunities through comprehensive support and guidance.
                 <br>
-            </p>
-            <div class="d-flex gap-3">
-                <a href="{% url 'login' %}" class="ukoko">
-                    Get Started
-                    <i class="fa-solid fa-rocket"></i>
-                </a>
-                <!-- <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg mt-3">
-                    Create Account
-                </a> -->
+                <br>
             </div>
-        </div>
+        </div> 
+
     </div>
+    
     <!-- Hero Section -->
     <!-- Toast Messages -->
     {% if messages %}
@@ -130,5 +162,7 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

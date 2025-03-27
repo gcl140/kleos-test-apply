@@ -82,10 +82,8 @@
                     {% if field.field.widget.input_type == "checkbox" %}
                         {% if user_type == "intern" %}
                             <div class="form-group custom-checkbox-group">
-                                <input type="checkbox" id="{{ field.id_for_label }}" name="{{ field.html_name }}" required>
-                                <label for="{{ field.id_for_label }}" class="custom-label" style="color: white;">
-                                    I will be applying for an Internship position
-                                </label>
+                                {{ field }}
+                                <span class="custom-label" style="color: white;">I will be applying for an Internship position</span>
                             </div>
                         {% endif %}
                     {% else %}
@@ -106,8 +104,7 @@
                         {{ field.errors }}
                     </div>
                 </div>
-            {% endfor %}
-            
+                {% endfor %}
         
                 <button type="submit" class="submit-btn">
                     <span class="btn-text">Register</span>
