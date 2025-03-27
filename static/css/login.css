@@ -130,7 +130,7 @@ body {
 
 .blob-2 {
     background: var(--tansaf-gold);
-    width: 350px;
+    /* width: 350px; */
     height: 350px;
     bottom: -50px;
     right: -50px;
