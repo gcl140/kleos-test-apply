@@ -15,7 +15,8 @@ def is_staff_user(user):
     return user.is_staff or user.has_perm('applications.view_all_applications')
 
 
-def get_application_for_user(user):
+def get_application_for_cohort(user):
+# def get_application_for_user(user):
     application, created = ApplicationCohort.objects.get_or_create(user=user)
     if created:
         print("A new cohort application instance was created.")
@@ -177,7 +178,7 @@ class SignatureView(FormMixin, UpdateView):
 
 @login_required
 def intro_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == "POST":
         form = IntroForm(request.POST, instance=application)
@@ -200,7 +201,7 @@ def intro_view(request):
 
 @login_required
 def general_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == 'POST':
         form = GeneralInfoForm(request.POST, instance=application)
@@ -222,7 +223,7 @@ def general_info_view(request):
 
 @login_required
 def contact_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == 'POST':
         form = ContactInfoForm(request.POST, instance=application)
@@ -243,7 +244,7 @@ def contact_info_view(request):
 
 @login_required
 def school_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == 'POST':
         form = SchoolInfoForm(request.POST, instance=application)
@@ -265,7 +266,7 @@ def school_info_view(request):
 
 @login_required
 def parent_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == 'POST':
         form = ParentInfoForm(request.POST, instance=application)
@@ -287,7 +288,7 @@ def parent_info_view(request):
 
 @login_required
 def financial_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == "POST":
         form = FinancialInfoForm(request.POST, instance=application)
@@ -310,7 +311,7 @@ def financial_info_view(request):
 
 @login_required
 def additional_info_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == "POST":
         form = AdditionalInfoForm(request.POST, instance=application)
@@ -333,7 +334,7 @@ def additional_info_view(request):
 
 @login_required
 def writing_section_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == "POST":
         form = WritingForm(request.POST, instance=application)
@@ -357,7 +358,7 @@ def writing_section_view(request):
 
 @login_required
 def files_signature(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
 
     if request.method == "POST":
         form = FinalsForm(request.POST, request.FILES, instance=application)
@@ -380,7 +381,7 @@ def files_signature(request):
 
 @login_required
 def addsiblings(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     siblings = Sibling.objects.filter(application=application)
     context = {
         'form': SiblingForm,
@@ -399,7 +400,7 @@ def create_sibling(request):
     if request.method == "POST":
         form = SiblingForm(request.POST)
         if form.is_valid():
-            application = get_application_for_user(request.user)
+            application = get_application_for_cohort(request.user)
             sibling = form.save(commit=False)
             sibling.application = application
             sibling.save()
@@ -440,7 +441,7 @@ def update_sibling(request, sibling_id):
 @login_required
 def delete_sibling(request, sibling_id):
     sibling = get_object_or_404(Sibling, id=sibling_id)
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     if sibling.application == application:
         sibling.delete()
     messages.success(request, "Sibling deleted successfully!")
@@ -449,7 +450,7 @@ def delete_sibling(request, sibling_id):
 
 @login_required
 def adddistinctions(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     
     context = {
         'form': DistinctionForm,
@@ -468,7 +469,7 @@ def create_distinction(request):
     if request.method == "POST":
         form = DistinctionForm(request.POST)
         if form.is_valid():
-            application = get_application_for_user(request.user)
+            application = get_application_for_cohort(request.user)
             distinction = form.save(commit=False)
             distinction.application = application
             distinction.save()  
@@ -499,7 +500,7 @@ def update_distinction(request, distinction_id):
 @login_required
 def delete_distinction(request, distinction_id):
     distinction = get_object_or_404(Distinction, id=distinction_id)
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     if distinction.application == application:
         distinction.delete()
     messages.success(request, "Distinction deleted successfully!")
@@ -507,7 +508,7 @@ def delete_distinction(request, distinction_id):
 
 @login_required
 def adddependents(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     
     context = {
         'form': DependentForm,
@@ -527,7 +528,7 @@ def create_dependent(request):
     if request.method == "POST":
         form = DependentForm(request.POST)
         if form.is_valid():
-            application = get_application_for_user(request.user)
+            application = get_application_for_cohort(request.user)
             dependent = form.save(commit=False)
             dependent.application = application
             dependent.save()  
@@ -556,7 +557,7 @@ def update_dependent(request, dependent_id):
 @login_required
 def delete_dependent(request, dependent_id):
     dependent = get_object_or_404(Dependent, id=dependent_id)
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     if dependent.application == application:
         dependent.delete()
     messages.success(request, "Dependent deleted successfully!")
@@ -565,7 +566,7 @@ def delete_dependent(request, dependent_id):
 
 @login_required
 def addactivities(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     
     context = {
         'form': ActivityForm,
@@ -583,7 +584,7 @@ def create_activity(request):
     if request.method == "POST":
         form = ActivityForm(request.POST)
         if form.is_valid():
-            application = get_application_for_user(request.user)
+            application = get_application_for_cohort(request.user)
             activity = form.save(commit=False)
             activity.application = application
             activity.save()  
@@ -614,7 +615,7 @@ def update_activity(request, activity_id):
 @login_required
 def delete_activity(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     if activity.application == application:
         activity.delete()
     messages.success(request, "Activity deleted successfully!")
@@ -622,7 +623,7 @@ def delete_activity(request, activity_id):
 
 @login_required
 def preview_application_view(request):
-    application = get_application_for_user(request.user)
+    application = get_application_for_cohort(request.user)
     
     if request.method == "POST":
         application.submitted = True
@@ -659,7 +660,7 @@ def view_all_applications(request):
 
 def preview_application_viewo(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    application = get_application_for_user(user)
+    application = get_application_for_cohort(user)
     context = {
         'application': application,
         'title': "Preview Your Application",
