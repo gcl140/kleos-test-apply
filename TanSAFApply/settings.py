@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x#)+v+p^&9xq&w-4xsl@9x0h!ht7*cotxf0!kug19@6_zu!n!%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = True
+DEBUG = True
+# DEBUG = False
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['apply.tansaf.or.tz', 'www.apply.tansaf.or.tz']
+# ALLOWED_HOSTS = ['gcl.pythonanywhere.com']
 # ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'crispy_bootstrap5',
-    'whitenoise.runserver_nostatic',  # Add this
 
 ]
 
@@ -61,8 +60,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
-
 ]
 
 ROOT_URLCONF = 'TanSAFApply.urls'
@@ -89,21 +86,10 @@ WSGI_APPLICATION = 'TanSAFApply.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Use 'django.db.backends.postgresql' for PostgreSQL
-        'NAME': 'tansafor_apply',  # Database name from cPanel
-        'USER': 'tansafor_admin',  # Database user from cPanel
-        'PASSWORD': 'Lukoonge14@0',  # Database user password
-        'HOST': 'localhost',  # Use '127.0.0.1' if localhost doesn’t work
-        'PORT': '3306',  # Default MySQL port, change if needed
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

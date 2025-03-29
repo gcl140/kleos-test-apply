@@ -7,12 +7,15 @@
 <h1 class="page-title">All Applications</h1>
 <div class="applications-container">
     <p class="total-applications">Total Applications: {{ applications|length }}</p>
+
+    <!-- Intern Applications Table -->
+    <h2 style="color: white;">Intern Applications</h2>
     <table class="applications-table">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Applicant's Name</th>
-                <th>Application Type</th>
+                <th>School</th>
                 <th>Submission Status</th>
                 <th>Date Applied</th>
                 <th>Actions</th>
@@ -20,22 +23,21 @@
         </thead>
         <tbody>
             {% for application in applications %}
+                {% if application.user.is_intern %}
                 <tr>
                     <td>{{ forloop.counter }}.</td>
                     <td>
                         {% if application.user %}
-                            {{ application.user.first_name }} {{ application.user.last_name }}
+                            {{ application.user.first_name }} {{ application.user.last_name }} <br>
+                            <a href="mailto:{{ application.user.email }}" style="color: wheat; text-decoration: none;">
+                                {{ application.user.email }}
+                            </a>
                         {% else %}
                             No User Assigned
                         {% endif %}
                     </td>
-                    <td>
-                        {% if application.user and application.user.is_intern %}
-                            Internship
-                        {% else %}
-                            Cohort
-                        {% endif %}
-                    </td>                    
+                    <td>{{ application.adv_school_name }}</td>
+                    
                     <td>
                         <span class="step-dot">
                             {% if application.submitted %}
@@ -49,17 +51,72 @@
                     <td>
                         {% if application.user %}
                             <a href="{% url 'intern_preview_application_viewo' application.user.id %}" class="action-link">
-                                <i class="fas fa-eye"></i> 
-                                View
+                                <i class="fas fa-eye"></i> View
                             </a>
                         {% else %}
                             <span>N/A</span>
                         {% endif %}
                     </td>
                 </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
-        
+    </table>
+
+    <!-- Cohort Applications Table -->
+     <br>
+     <br>
+    <h2 style="color: white;">Cohort Applications</h2>
+    <table class="applications-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Applicant's Name</th>
+                <th>School</th>
+                <th>Submission Status</th>
+                <th>Date Applied</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+                {% if not application.user.is_intern %}
+                <tr>
+                    <td>{{ forloop.counter }}.</td>
+                    <td>
+                        {% if application.user %}
+                            {{ application.user.first_name }} {{ application.user.last_name }} <br>
+                            <a href="mailto:{{ application.user.email }}" style="color: wheat; text-decoration: none;">
+                                {{ application.user.email }}
+                            </a>
+                        {% else %}
+                            No User Assigned
+                        {% endif %}
+                    </td>
+                    <td>{{ application.adv_school_name }}</td>
+                    <td>
+                        <span class="step-dot">
+                            {% if application.submitted %}
+                                <i class="fa-regular fa-circle-check" style="color: green; margin-right: 5px;"></i> Submitted
+                            {% else %}
+                                <i class="fa-regular fa-circle" style="color: rgb(255, 70, 101); margin-right: 5px"></i> Not Submitted
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>{{ application.created|date:"M d, Y" }}</td>
+                    <td>
+                        {% if application.user %}
+                            <a href="{% url 'intern_preview_application_viewo' application.user.id %}" class="action-link">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                        {% else %}
+                            <span>N/A</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
     </table>
 </div>
 {% endblock %}
