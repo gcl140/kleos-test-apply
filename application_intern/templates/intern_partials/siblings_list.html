@@ -8,7 +8,7 @@
             <span class="age">{{ sibling.age }} years old</span>
         </div>
         <div class="sibling-actions">
-            <a href="{% url 'update_sibling' sibling.id %}" class="btn-action edit" title="Edit">
+            <a href="{% url 'intern_update_sibling' sibling.id %}" class="btn-action edit" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
             </a>
             <!-- <button class="btn-action delete" title="Delete"
@@ -18,7 +18,7 @@
                 hx-confirm="Are you sure you want to delete this sibling?">
                 <i class="fas fa-trash-alt"></i>
             </button> -->
-            <a href="{% url 'delete_sibling' sibling.id %}" class="btn-action delete" title="Delete">
+            <a href="{% url 'intern_delete_sibling' sibling.id %}" class="btn-action delete" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </a>
         </div>
@@ -28,7 +28,7 @@
         <div class="detail-item">
             <i class="fas fa-graduation-cap"></i>
             <div class="detail-content">
-                <span class="text-truncate">{{ sibling.education|default:"Education: N/A" }}</span>
+                <span class="text-truncate">{{ sibling.education|default:"Education: N/A" }}, {{ sibling.institute}}</span>
             </div>
         </div>
 

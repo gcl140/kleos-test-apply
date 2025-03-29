@@ -1,5 +1,5 @@
 from django import forms
-from .models import ApplicationIntern, Sibling, Dependent, Activity, Distinction
+from .models import ApplicationIntern, InternSibling, InternDependent, InternActivity, InternDistinction
 
 class IntroForm(forms.ModelForm):
     class Meta:
@@ -136,24 +136,24 @@ class FinalsForm(forms.ModelForm):
             'signdate': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
 
-class SiblingForm(forms.ModelForm):
+class InternSiblingForm(forms.ModelForm):
     class Meta:
-        model = Sibling
+        model = InternSibling
         fields = ['sibling_name', 'age', 'education', 'institute', 'degree', 'occupation']
 
-class DependentForm(forms.ModelForm):
+class InternDependentForm(forms.ModelForm):
     class Meta:
-        model = Dependent
+        model = InternDependent
         fields = ['dependent_name', 'relationship']
 
-class ActivityForm(forms.ModelForm):
+class InternActivityForm(forms.ModelForm):
     class Meta:
-        model = Activity
+        model = InternActivity
         fields = ['activity_type', 'activity_description', 'outside_school', 'leadership_position', 'organization_name', 'start_year', 'end_year', 'weeksperyear', 'hoursperweek']
         
-class DistinctionForm(forms.ModelForm):
+class InternDistinctionForm(forms.ModelForm):
     class Meta:
-        model = Distinction
+        model = InternDistinction
         fields = ['distinction_name', 'level_of_rec', 'year']
 
 

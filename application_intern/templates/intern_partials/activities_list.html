@@ -1,29 +1,39 @@
-<div class="dependent-card">
-    <div class="dependent-header">
-        <div class="dependent-avatar">
-            <i class="fas fa-user"></i>
+<div class="activity-card">
+    <div class="activity-header">
+        <div class="activity-avatar">
+            <i class="fas fa-clipboard-list"></i>
         </div>
-        <div class="dependent-info">
-            <h3 class="text-truncate">{{ dependent.dependent_name }}</h3>
-            <span class="age">
-            <i class="fa-solid fa-heart"></i> {{ dependent.relationship|default:"Relationship: N/A" }}</span>
-
+        <div class="activity-info">
+            <h3 class="text-truncate">{{ activity.activity_type }}</h3>
+            <span class="age">{{ activity.leadership_position }} </span>
         </div>
-        <div class="dependent-actions">
-            <a href="{% url 'update_dependent' dependent.id %}" class="btn-action edit" title="Edit">
+        <div class="activity-actions">
+            <a href="{% url 'intern_update_activity' activity.id %}" class="btn-action edit" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
-            </a>
-            <a href="{% url 'delete_dependent' dependent.id %}" class="btn-action delete" title="Delete">
+            </a>            <a href="{% url 'intern_delete_activity' activity.id %}" class="btn-action delete" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </a>
         </div>
     </div>
 
+    <div class="activity-details">
+        <div class="detail-item">
+            <i class="fa-regular fa-building"></i>
+            <div class="detail-content">
+                <span class="text-truncate">{{ activity.organization_name|default:"Education: N/A" }}</span>
+            </div>
+        </div>
 
+        <div class="detail-item">
+            <i class="fas fa-calendar-alt"></i>
+            <div class="detail-content">
+                <span class="text-truncate"> From {{ activity.start_year }} to {{ activity.end_year }} </span>
+            </div>
+        </div>
+    </div>
 </div>
-
 <style>
-    .dependent-card {
+    .activity-card {
         background: rgba(255, 255, 255, 0);
         backdrop-filter: blur(10px);
         border-radius: 12px;
@@ -33,19 +43,19 @@
         transition: all 0.3s ease;
     }
 
-    .dependent-card:hover {
+    .activity-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .dependent-header {
+    .activity-header {
         display: flex;
         align-items: center;
         gap: 1rem;
         margin-bottom: 1rem;
     }
 
-    .dependent-avatar {
+    .activity-avatar {
         width: 40px;
         height: 40px;
         background: var(--tansaf-blue-light);
@@ -56,17 +66,17 @@
         flex-shrink: 0;
     }
 
-    .dependent-avatar i {
+    .activity-avatar i {
         font-size: 1.2rem;
         color: var(--tansaf-blue);
     }
 
-    .dependent-info {
+    .activity-info {
         flex: 1;
         min-width: 0;
     }
 
-    .dependent-info h3 {
+    .activity-info h3 {
         /* color: var(--tansaf-blue); */
         color: wheat;
         margin: 0;
@@ -78,7 +88,7 @@
         font-size: 0.8rem;
     }
 
-    .dependent-actions {
+    .activity-actions {
         display: flex;
         gap: 0.5rem;
     }
@@ -106,7 +116,8 @@
     }
 
     .btn-action.delete {
-        background: rgb(221, 26, 26);
+        /* background: rgba(220, 53, 70, 0.205); */
+        background: rgb(230, 43, 43);
         color: white;
     }
 
@@ -116,7 +127,7 @@
         transform: scale(1.1);
     }
 
-    .dependent-details {
+    .activity-details {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -154,7 +165,7 @@
     }
 
     @media (max-width: 768px) {
-        .dependent-card {
+        .activity-card {
             padding: 0.75rem;
         }
     }

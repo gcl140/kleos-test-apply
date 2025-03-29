@@ -13,7 +13,7 @@
 <div class="content-wrapper">
     <!-- <div class="form-progress"> -->
         <div class="form-progress">
-            <a href="{% url 'intro_view' %}" class="progress-step {% if application.intro_completed %}completed{% endif %} {% if current_section == 'intro' %}active{% endif %}">
+            <a href="{% url 'intern_intro_view' %}" class="progress-step {% if application.intro_completed %}completed{% endif %} {% if current_section == 'intro' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.intro_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -23,7 +23,7 @@
                 </span>
                 <span class="step-label">Intro</span>
             </a>
-            <a href="{% url 'general_info_view' %}" class="progress-step {% if application.general_info_completed %}completed{% endif %} {% if current_section == 'general_info' %}active{% endif %}">
+            <a href="{% url 'intern_general_info_view' %}" class="progress-step {% if application.general_info_completed %}completed{% endif %} {% if current_section == 'general_info' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.general_info_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -33,7 +33,7 @@
                 </span>
                 <span class="step-label">About You</span>
             </a>
-            <a href="{% url 'contact_info_view' %}" class="progress-step {% if application.contact_info_completed %}completed{% endif %} {% if current_section == 'contact_info' %}active{% endif %}">
+            <a href="{% url 'intern_contact_info_view' %}" class="progress-step {% if application.contact_info_completed %}completed{% endif %} {% if current_section == 'contact_info' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.contact_info_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -43,7 +43,7 @@
                 </span>
                 <span class="step-label">Contacts</span>
             </a>
-            <a href="{% url 'school_info_view' %}" class="progress-step {% if application.school_info_completed %}completed{% endif %} {% if current_section == 'school_info' %}active{% endif %}">
+            <a href="{% url 'intern_school_info_view' %}" class="progress-step {% if application.school_info_completed %}completed{% endif %} {% if current_section == 'school_info' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.school_info_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -53,7 +53,7 @@
                 </span>
                 <span class="step-label">School Info</span>
             </a>
-            <a href="{% url 'parent_info_view' %}" class="progress-step {% if application.family_info_completed %}completed{% endif %} {% if current_section == 'family_info' %}active{% endif %}">
+            <a href="{% url 'intern_parent_info_view' %}" class="progress-step {% if application.family_info_completed %}completed{% endif %} {% if current_section == 'family_info' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.family_info_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -63,7 +63,7 @@
                 </span>
                 <span class="step-label">Family Info</span>
             </a>
-            <a href="{% url 'addsiblings' %}" class="progress-step {% if application.siblings_completed %}completed{% endif %} {% if current_section == 'siblings' %}active{% endif %}">
+            <a href="{% url 'intern_addsiblings' %}" class="progress-step {% if application.siblings_completed %}completed{% endif %} {% if current_section == 'siblings' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.siblings_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -73,7 +73,7 @@
                 </span>
                 <span class="step-label">Siblings</span>
             </a>
-            <a href="{% url 'adddependents' %}" class="progress-step {% if application.dependents_completed %}completed{% endif %} {% if current_section == 'dependents' %}active{% endif %}">
+            <a href="{% url 'intern_adddependents' %}" class="progress-step {% if application.dependents_completed %}completed{% endif %} {% if current_section == 'dependents' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.dependents_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -83,7 +83,7 @@
                 </span>
                 <span class="step-label">Dependents</span>
             </a>
-            <a href="{% url 'financial_info_view' %}" class="progress-step {% if application.financial_info_completed %}completed{% endif %} {% if current_section == 'financial_info' %}active{% endif %}">
+            <a href="{% url 'intern_financial_info_view' %}" class="progress-step {% if application.financial_info_completed %}completed{% endif %} {% if current_section == 'financial_info' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.financial_info_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -93,7 +93,7 @@
                 </span>
                 <span class="step-label">Financial Info</span>
             </a>
-            <a href="{% url 'addactivities' %}" class="progress-step {% if application.activities_completed %}completed{% endif %} {% if current_section == 'activities' %}active{% endif %}">
+            <a href="{% url 'intern_addactivities' %}" class="progress-step {% if application.activities_completed %}completed{% endif %} {% if current_section == 'activities' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.activities_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -103,7 +103,7 @@
                 </span>
                 <span class="step-label">Activities</span>
             </a>
-            <a href="{% url 'adddistinctions' %}" class="progress-step {% if application.distinctions_completed %}completed{% endif %} {% if current_section == 'distinctions' %}active{% endif %}">
+            <a href="{% url 'intern_adddistinctions' %}" class="progress-step {% if application.distinctions_completed %}completed{% endif %} {% if current_section == 'distinctions' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.distinctions_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -113,7 +113,7 @@
                 </span>
                 <span class="step-label">Distinctions</span>
             </a>
-            <a href="{% url 'additional_info_view' %}" class="progress-step {% if application.other_inquiries_completed %}completed{% endif %} {% if current_section == 'other_inquiries' %}active{% endif %}">
+            <a href="{% url 'intern_additional_info_view' %}" class="progress-step {% if application.other_inquiries_completed %}completed{% endif %} {% if current_section == 'other_inquiries' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.other_inquiries_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -123,7 +123,7 @@
                 </span>
                 <span class="step-label">Other Inquiries</span>
             </a>
-            <a href="{% url 'writing_section_view' %}" class="progress-step {% if application.writing_completed %}completed{% endif %} {% if current_section == 'writing' %}active{% endif %}">
+            <a href="{% url 'intern_writing_section_view' %}" class="progress-step {% if application.writing_completed %}completed{% endif %} {% if current_section == 'writing' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.writing_completed %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -133,7 +133,7 @@
                 </span>
                 <span class="step-label">Writing</span>
             </a>
-            <a href="{% url 'files_signature' %}" class="progress-step {% if application.files_signature %}completed{% endif %} {% if current_section == 'files_signature' %}active{% endif %}">
+            <a href="{% url 'intern_files_signature' %}" class="progress-step {% if application.files_signature %}completed{% endif %} {% if current_section == 'files_signature' %}active{% endif %}">
                 <span class="step-dot">
                     {% if application.files_signature %}
                         <i class="fa-regular fa-circle-check"></i>
@@ -142,6 +142,12 @@
                     {% endif %}
                 </span>
                 <span class="step-label">Uploads</span>
+            </a>
+            <a href="{% url 'intern_preview_application_view' %}" class="progress-step completed active">
+                <span class="step-dot">
+                        <i class="fa-regular fa-circle-check"></i>
+                </span>
+                <span class="step-label">Preview</span>
             </a>
         </div>
     <!-- </div> -->
@@ -176,7 +182,7 @@
                     </div>
 
                 </div>
-                {% include 'partials/activities.html' %}
+                {% include 'intern_partials/activities.html' %}
             </div>
 
 
@@ -185,7 +191,7 @@
                 Please remember to click the <b> SAVE ALL</b> button after adding activities.
             </div>
             <div class="activity-actions">
-                <button type="button" class="btn-add-activity" hx-get="{% url 'create_activity' %}"
+                <button type="button" class="btn-add-activity" hx-get="{% url 'intern_create_activity' %}"
                     hx-target="#activity-form" hx-swap="beforeend">
                     <i class="fas fa-plus-circle"></i> Add activity
                 </button>
@@ -212,7 +218,7 @@
             </h3>
             <div id="activity-list" class="activities-grid">
                 {% for activity in activities %}
-                {% include 'partials/activities_list.html' %}
+                {% include 'intern_partials/activities_list.html' %}
                 {% endfor %}
             </div>
         </div>

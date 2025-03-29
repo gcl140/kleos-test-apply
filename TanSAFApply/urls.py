@@ -30,17 +30,17 @@ urlpatterns = [
 
 ]
 
-# Serve media files in development (only works if DEBUG = True)
-if not settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-
-# # Serve media files even when DEBUG is False
+# # Serve media files in development (only works if DEBUG = True)
 # if not settings.DEBUG:
-#     urlpatterns += [
-#         path('media/<path:path>/', serve, {'document_root': settings.MEDIA_ROOT}),
-#     ]
-# else:
-#     # Serve media files in development (only works if DEBUG = True)
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+# Serve media files even when DEBUG is False
+if not settings.DEBUG:
+    urlpatterns += [
+        path('media/<path:path>/', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
+else:
+    # Serve media files in development (only works if DEBUG = True)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

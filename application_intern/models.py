@@ -219,57 +219,57 @@ class ApplicationIntern(models.Model):
         return {
             'intro': {
                 'completed': self.intro_completed,
-                'url': 'intro_view'
+                'url': 'intern_intro_view'
             },
             'general_info': {
                 'completed': self.general_info_completed,
-                'url': 'general_info_view'
+                'url': 'intern_general_info_view'
             },
             'contact_info': {
                 'completed': self.contact_info_completed,
-                'url': 'contact_info_view'
+                'url': 'intern_contact_info_view'
             },
             'school_info': {
                 'completed': self.school_info_completed,
-                'url': 'school_info_view'
+                'url': 'intern_school_info_view'
             },
             'family_info': {
                 'completed': self.family_info_completed,
-                'url': 'parent_info_view'
+                'url': 'intern_parent_info_view'
             },
             'siblings': {
                 'completed': self.siblings_completed,
-                'url': 'addsiblings'
+                'url': 'intern_addsiblings'
             },
             'dependents': {
                 'completed': self.dependents_completed,
-                'url': 'adddependents'
+                'url': 'intern_adddependents'
             },
             'financial_info': {
                 'completed': self.financial_info_completed,
-                'url': 'financial_info_view'
+                'url': 'intern_financial_info_view'
             },
             'activities': {
                 'completed': self.activities_completed,
-                'url': 'addactivities'
+                'url': 'intern_addactivities'
             },
             'distinctions': {
                 'completed': self.distinctions_completed,
-                'url': 'adddistinctions'
+                'url': 'intern_adddistinctions'
             },
             'other_inquiries': {
                 'completed': self.other_inquiries_completed,
-                'url': 'additional_info_view'                
+                'url': 'intern_additional_info_view'                
             },
             'writing': {
                 'completed': self.writing_completed,
-                # 'url': 'essays_view'
-                'url': 'writing_section_view'
+                # 'url': 'intern_essays_view'
+                'url': 'intern_writing_section_view'
 
             },
             'files_signature': {
                 'completed': self.files_signature,
-                'url': 'files_signature'
+                'url': 'intern_files_signature'
             }
         }
 
@@ -338,7 +338,7 @@ class ApplicationIntern(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Sibling(models.Model):
+class InternSibling(models.Model):
     application = models.ForeignKey(ApplicationIntern, on_delete=models.CASCADE, related_name="application_intern_siblings")
     sibling_name = models.CharField(max_length=500, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -346,11 +346,11 @@ class Sibling(models.Model):
     institute = models.CharField(max_length=500, null=True, blank=True)
     degree = models.CharField(max_length=500, null=True, blank=True)
     occupation = models.CharField(max_length=500, null=True, blank=True)
-
+    
     def __str__(self):
         return f"{self.sibling_name} - {self.age}"
 
-class Dependent(models.Model):
+class InternDependent(models.Model):
     application = models.ForeignKey(ApplicationIntern, on_delete=models.CASCADE, related_name="application_intern_dependents")
     dependent_name = models.CharField(max_length=500, null=True, blank=True)
     relationship = models.CharField(max_length=500, null=True, blank=True)
@@ -358,7 +358,7 @@ class Dependent(models.Model):
     def __str__(self):
         return f"{self.dependent_name} - {self.relationship}"
 
-class Activity(models.Model):
+class InternActivity(models.Model):
     application = models.ForeignKey(ApplicationIntern, on_delete=models.CASCADE, related_name="application_intern_activities")
     activity_type = models.CharField(max_length=500, choices=[ ('Academic', 'Academic'),
                                 ('Art', 'Art'),
@@ -395,11 +395,11 @@ class Activity(models.Model):
     outside_school = models.BooleanField(default=False)
     start_year = models.CharField(max_length=500, choices=[('Grade 9','Grade 9/ Form 3'),('Grade 10','Grade 10/ Form 4'),('Grade 11','Grade 11/ Form 5'),('Grade 12','Grade 12/ Form 6')], null=True, blank=True)
     end_year = models.CharField(max_length=500, null=True, blank=True, choices=[('Grade 9','Grade 9/ Form 3'),('Grade 10','Grade 10/ Form 4'),('Grade 11','Grade 11/ Form 5'),('Grade 12','Grade 12/ Form 6')])
-
+    
     def __str__(self):
         return f"{self.activity_type} at {self.organization_name}"
 
-class Distinction(models.Model):
+class InternDistinction(models.Model):
     application = models.ForeignKey(ApplicationIntern, on_delete=models.CASCADE, related_name="application_intern_distinctions")
     distinction_name = models.CharField(max_length=500, null=True, blank=True)
     level_of_rec = models.CharField(max_length=500, choices=[
@@ -409,6 +409,7 @@ class Distinction(models.Model):
                                 ('National', 'National'),
                                 ('International', 'International'),], null=True, blank=True)
     year = models.CharField(max_length=500, choices=[('Grade 9','Grade 9/ Form 3'),('Grade 10','Grade 10/ Form 4'),('Grade 11','Grade 11/ Form 5'),('Grade 12','Grade 12/ Form 6')], null=True, blank=True)
-
+    
+    
     def __str__(self):        
         return f"{self.distinction_name} - {self.level_of_rec}"

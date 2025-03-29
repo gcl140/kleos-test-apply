@@ -143,9 +143,13 @@ def login(request):
             # Check if the user is an intern or cohort and create their application instance
             if user.is_intern:
                 application = get_application_for_intern(user)
+                if application.submitted:
+                    return redirect('intern_application_submitted_view')
                 return redirect('intern_intro_view')  # Replace with your actual URL name
             else:
                 application = get_application_for_cohort(user)
+                if application.submitted:
+                    return redirect('application_submitted_view')
                 return redirect('intro_view')  # Replace with your actual URL name
 
         else:

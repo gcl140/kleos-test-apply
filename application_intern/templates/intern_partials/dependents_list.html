@@ -1,17 +1,19 @@
-<div class="distinction-card">
-    <div class="distinction-header">
-        <div class="distinction-avatar">
-            <i class="fas fa-clipboard-list"></i>
+<div class="dependent-card">
+    <div class="dependent-header">
+        <div class="dependent-avatar">
+            <i class="fas fa-user"></i>
         </div>
-        <div class="distinction-info">
-            <h3 class="text-truncate">{{ distinction.distinction_name }}</h3>
-            <span class="year"> <h4 style="color: rgb(194, 194, 194);">{{ distinction.level_of_rec }} </h4></span>
-            <span class="year">{{ distinction.year }} </span>
+        <div class="dependent-info">
+            <h3 class="text-truncate">{{ dependent.dependent_name }}</h3>
+            <span class="age">
+            <i class="fa-solid fa-heart"></i> {{ dependent.relationship|default:"Relationship: N/A" }}</span>
+
         </div>
-        <div class="distinction-actions">
-            <a href="{% url 'update_distinction' distinction.id %}" class="btn-action edit" title="Edit">
+        <div class="dependent-actions">
+            <a href="{% url 'intern_update_dependent' dependent.id %}" class="btn-action edit" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
-            </a>            <a href="{% url 'delete_distinction' distinction.id %}" class="btn-action delete" title="Delete">
+            </a>
+            <a href="{% url 'intern_delete_dependent' dependent.id %}" class="btn-action delete" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </a>
         </div>
@@ -19,8 +21,9 @@
 
 
 </div>
+
 <style>
-    .distinction-card {
+    .dependent-card {
         background: rgba(255, 255, 255, 0);
         backdrop-filter: blur(10px);
         border-radius: 12px;
@@ -30,19 +33,19 @@
         transition: all 0.3s ease;
     }
 
-    .distinction-card:hover {
+    .dependent-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .distinction-header {
+    .dependent-header {
         display: flex;
         align-items: center;
         gap: 1rem;
         margin-bottom: 1rem;
     }
 
-    .distinction-avatar {
+    .dependent-avatar {
         width: 40px;
         height: 40px;
         background: var(--tansaf-blue-light);
@@ -53,29 +56,29 @@
         flex-shrink: 0;
     }
 
-    .distinction-avatar i {
+    .dependent-avatar i {
         font-size: 1.2rem;
         color: var(--tansaf-blue);
     }
 
-    .distinction-info {
+    .dependent-info {
         flex: 1;
         min-width: 0;
     }
 
-    .distinction-info h3 {
+    .dependent-info h3 {
         /* color: var(--tansaf-blue); */
         color: wheat;
         margin: 0;
         font-size: 1rem;
     }
 
-    .year {
+    .age {
         color: rgb(214, 214, 214);
         font-size: 0.8rem;
     }
 
-    .distinction-actions {
+    .dependent-actions {
         display: flex;
         gap: 0.5rem;
     }
@@ -103,8 +106,7 @@
     }
 
     .btn-action.delete {
-        /* background: rgba(220, 53, 70, 0.205); */
-        background: rgb(230, 43, 43);
+        background: rgb(221, 26, 26);
         color: white;
     }
 
@@ -114,7 +116,7 @@
         transform: scale(1.1);
     }
 
-    .distinction-details {
+    .dependent-details {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -152,7 +154,7 @@
     }
 
     @media (max-width: 768px) {
-        .distinction-card {
+        .dependent-card {
             padding: 0.75rem;
         }
     }

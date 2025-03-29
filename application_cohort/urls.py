@@ -41,8 +41,8 @@ urlpatterns = [
     path('delete_dependent/<int:dependent_id>/', views.delete_dependent, name='delete_dependent'),
     
     path('preview_application/', views.preview_application_view, name='preview_application_view'),
-    path('preview_applicationo/<int:user_id>/', views.preview_application_viewo, name='preview_application_viewo'),
-    path('view_all_applications/', views.view_all_applications, name='view_all_applications'),
+    # path('preview_applicationo/<int:user_id>/', views.preview_application_viewo, name='preview_application_viewo'),
+    # path('view_all_applications/', views.view_all_applications, name='view_all_applications'),
 
      path('application_submitted/', views.application_submitted_view, name='application_submitted_view'),
    

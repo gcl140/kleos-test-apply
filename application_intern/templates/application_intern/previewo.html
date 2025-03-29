@@ -18,7 +18,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/login copy.css' %}">
+    <link rel="stylesheet" href="{% static 'css/logincopy.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
 
@@ -43,11 +43,10 @@
         <div class="login-container">
             <div class="form-side">
                 <div class="form-header">
-                    <h2>Hi, {{application.first_name}}!
-                    </h2>
+                    <h3>Hi Staff,  Welcome to <b>{{application.first_name}}'s</b> {% if application.user.is_intern%}INTERN{%else%}COHORT{%endif%} application!
+                    </h3>
                     <p>
-                        Congratulations on making it this far! Feel free to preview your application before <b>submitting</b>
-                        it.
+                         Feel free to review the application
                     </p>
                     <br>
                     <h3>
@@ -67,7 +66,7 @@
                         <i class="fa-solid fa-circle-exclamation" id="red"></i>
                     {% endif %}
                     General and Contact Information
-                        <a href="{% url 'general_info_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_general_info_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h2>
@@ -134,7 +133,7 @@
                     {% endif %}
 
                         Educational Information
-                        <a href="{% url 'school_info_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_school_info_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
 
@@ -245,7 +244,7 @@
                     </h2>
                     <br>
                     <h3 class="mb-5">                        Parents Information
-                        <a href="{% url 'parent_info_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_parent_info_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h3>
@@ -364,14 +363,15 @@
                     {% endif %}
                     <br>
                     <h3 class="mb-5">Siblings Information
-                        <a href="{% url 'addsiblings' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_addsiblings' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
 
                     </h3>
                     <br>
                     <!-- Sibling Information Loop -->
-                    {% for sibling in application.application_siblings.all %}
+                    
+                    {% for sibling in siblings %}
                     <h5 class="mb-3 mt-4">Sibling #{{ forloop.counter }}</h5>
                     <table class="info-table">
                         <tbody>
@@ -406,13 +406,13 @@
                     <!-- Dependent Information Loop -->
                     <br>
                     <h3 class="mb-5">Dependents Information
-                        <a href="{% url 'adddependents' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_adddependents' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h3>
                     <br>
 
-                    {% for dependent in application.application_dependents.all %}
+                    {% for dependent in dependents %}
                     <h5 class="mb-3 mt-4">Dependent #{{ forloop.counter }}</h5>
                     <table class="info-table">
                         <tbody>
@@ -438,7 +438,7 @@
                     {% endif %}
 
                         Financial Information
-                        <a href="{% url 'financial_info_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_financial_info_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h2>
@@ -518,14 +518,18 @@
                         <br>
                         <h3 class="mb-5">
 Extracurricular Activities
-                            <a href="{% url 'addactivities' %}" class="btn-action" title="Edit"> 
+                            <a href="{% url 'intern_addactivities' %}" class="btn-action" title="Edit"> 
                                 <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                             </a>
     
                         </h3>
                         <br>
-                        {% for activity in application.application_activities.all %}
-                        <h5 class="mb-3 mt-4">Activity #{{ forloop.counter }}</h5>
+                        {% for activity in activities %}
+                        <h5 class="mb-3 mt-4">
+                            {% if not activity.outside_school%}
+                            <i class="fas fa-building"></i>
+                            {%endif%}
+                            Activity #{{ forloop.counter }}</h5>
                         <h4>{{ activity.activity_type }}</h4>
                         <br>
                         <div class="row">
@@ -572,13 +576,13 @@ Extracurricular Activities
                     <div class="preview-section">
                         <br>
                         <h3 class="mb-5">Distinctions
-                            <a href="{% url 'adddistinctions' %}" class="btn-action" title="Edit"> 
+                            <a href="{% url 'intern_adddistinctions' %}" class="btn-action" title="Edit"> 
                                 <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                             </a>
 
                         </h3>
                         <br>
-                        {% for distinction in application.application_distinctions.all %}
+                        {% for distinction in distinctions %}
                         <h5 class="mb-3 mt-4">Distinction #{{ forloop.counter }}</h5>
                         <h4>{{ distinction.distinction_name }}</h4>
                         <br>
@@ -613,7 +617,7 @@ Extracurricular Activities
                     {% endif %}
 
                         Additional Information
-                        <a href="{% url 'additional_info_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_additional_info_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h2>
@@ -793,7 +797,7 @@ Extracurricular Activities
                         <i class="fa-solid fa-circle-exclamation" id="red"></i>
                     {% endif %}
 Essays
-                        <a href="{% url 'writing_section_view' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_writing_section_view' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
                     </h2>
@@ -818,11 +822,13 @@ Essays
                                     </tr>
                                     {% endif %}
 
+                                    {% if application.user.is_intern %}
                                     {% if application.cohort %}
                                     <tr>
-                                        <td class="info-label">Fellow Cohort to know about you:</td>
+                                        <td class="info-label">Meaningful contribution to others(Intern):</td>
                                         <td class="info-response">{{ application.cohort }}</td>
                                     </tr>
+                                    {% endif %}
                                     {% endif %}
 
                                     {% if application.teach %}
@@ -903,7 +909,7 @@ Essays
                     {% endif %}
 
                         Documentations
-                        <a href="{% url 'files_signature' %}" class="btn-action" title="Edit"> 
+                        <a href="{% url 'intern_files_signature' %}" class="btn-action" title="Edit"> 
                             <!-- <i class="fas fa-pencil-alt"></i> Edit -->
                         </a>
 
@@ -922,7 +928,6 @@ Essays
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
-
                                     {% if application.rec_letter1 %}
                                     <tr>
                                         <td class="info-label">Recommendation Letter 1:</td>
@@ -939,26 +944,33 @@ Essays
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.ib_scores %}
+                                    {% if application.adv_certificates %}
                                     <tr>
-                                        <td class="info-label">IB Scores:</td>
-                                        <td class="info-response"><a href="{{ application.ib_scores.url }}"
+                                        <td class="info-label">A-Level certificates:</td>
+                                        <td class="info-response"><a href="{{ application.adv_certificates.url }}"
+                                                target="_blank">View File</a></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if application.olv_certificates %}
+                                    <tr>
+                                        <td class="info-label">O-Level certificates:</td>
+                                        <td class="info-response"><a href="{{ application.olv_certificates.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.csee_results %}
+                                    {% if application.a_level_school_transcripts %}
                                     <tr>
-                                        <td class="info-label">CSEE Results:</td>
-                                        <td class="info-response"><a href="{{ application.csee_results.url }}"
+                                        <td class="info-label">A-Level Transcripts:</td>
+                                        <td class="info-response"><a href="{{ application.a_level_school_transcripts.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
 
-                                    {% if application.school_transcripts %}
+                                    {% if application.o_level_school_transcripts %}
                                     <tr>
-                                        <td class="info-label">School Transcripts:</td>
-                                        <td class="info-response"><a href="{{ application.school_transcripts.url }}"
+                                        <td class="info-label">O-Level Transcripts:</td>
+                                        <td class="info-response"><a href="{{ application.o_level_school_transcripts.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
@@ -1055,7 +1067,7 @@ Essays
             const element = document.getElementById('preview-contenti');
             const opt = {
                 margin: 0.5, // Adjust margin as needed
-                filename: 'TanSAF_Application.pdf',
+                filename: '{{ application.first_name }} {{ application.middle_name }} TanSAF_Application.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,

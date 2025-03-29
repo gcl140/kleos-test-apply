@@ -1,9 +1,10 @@
+from application_cohort.views import get_application_for_cohort, get_form_progress_data
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .forms import IntroForm, GeneralInfoForm, ContactInfoForm, SchoolInfoForm, ParentInfoForm, FinancialInfoForm, AdditionalInfoForm, DependentForm, DistinctionForm, SiblingForm, ActivityForm, WritingForm, FinalsForm
-from .models import ApplicationIntern, Sibling, Dependent, Distinction, Activity
+from .forms import IntroForm, GeneralInfoForm, ContactInfoForm, SchoolInfoForm, ParentInfoForm, FinancialInfoForm, AdditionalInfoForm, InternDependentForm, InternDistinctionForm, InternSiblingForm, InternActivityForm, WritingForm, FinalsForm
+from .models import ApplicationIntern, InternSibling, InternDependent, InternDistinction, InternActivity
 from application_cohort.models import ApplicationCohort
 from django.contrib import messages
 from django.http import HttpResponseForbidden
@@ -36,7 +37,7 @@ def save_application_data(application, form, request=None):
                     messages.error(request, f"Error in '{field}': {error}")
         return False
 
-def get_form_progress_data(application, request):
+def get_intern_form_progress_data(application, request):
     """Get progress data for the form progress bar"""
     application = ApplicationIntern.objects.get(user=request.user)
     completion_status = application.get_completion_status()
@@ -44,67 +45,67 @@ def get_form_progress_data(application, request):
     progress_data = {
         'intro': {
             'label': 'Introduction',
-            'url': reverse('intro_view'),
+            'url': reverse('intern_intro_view'),
             'completed': completion_status['intro']
         },
         'general_info': {
             'label': 'General Info',
-            'url': reverse('general_info_view'),
+            'url': reverse('intern_general_info_view'),
             'completed': completion_status['general_info']
         },
         'contact_info': {
             'label': 'Contact Info',
-            'url': reverse('contact_info_view'),
+            'url': reverse('intern_contact_info_view'),
             'completed': completion_status['contact_info']
         },
         'school_info': {
             'label': 'School Info',
-            'url': reverse('school_info_view'),
+            'url': reverse('intern_school_info_view'),
             'completed': completion_status['school_info']
         },
         'family_info': {
             'label': 'Family Info',
-            'url': reverse('parent_info_view'),
+            'url': reverse('intern_parent_info_view'),
             'completed': completion_status['family_info']
         },
         'siblings': {
             'label': 'Siblings',
-            'url': reverse('addsiblings'),
+            'url': reverse('intern_addsiblings'),
             'completed': completion_status['siblings']
         },
         'dependents': {
             'label': 'Dependents',
-            'url': reverse('adddependents'),
+            'url': reverse('intern_adddependents'),
             'completed': completion_status['dependents']
         },
         'financial_info': {
             'label': 'Financial Info',
-            'url': reverse('financial_info_view'),
+            'url': reverse('intern_financial_info_view'),
             'completed': completion_status['financial_info']
         },
         'activities': {
             'label': 'Activities',
-            'url': reverse('addactivities'),
+            'url': reverse('intern_addactivities'),
             'completed': completion_status['activities']
         },
         'distinctions': {
             'label': 'Distinctions',
-            'url': reverse('adddistinctions'),
+            'url': reverse('intern_adddistinctions'),
             'completed': completion_status['distinctions']
         },
         'other_inquiries': {
             'label': 'Other Inquiries',
-            'url': reverse('additional_info_view'),
+            'url': reverse('intern_additional_info_view'),
             'completed': completion_status['other_inquiries']
         },
         'writing': {
             'label': 'Writing',
-            'url': reverse('writing_section_view'),
+            'url': reverse('intern_writing_section_view'),
             'completed': completion_status['writing']
         },
         'files_signature': {
             'label': 'Files & Signature',
-            'url': reverse('files_signature'),
+            'url': reverse('intern_files_signature'),
             'completed': completion_status['files_signature']
         }
     }
@@ -115,7 +116,7 @@ class FormMixin:
     """Mixin to add progress data to context"""
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['progress_data'] = get_form_progress_data(application=self.object, request=self.request)
+        context['progress_data'] = get_intern_form_progress_data(application=self.object, request=self.request)
         context['current_section'] = self.current_section
         return context
 
@@ -193,7 +194,7 @@ def intro_view(request):
         'title': "Introduction",
         'previous_url': None,
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'intro'
     }
     return render(request, 'application_intern/1_intro.html', context)
@@ -214,9 +215,9 @@ def general_info_view(request):
     context = {
         'form': form,
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'general_info',
-        'previous_url': reverse('intro_view')
+        'previous_url': reverse('intern_intro_view')
     }
     return render(request, 'application_intern/2_general_info.html', context)
 
@@ -235,9 +236,9 @@ def contact_info_view(request):
     context = {
         'form': form,
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'contact_info',
-        'previous_url': reverse('general_info_view')
+        'previous_url': reverse('intern_general_info_view')
     }
     return render(request, 'application_intern/3_contact_info.html', context)
 
@@ -257,9 +258,9 @@ def school_info_view(request):
     context = {
         'form': form,
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'school_info',
-        'previous_url': reverse('contact_info_view')
+        'previous_url': reverse('intern_contact_info_view')
     }
     return render(request, 'application_intern/4_school_info.html', context)
 
@@ -279,9 +280,9 @@ def parent_info_view(request):
     context = {
         'form': form,
         'application': application,
-        'progress_data': get_form_progress_data(application, request),
+        'progress_data': get_intern_form_progress_data(application, request),
         'current_section': 'family_info',
-        'previous_url': reverse('school_info_view')
+        'previous_url': reverse('intern_school_info_view')
     }
     return render(request, 'application_intern/5_parents_info.html', context)
 
@@ -301,9 +302,9 @@ def financial_info_view(request):
     context = {
         'form': form,
         'title': "Financial Information",
-        'previous_url': reverse('parent_info_view'),
+        'previous_url': reverse('intern_parent_info_view'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),
+        'progress_data': get_intern_form_progress_data(application, request),
         'current_section': 'financial_info'
     }
     return render(request, 'application_intern/8_financial_info.html', context)
@@ -324,9 +325,9 @@ def additional_info_view(request):
     context = {
         'form': form,
         'title': "Additional Information",
-        'previous_url': reverse('financial_info_view'),
+        'previous_url': reverse('intern_financial_info_view'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),
+        'progress_data': get_intern_form_progress_data(application, request),
         'current_section': 'other_inquiries'
     }
     return render(request, 'application_intern/11_other_inquiries.html', context)
@@ -347,9 +348,9 @@ def writing_section_view(request):
     context = {
         'form': form,
         'title': "Essay Writing",
-        'previous_url': reverse('additional_info_view'),
+        'previous_url': reverse('intern_additional_info_view'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),
+        'progress_data': get_intern_form_progress_data(application, request),
         'current_section': 'writing'
     }
     return render(request, 'application_intern/12_essays.html', context)
@@ -370,9 +371,9 @@ def files_signature(request):
     context = {
         'form': form,
         'title': "Files Uploading and Signature",
-        'previous_url': reverse('additional_info_view'),
+        'previous_url': reverse('intern_additional_info_view'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'files_signature'
     }
     return render(request, 'application_intern/13_finale.html', context)
@@ -381,14 +382,14 @@ def files_signature(request):
 @login_required
 def addsiblings(request):
     application = get_application_for_intern(request.user)
-    siblings = Sibling.objects.filter(application=application)
+    siblings = InternSibling.objects.filter(application=application)
     context = {
-        'form': SiblingForm,
+        'form': InternSiblingForm,
         'siblings': siblings,
-        'previous_url': reverse('parent_info_view'),
-        'next_url': reverse('adddependents'),
+        'previous_url': reverse('intern_parent_info_view'),
+        'next_url': reverse('intern_adddependents'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'siblings'
     }
     return render(request, 'application_intern/6_addsiblings.html', context)
@@ -397,49 +398,49 @@ def addsiblings(request):
 @login_required
 def create_sibling(request):
     if request.method == "POST":
-        form = SiblingForm(request.POST)
+        form = InternSiblingForm(request.POST)
         if form.is_valid():
             application = get_application_for_intern(request.user)
             sibling = form.save(commit=False)
             sibling.application = application
             sibling.save()
-            siblings = Sibling.objects.filter(application=application)
+            siblings = InternSibling.objects.filter(application=application)
             context = {
                 'siblings': siblings,
                 'sibling': sibling  
             }
             if request.headers.get('HX-Request'):
-                return render(request, 'partials/siblings_list.html', context)
+                return render(request, 'intern_partials/siblings_list.html', context)
             
             messages.success(request, "Sibling added successfully!")
             return redirect('intern_addsiblings')
     else:
-        form = SiblingForm()
+        form = InternSiblingForm()
 
-    return render(request, 'partials/siblings.html', {'form': form})
+    return render(request, 'intern_partials/siblings.html', {'form': form})
 
 
 @login_required
 def update_sibling(request, sibling_id):
-    sibling = get_object_or_404(Sibling, id=sibling_id)
+    sibling = get_object_or_404(InternSibling, id=sibling_id)
     
     if request.method == 'POST':
-        form = SiblingForm(request.POST, instance=sibling)
+        form = InternSiblingForm(request.POST, instance=sibling)
         if form.is_valid():
             form.save()
             messages.success(request, "Changes saved successfully!")
             return redirect('intern_addsiblings')
     else:
-        form = SiblingForm(instance=sibling)
+        form = InternSiblingForm(instance=sibling)
     context = {'form': form}
-    return render(request, 'partials/siblings_update.html', context)
+    return render(request, 'intern_partials/siblings_update.html', context)
 
 
 
 
 @login_required
 def delete_sibling(request, sibling_id):
-    sibling = get_object_or_404(Sibling, id=sibling_id)
+    sibling = get_object_or_404(InternSibling, id=sibling_id)
     application = get_application_for_intern(request.user)
     if sibling.application == application:
         sibling.delete()
@@ -452,12 +453,12 @@ def adddistinctions(request):
     application = get_application_for_intern(request.user)
     
     context = {
-        'form': DistinctionForm,
-        'distinctions': Distinction.objects.filter(application=application),
-        'previous_url': reverse('addactivities'),
-        'next_url': reverse('additional_info_view'),
+        'form': InternDistinctionForm,
+        'distinctions': InternDistinction.objects.filter(application=application),
+        'previous_url': reverse('intern_addactivities'),
+        'next_url': reverse('intern_additional_info_view'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),   
+        'progress_data': get_intern_form_progress_data(application, request),   
         'current_section': 'distinctions'
     }
     return render(request, 'application_intern/10_adddistinctions.html', context)
@@ -466,43 +467,43 @@ def adddistinctions(request):
 @login_required
 def create_distinction(request):
     if request.method == "POST":
-        form = DistinctionForm(request.POST)
+        form = InternDistinctionForm(request.POST)
         if form.is_valid():
             application = get_application_for_intern(request.user)
             distinction = form.save(commit=False)
             distinction.application = application
             distinction.save()  
             context = {'distinction': distinction}
-            return render(request, 'partials/distinctions_list.html', context)
+            return render(request, 'intern_partials/distinctions_list.html', context)
     else:
-        form = DistinctionForm()
+        form = InternDistinctionForm()
 
-    return render(request, 'partials/distinctions.html', {'form': form})
+    return render(request, 'intern_partials/distinctions.html', {'form': form})
 
 
 @login_required
 def update_distinction(request, distinction_id):
-    distinction = get_object_or_404(Distinction, id=distinction_id)
+    distinction = get_object_or_404(InternDistinction, id=distinction_id)
     
     if request.method == 'POST':
-        form = DistinctionForm(request.POST, instance=distinction)
+        form = InternDistinctionForm(request.POST, instance=distinction)
         if form.is_valid():
             form.save()
             messages.success(request, "Changes saved successfully!")
             return redirect('intern_adddistinctions')
     else:
-        form = DistinctionForm(instance=distinction)
+        form = InternDistinctionForm(instance=distinction)
     context = {'form': form}
-    return render(request, 'partials/distinctions_update.html', context)
+    return render(request, 'intern_partials/distinctions_update.html', context)
 
 
 @login_required
 def delete_distinction(request, distinction_id):
-    distinction = get_object_or_404(Distinction, id=distinction_id)
+    distinction = get_object_or_404(InternDistinction, id=distinction_id)
     application = get_application_for_intern(request.user)
     if distinction.application == application:
         distinction.delete()
-    messages.success(request, "Distinction deleted successfully!")
+    messages.success(request, "InternDistinction deleted successfully!")
     return redirect('intern_adddistinctions')
 
 @login_required
@@ -510,13 +511,13 @@ def adddependents(request):
     application = get_application_for_intern(request.user)
     
     context = {
-        'form': DependentForm,
-        'dependents': Dependent.objects.filter(application=application),
-        'previous_url': reverse('addsiblings'),
-        'next_url': reverse('financial_info_view'),
+        'form': InternDependentForm,
+        'dependents': InternDependent.objects.filter(application=application),
+        'previous_url': reverse('intern_addsiblings'),
+        'next_url': reverse('intern_financial_info_view'),
         
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'dependents'
     }
     return render(request, 'application_intern/7_adddependents.html', context)
@@ -525,41 +526,41 @@ def adddependents(request):
 @login_required
 def create_dependent(request):
     if request.method == "POST":
-        form = DependentForm(request.POST)
+        form = InternDependentForm(request.POST)
         if form.is_valid():
             application = get_application_for_intern(request.user)
             dependent = form.save(commit=False)
             dependent.application = application
             dependent.save()  
             context = {'dependent': dependent}
-            return render(request, 'partials/dependents_list.html', context)
+            return render(request, 'intern_partials/dependents_list.html', context)
     else:
-        form = DependentForm()
+        form = InternDependentForm()
 
-    return render(request, 'partials/dependents.html', {'form': form})
+    return render(request, 'intern_partials/dependents.html', {'form': form})
 
 @login_required
 def update_dependent(request, dependent_id):
-    dependent = get_object_or_404(Dependent, id=dependent_id)
+    dependent = get_object_or_404(InternDependent, id=dependent_id)
     
     if request.method == 'POST':
-        form = DependentForm(request.POST, instance=dependent)
+        form = InternDependentForm(request.POST, instance=dependent)
         if form.is_valid():
             form.save()
             messages.success(request, "Changes saved successfully!")
             return redirect('intern_adddependents')
     else:
-        form = DependentForm(instance=dependent)
+        form = InternDependentForm(instance=dependent)
     context = {'form': form}
-    return render(request, 'partials/dependents_update.html', context)
+    return render(request, 'intern_partials/dependents_update.html', context)
 
 @login_required
 def delete_dependent(request, dependent_id):
-    dependent = get_object_or_404(Dependent, id=dependent_id)
+    dependent = get_object_or_404(InternDependent, id=dependent_id)
     application = get_application_for_intern(request.user)
     if dependent.application == application:
         dependent.delete()
-    messages.success(request, "Dependent deleted successfully!")
+    messages.success(request, "InternDependent deleted successfully!")
     return redirect('intern_adddependents')
 
 
@@ -568,52 +569,52 @@ def addactivities(request):
     application = get_application_for_intern(request.user)
     
     context = {
-        'form': ActivityForm,
-        'activities': Activity.objects.filter(application=application),
-        'previous_url': reverse('financial_info_view'),
-        'next_url': reverse('adddistinctions'),
+        'form': InternActivityForm,
+        'activities': InternActivity.objects.filter(application=application),
+        'previous_url': reverse('intern_financial_info_view'),
+        'next_url': reverse('intern_adddistinctions'),
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        'progress_data': get_intern_form_progress_data(application, request),  
         'current_section': 'activities'
     }
     return render(request, 'application_intern/9_addactivities.html', context)
 
 @login_required
-def create_activity(request):
+def intern_create_activity(request):
     if request.method == "POST":
-        form = ActivityForm(request.POST)
+        form = InternActivityForm(request.POST)
         if form.is_valid():
             application = get_application_for_intern(request.user)
             activity = form.save(commit=False)
             activity.application = application
             activity.save()  
             context = {'activity': activity}
-            return render(request, 'partials/activities_list.html', context)
+            return render(request, 'intern_partials/activities_list.html', context)
     else:
-        form = ActivityForm()
+        form = InternActivityForm()
 
-    return render(request, 'partials/activities.html', {'form': form})
+    return render(request, 'intern_partials/activities.html', {'form': form})
 
 
 @login_required
 def update_activity(request, activity_id):
-    activity = get_object_or_404(Activity, id=activity_id)
+    activity = get_object_or_404(InternActivity, id=activity_id)
     
     if request.method == 'POST':
-        form = ActivityForm(request.POST, instance=activity) 
+        form = InternActivityForm(request.POST, instance=activity) 
         if form.is_valid():
             form.save()
             messages.success(request, "Changes saved successfully!")
             return redirect('intern_addactivities')
     else:
-        form = ActivityForm(instance=activity)
+        form = InternActivityForm(instance=activity)
     context = {'form': form}
-    return render(request, 'partials/activities_update.html', context)
+    return render(request, 'intern_partials/activities_update.html', context)
 
 
 @login_required
 def delete_activity(request, activity_id):
-    activity = get_object_or_404(Activity, id=activity_id)
+    activity = get_object_or_404(InternActivity, id=activity_id)
     application = get_application_for_intern(request.user)
     if activity.application == application:
         activity.delete()
@@ -654,17 +655,36 @@ def view_all_applications(request):
     context = {
         'applications': applications,
         }
-    return render(request, 'application_cohort/view_all_applications.html', context)
+    return render(request, 'application_intern/view_all_applications.html', context)
 
 
 def preview_application_viewo(request, user_id):
     user = get_object_or_404(User, id=user_id)
-    application = get_application_for_intern(user)
+    # application = get_application_for_intern(user)
+    if user.is_intern:  # Assuming there's an attribute or method that identifies intern users
+        application = get_application_for_intern(user)
+        # progress_data = get_intern_form_progress_data(application, request)
+        siblings = application.application_intern_siblings.all()
+        dependents = application.application_intern_dependents.all()
+        distinctions = application.application_intern_distinctions.all()
+        activities = application.application_intern_activities.all()
+    else:  # If not an intern, assume it's a cohort application
+        application = get_application_for_cohort(user)
+        # progress_data = get_form_progress_data(application, request)
+        siblings = application.application_cohort_siblings.all()
+        dependents = application.application_cohort_dependents.all()
+        distinctions = application.application_cohort_distinctions.all()
+        activities = application.application_cohort_activities.all()
+
     context = {
         'application': application,
         'title': "Preview Your Application",
         'current_section': 'preview',
         'application': application,
-        'progress_data': get_form_progress_data(application, request),  
+        # 'progress_data': progress_data,  
+        'siblings': siblings,
+        'dependents': dependents,
+        'distinctions': distinctions,
+        'activities': activities,
     }
     return render(request, 'application_intern/previewo.html', context)

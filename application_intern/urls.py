@@ -18,15 +18,15 @@ urlpatterns = [
     path('essay-writing/', views.writing_section_view, name='intern_writing_section_view'),
     path('finale/', views.files_signature, name='intern_files_signature'),
     
-    path('addactivities/', views.addactivities, name='intern_addactivities'),
-    path('create_activity/', views.create_activity, name='intern_create_activity'),
+    path('intern_addactivities/', views.addactivities, name='intern_addactivities'),
+    path('intern_create_activity/', views.intern_create_activity, name='intern_create_activity'),
     path('update_activity/<int:activity_id>/', views.update_activity, name='intern_update_activity'), 
     path('delete_activity/<int:activity_id>/', views.delete_activity, name='intern_delete_activity'),
-    path('adddistinctions/', views.adddistinctions, name='intern_adddistinctions'),
+    path('intern_adddistinctions/', views.adddistinctions, name='intern_adddistinctions'),
     path('create_distinction/', views.create_distinction, name='intern_create_distinction'),
     path('update_distinction/<int:distinction_id>/', views.update_distinction, name='intern_update_distinction'), 
     path('delete_distinction/<int:distinction_id>/', views.delete_distinction, name='intern_delete_distinction'),
-    path('addsiblings/', views.addsiblings, name='intern_addsiblings'),
+    path('intern_addsiblings/', views.addsiblings, name='intern_addsiblings'),
     path('create_sibling/', views.create_sibling, name='intern_create_sibling'),
     path('update_sibling/<int:sibling_id>/', views.update_sibling, name='intern_update_sibling'), 
     path('delete_sibling/<int:sibling_id>/', views.delete_sibling, name='intern_delete_sibling'),
@@ -35,7 +35,7 @@ urlpatterns = [
     # path('get-sibling-count/', views.get_sibling_count, name='intern_get_sibling_count'),
 
 
-    path('adddependents/', views.adddependents, name='intern_adddependents'),
+    path('intern_adddependents/', views.adddependents, name='intern_adddependents'),
     path('create_dependent/', views.create_dependent, name='intern_create_dependent'),
     path('update_dependent/<int:dependent_id>/', views.update_dependent, name='intern_update_dependent'), 
     path('delete_dependent/<int:dependent_id>/', views.delete_dependent, name='intern_delete_dependent'),

@@ -12,7 +12,6 @@
             <tr>
                 <th>#</th>
                 <th>Applicant's Name</th>
-                <!-- <th>Internship</th> -->
                 <th>Application Type</th>
                 <th>Submission Status</th>
                 <th>Date Applied</th>
@@ -23,35 +22,44 @@
             {% for application in applications %}
                 <tr>
                     <td>{{ forloop.counter }}.</td>
-                    <td>{{ application.first_name }} {{ application.last_name }}</td>
                     <td>
-                        {% if application.user.is_intern %}
+                        {% if application.user %}
+                            {{ application.user.first_name }} {{ application.user.last_name }}
+                        {% else %}
+                            No User Assigned
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if application.user and application.user.is_intern %}
                             Internship
                         {% else %}
                             Cohort
                         {% endif %}
-                    </td>
-                    
+                    </td>                    
                     <td>
                         <span class="step-dot">
-                        {%if application.submitted%}
+                            {% if application.submitted %}
                                 <i class="fa-regular fa-circle-check" style="color: green; margin-right: 5px;"></i> Submitted
                             {% else %}
                                 <i class="fa-regular fa-circle" style="color: rgb(255, 70, 101); margin-right: 5px"></i> Not Submitted
                             {% endif %}
                         </span>
-
                     </td>
                     <td>{{ application.created|date:"M d, Y" }}</td>
                     <td>
-                        <a href="{% url 'preview_application_viewo' application.user.id %}" class="action-link">
-                            <i class="fas fa-eye"></i> 
-                            View
-                        </a>
+                        {% if application.user %}
+                            <a href="{% url 'intern_preview_application_viewo' application.user.id %}" class="action-link">
+                                <i class="fas fa-eye"></i> 
+                                View
+                            </a>
+                        {% else %}
+                            <span>N/A</span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
+        
     </table>
 </div>
 {% endblock %}

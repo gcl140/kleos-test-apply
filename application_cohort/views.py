@@ -4,15 +4,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from .forms import IntroForm, GeneralInfoForm, ContactInfoForm, SchoolInfoForm, ParentInfoForm, FinancialInfoForm, AdditionalInfoForm, DependentForm, DistinctionForm, SiblingForm, ActivityForm, WritingForm, FinalsForm
 from .models import ApplicationCohort, Sibling, Dependent, Distinction, Activity
-from application_intern.models import ApplicationIntern
+# from application_intern.models import ApplicationIntern
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.views.generic import UpdateView
 
 User = get_user_model()
 
-def is_staff_user(user):
-    return user.is_staff or user.has_perm('applications.view_all_applications')
+# def is_staff_user(user):
+#     return user.is_staff or user.has_perm('applications.view_all_applications')
 
 
 def get_application_for_cohort(user):
@@ -646,26 +646,26 @@ def preview_application_view(request):
 def application_submitted_view(request):
     return render(request, 'application_cohort/application_submitted.html')
 
-@login_required
-@user_passes_test(is_staff_user)
-def view_all_applications(request):
-    cohort_applications = list(ApplicationCohort.objects.all())
-    intern_applications = list(ApplicationIntern.objects.all())
-    applications = cohort_applications + intern_applications
-    context = {
-        'applications': applications,
-        }
-    return render(request, 'application_cohort/view_all_applications.html', context)
+# @login_required
+# @user_passes_test(is_staff_user)
+# def view_all_applications(request):
+#     cohort_applications = list(ApplicationCohort.objects.all())
+#     intern_applications = list(ApplicationIntern.objects.all())
+#     applications = cohort_applications + intern_applications
+#     context = {
+#         'applications': applications,
+#         }
+#     return render(request, 'application_cohort/view_all_applications.html', context)
 
 
-def preview_application_viewo(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    application = get_application_for_cohort(user)
-    context = {
-        'application': application,
-        'title': "Preview Your Application",
-        'current_section': 'preview',
-        'application': application,
-        'progress_data': get_form_progress_data(application, request),  
-    }
-    return render(request, 'application_cohort/previewo.html', context)
+# def preview_application_viewo(request, user_id):
+#     user = get_object_or_404(User, id=user_id)
+#     application = get_application_for_cohort(user)
+#     context = {
+#         'application': application,
+#         'title': "Preview Your Application",
+#         'current_section': 'preview',
+#         'application': application,
+#         'progress_data': get_form_progress_data(application, request),  
+#     }
+#     return render(request, 'application_cohort/previewo.html', context)

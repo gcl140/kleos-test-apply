@@ -46,7 +46,7 @@
                     <h2>Hi, {{application.first_name}}!
                     </h2>
                     <p>
-                        Congratulations on making it this far! Feel free to preview your application before <b>submitting</b>
+                        Congratulations on making it this far! Feel free to preview your COHORT application before <b>submitting</b>
                         it.
                     </p>
                     <br>
@@ -371,7 +371,7 @@
                     </h3>
                     <br>
                     <!-- Sibling Information Loop -->
-                    {% for sibling in application.application_siblings.all %}
+                    {% for sibling in application.application_cohort_siblings.all %}
                     <h5 class="mb-3 mt-4">Sibling #{{ forloop.counter }}</h5>
                     <table class="info-table">
                         <tbody>
@@ -412,7 +412,7 @@
                     </h3>
                     <br>
 
-                    {% for dependent in application.application_dependents.all %}
+                    {% for dependent in application.application_cohort_dependents.all %}
                     <h5 class="mb-3 mt-4">Dependent #{{ forloop.counter }}</h5>
                     <table class="info-table">
                         <tbody>
@@ -524,8 +524,13 @@ Extracurricular Activities
     
                         </h3>
                         <br>
-                        {% for activity in application.application_activities.all %}
-                        <h5 class="mb-3 mt-4">Activity #{{ forloop.counter }}</h5>
+                        {% for activity in application.application_cohort_activities.all %}
+                        <h5 class="mb-3 mt-4">
+                            
+                            {% if not activity.outside_school%}
+                            <i class="fas fa-building"></i>
+                            {%endif%}
+                            Activity #{{ forloop.counter }}</h5>
                         <h4>{{ activity.activity_type }}</h4>
                         <br>
                         <div class="row">
@@ -578,7 +583,7 @@ Extracurricular Activities
 
                         </h3>
                         <br>
-                        {% for distinction in application.application_distinctions.all %}
+                        {% for distinction in application.application_cohort_distinctions.all %}
                         <h5 class="mb-3 mt-4">Distinction #{{ forloop.counter }}</h5>
                         <h4>{{ distinction.distinction_name }}</h4>
                         <br>
@@ -1072,7 +1077,8 @@ Essays
             const element = document.getElementById('preview-contenti');
             const opt = {
                 margin: 0.5, // Adjust margin as needed
-                filename: 'TanSAF_Application.pdf',
+                filename: '{{ application.first_name }} {{ application.middle_name }} TanSAF_Application.pdf',
+                
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,

@@ -1,20 +1,20 @@
 from django.contrib import admin
-from .models import ApplicationIntern, Sibling, Dependent, Activity, Distinction
+from .models import ApplicationIntern, InternSibling, InternDependent, InternActivity, InternDistinction
 
 class SiblingInline(admin.TabularInline):  # or admin.StackedInline for different layout
-    model = Sibling
+    model = InternSibling
     extra = 1  # Number of empty forms to display
 
 class DependentInline(admin.TabularInline):  # or admin.StackedInline for different layout
-    model = Dependent
+    model = InternDependent
     extra = 1  # Number of empty forms to display
 
 class ActivityInline(admin.TabularInline):  # or admin.StackedInline for different layout
-    model = Activity
+    model = InternActivity
     extra = 1  # Number of empty forms to display
 
 class DistinctionInline(admin.TabularInline):  # or admin.StackedInline for different layout
-    model = Distinction
+    model = InternDistinction
     extra = 1  # Number of empty forms to display
 
 class ApplicationInternAdmin(admin.ModelAdmin):

@@ -1,39 +1,26 @@
-<div class="activity-card">
-    <div class="activity-header">
-        <div class="activity-avatar">
+<div class="distinction-card">
+    <div class="distinction-header">
+        <div class="distinction-avatar">
             <i class="fas fa-clipboard-list"></i>
         </div>
-        <div class="activity-info">
-            <h3 class="text-truncate">{{ activity.activity_type }}</h3>
-            <span class="age">{{ activity.leadership_position }} </span>
+        <div class="distinction-info">
+            <h3 class="text-truncate">{{ distinction.distinction_name }}</h3>
+            <span class="year"> <h4 style="color: rgb(194, 194, 194);">{{ distinction.level_of_rec }} </h4></span>
+            <span class="year">{{ distinction.year }} </span>
         </div>
-        <div class="activity-actions">
-            <a href="{% url 'update_activity' activity.id %}" class="btn-action edit" title="Edit">
+        <div class="distinction-actions">
+            <a href="{% url 'intern_update_distinction' distinction.id %}" class="btn-action edit" title="Edit">
                 <i class="fas fa-pencil-alt"></i>
-            </a>            <a href="{% url 'delete_activity' activity.id %}" class="btn-action delete" title="Delete">
+            </a>            <a href="{% url 'intern_delete_distinction' distinction.id %}" class="btn-action delete" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </a>
         </div>
     </div>
 
-    <div class="activity-details">
-        <div class="detail-item">
-            <i class="fa-regular fa-building"></i>
-            <div class="detail-content">
-                <span class="text-truncate">{{ activity.organization_name|default:"Education: N/A" }}</span>
-            </div>
-        </div>
 
-        <div class="detail-item">
-            <i class="fas fa-calendar-alt"></i>
-            <div class="detail-content">
-                <span class="text-truncate"> From {{ activity.start_year }} to {{ activity.end_year }} </span>
-            </div>
-        </div>
-    </div>
 </div>
 <style>
-    .activity-card {
+    .distinction-card {
         background: rgba(255, 255, 255, 0);
         backdrop-filter: blur(10px);
         border-radius: 12px;
@@ -43,19 +30,19 @@
         transition: all 0.3s ease;
     }
 
-    .activity-card:hover {
+    .distinction-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .activity-header {
+    .distinction-header {
         display: flex;
         align-items: center;
         gap: 1rem;
         margin-bottom: 1rem;
     }
 
-    .activity-avatar {
+    .distinction-avatar {
         width: 40px;
         height: 40px;
         background: var(--tansaf-blue-light);
@@ -66,29 +53,29 @@
         flex-shrink: 0;
     }
 
-    .activity-avatar i {
+    .distinction-avatar i {
         font-size: 1.2rem;
         color: var(--tansaf-blue);
     }
 
-    .activity-info {
+    .distinction-info {
         flex: 1;
         min-width: 0;
     }
 
-    .activity-info h3 {
+    .distinction-info h3 {
         /* color: var(--tansaf-blue); */
         color: wheat;
         margin: 0;
         font-size: 1rem;
     }
 
-    .age {
+    .year {
         color: rgb(214, 214, 214);
         font-size: 0.8rem;
     }
 
-    .activity-actions {
+    .distinction-actions {
         display: flex;
         gap: 0.5rem;
     }
@@ -127,7 +114,7 @@
         transform: scale(1.1);
     }
 
-    .activity-details {
+    .distinction-details {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
@@ -165,7 +152,7 @@
     }
 
     @media (max-width: 768px) {
-        .activity-card {
+        .distinction-card {
             padding: 0.75rem;
         }
     }
