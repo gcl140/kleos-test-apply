@@ -71,49 +71,8 @@
         <!-- Form Side -->
         <div class="form-side">
             <form class="login-form" method="POST">
-            <!-- <form class="login-form" method="post" action="{% url 'login' %}"> -->
-                {% csrf_token %}
-                <div class="form-header">
-                    <h2>Welcome Back</h2>
-                    <p>Enter your credentials to access your account</p>
-                </div>
-
-                <div class="form-group">
-                    <input type="text" id="username" name="username" class="form-input" placeholder=" " required>
-                    <label for="username" class="form-label">Email</label>
-                    <div class="text-danger">
-                        {{ form.username.errors }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <input type="password" id="password" name="password" class="form-input" placeholder=" " required>
-                    <label for="password" class="form-label">Password</label>
-                    <div class="text-danger">
-                        {{ form.password.errors }}
-                    </div>
-                </div>
-
-                <div class="form-footer text-center">
-                    <a style="color: white;" href="{% url 'password_reset' %}">Forgot password?</a>
-                </div>
-                <br>
-                <button type="submit" class="submit-btn">
-                    <span class="btn-text">Sign In</span>
-                </button>
-                <div class="form-footer text-center">
-                    <p style="color: white;">Don't have an account?</p>
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            Create One
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="registerDropdown">
-                            <li><a class="dropdown-item" href="{% url 'register' 'intern' %}">Register as an Intern</a></li>
-                            <li><a class="dropdown-item" href="{% url 'register' 'cohort' %}">Register as a Cohort</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
+                {% block content %} {% endblock %}
+         
                 <!-- Bootstrap JS (Ensure it's included for dropdown functionality) -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                 
