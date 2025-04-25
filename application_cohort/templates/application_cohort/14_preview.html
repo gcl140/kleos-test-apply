@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="{% static 'css/logincopy.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
-
     <style>
         .info-response, .info-label{
             border-bottom: 1px solid #cccccc31;
@@ -407,8 +406,7 @@
                             </tr>
                         </tbody>
                     </table>
-
-                    {% empty %}
+                                        {% empty %}
                     <p style="text-align: center;">No siblings have been added or saved.</p>
                     {% endfor %}
 
@@ -435,8 +433,7 @@
                             </tr>
                         </tbody>
                     </table>
-
-                    {% empty %}
+                                        {% empty %}
                     <p style="text-align: center;">No dependents have been added or saved.</p>
                     {% endfor %}
                 </form>
@@ -582,8 +579,8 @@ Extracurricular Activities
                             </div>
                         </div>
                         <br>
-                    {% empty %}
-                    <p style="text-align: center;">No activity have been added or saved.</p>
+                                            {% empty %}
+                    <p style="text-align: center;">No activities have been added or saved.</p>
                     {% endfor %}
                     </div>
 
@@ -618,10 +615,9 @@ Extracurricular Activities
                             </div>
                         </div>
                         <br>
-                        {% empty %}
-                        
+                                            {% empty %}
                     <p style="text-align: center;">No distinctions have been added or saved.</p>
-                        {% endfor %}
+                    {% endfor %}
                     </div>
 
                 </form>
@@ -836,7 +832,7 @@ Essays
                                 <tbody>
                                     <tr>
                                         <td class="info-label">Most Meaningful ExtraCurricular Activity Essay:</td>
-                                        <td class="info-response" id="info-response">{{ application.extrac }}</td>
+                                        <td class="info-response">{{ application.extrac }}</td>
                                     </tr>
                                     <tr>
                                         <td class="info-label">Challenge Essay:</td>

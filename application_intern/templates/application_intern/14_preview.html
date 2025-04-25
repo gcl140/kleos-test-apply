@@ -22,6 +22,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
 
+    <style>
+        .info-response, .info-label{
+            border-bottom: 1px solid #cccccc31;
+            padding: 10px 0;
+            }
+    </style>
 </head>
 
 <body>
@@ -401,6 +407,8 @@
                             </tr>
                         </tbody>
                     </table>
+                    {% empty %}
+                    <p style="text-align: center;">No siblings have been added or saved.</p>
                     {% endfor %}
 
                     <!-- Dependent Information Loop -->
@@ -426,6 +434,8 @@
                             </tr>
                         </tbody>
                     </table>
+                                        {% empty %}
+                    <p style="text-align: center;">No dependents have been added or saved.</p>
                     {% endfor %}
                 </form>
                 <br>
@@ -572,7 +582,9 @@ Extracurricular Activities
                             </div>
                         </div>
                         <br>
-                        {% endfor %}
+                                            {% empty %}
+                    <p style="text-align: center;">No activities have been added or saved.</p>
+                    {% endfor %}
                     </div>
 
                     <!-- Distinctions Section -->
@@ -606,7 +618,9 @@ Extracurricular Activities
                             </div>
                         </div>
                         <br>
-                        {% endfor %}
+                                            {% empty %}
+                    <p style="text-align: center;">No distinctions have been added or saved.</p>
+                    {% endfor %}
                     </div>
 
                 </form>
@@ -819,47 +833,30 @@ Essays
                         <div class="col-md-6">
                             <table class="info-table">
                                 <tbody>
-                                    {% if application.extrac %}
                                     <tr>
                                         <td class="info-label">Most Meaningful ExtraCurricular Activity Essay:</td>
                                         <td class="info-response">{{ application.extrac }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.chlg %}
                                     <tr>
                                         <td class="info-label">Challenge Essay:</td>
                                         <td class="info-response">{{ application.chlg }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.cohort %}
                                     <tr>
                                         <td class="info-label">Meaningful contribution to others(Intern):</td>
                                         <td class="info-response">{{ application.cohort }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.teach %}
                                     <tr>
                                         <td class="info-label">A class you'd teach:</td>
                                         <td class="info-response">{{ application.teach }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.why_tansaf %}
                                     <tr>
                                         <td class="info-label">Why TanSAF?:</td>
                                         <td class="info-response">{{ application.why_tansaf }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.why_you %}
                                     <tr>
                                         <td class="info-label">Why You?:</td>
                                         <td class="info-response">{{ application.why_you }}</td>
                                     </tr>
-                                    {% endif %}
 
                                     {% if application.has_disciplinary_violation %}
                                     <tr>

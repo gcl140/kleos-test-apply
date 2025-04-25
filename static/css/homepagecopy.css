@@ -369,7 +369,7 @@ a {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
-    padding: 200px 0 50px 0;
+    padding: 400px 0 50px 0 !important;
 }
 
 .hero-overlay p {
@@ -388,4 +388,10 @@ a {
     /* width: fit-content; */
     text-align: center;
     padding-bottom: 20px;
+  }
+  
+  small{
+  
+      
+  }
   }

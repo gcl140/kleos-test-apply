@@ -49,6 +49,12 @@
                     <a href="{% url 'logout' %}" class="nav-link">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
+                    {% if user.is_staff %}
+                                        <a href="{% url 'intern_view_all_applications' %}" class="nav-link">
+                        <i class="fa-solid fa-gauge-high"></i> Dashboard
+                    </a>
+            {% endif %}
+            
                 {% else %}
                     <a href="{% url 'login' %}" class="nav-link">
                         <i class="fas fa-sign-in-alt"></i> Login

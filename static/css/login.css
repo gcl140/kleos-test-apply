@@ -295,8 +295,6 @@ body {
 }
 
 .form-footer a {
-    /* color: var(--tansaf-gold); */
-    /* color: var(--tansaf-blue-light); */
     color: black;
     text-decoration: none;
     font-size: 0.9rem;

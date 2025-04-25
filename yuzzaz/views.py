@@ -1,3 +1,5 @@
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
@@ -16,6 +18,10 @@ from .tokens import account_activation_token
 from .forms import UserRegistrationForm
 from .forms import CustomUserForm
 import datetime
+
+from django.utils import timezone
+from datetime import datetime
+
 from django.http import HttpResponseForbidden
 
 # from resources.models import Resource
@@ -79,14 +85,16 @@ def register(request, user_type):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
                 'protocol': 'https' if request.is_secure() else 'http',
-                'current_year': datetime.datetime.now().year,
+                # 'current_year': datetime.datetime.now().year,
+                'current_year': datetime.now().year,
+
             })
             email = EmailMessage(mail_subject, message, to=[user.email])
             email.content_subtype = "html"  # Ensure the email content type is HTML
             email.send()
 
             messages.success(
-                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration."
+                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration (Remember to check your spam too)."
             )
             return redirect('homepage')  # Redirect to login page
     else:
@@ -159,7 +167,13 @@ def login(request):
 
 
 def homepage(request):
-        return render(request, 'yuzzaz/homepage.html')
+    now = timezone.now()
+    open_date = timezone.make_aware(datetime(2025, 5, 1))
+    close_date = timezone.make_aware(datetime(2025, 6, 1))
+    portal_open = open_date <= now < close_date
+    return render(request, 'yuzzaz/homepage.html', {
+        'portal_open': portal_open
+    })
 
 
 def logout(request):
@@ -173,3 +187,37 @@ def counsellor_required(view_func):
             return HttpResponseForbidden("You are not authorized to access this page. Please login as a counsellor.")
         return view_func(request, *args, **kwargs)
     return wrapper
+
+
+
+@user_passes_test(lambda u: u.is_staff)
+def activate_all_users(request):
+    inactive_users = User.objects.filter(is_active=False)
+    # inactive_users = User.objects.filter(is_active=False, application__submitted=False)
+    count = inactive_users.count()
+
+    for user in inactive_users:
+        user.is_active = True
+        user.save()
+
+    messages.success(request, f"Successfully activated {count} inactive user(s).")
+    return redirect('intern_view_all_applications')  # Change to your desired redirect URL
+    
+
+@user_passes_test(lambda u: u.is_staff)
+@require_POST
+def activate_user_by_email(request):
+    email = request.POST.get('email')
+    user = User.objects.filter(email=email).first()
+
+    if user:
+        if user.is_active:
+            messages.info(request, f"User '{email}' is already active.")
+        else:
+            user.is_active = True
+            user.save()
+            messages.success(request, f"User '{email}' has been activated.")
+    else:
+        messages.error(request, f"No user found with email '{email}'.")
+
+    return redirect('intern_view_all_applications')
