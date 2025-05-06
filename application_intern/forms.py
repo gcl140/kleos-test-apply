@@ -128,7 +128,8 @@ class FinalsForm(forms.ModelForm):
             'a_level_school_transcripts', 
             'o_level_school_transcripts', 
             'official_id',
-            'supps', 
+            'supps',
+            'consider_cohort',
             'signature', 
             'signdate'
         ]

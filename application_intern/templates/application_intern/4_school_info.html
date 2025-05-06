@@ -1,4 +1,4 @@
-{% extends 'application_intern/shared_form_base.html' %}
+{% extends 'application_intern/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
@@ -8,308 +8,569 @@
 {% block info_title %}School Information{% endblock %}
 
 {% block info_description %}
+<div class="text-gray-300 mb-6">
     <p>
         This section collects your academic background, including details about your Advanced and Ordinary Level schools.
-        Providing accurate information ensures proper verification and processing of your application.
+        <strong class="text-white">Providing accurate information ensures proper verification and processing of your application.</strong>
     </p>
+</div>
+
+<div class="text-gray-300 mb-6">
     <p>
-        <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
+        <strong>Note:</strong> Fields marked with an asterisk (<span class="text-red-400">*</span>) are mandatory.
     </p>
+</div>
 {% endblock %}
-
-{% block info_hints %}
-    <ul>
-        <li>
-            <strong>School Name:</strong> Enter the full name of your school as it appears in official records.
-        </li>
-        <li>
-            <strong>School Contact:</strong> Ensure the provided phone number and email address are accurate for verification purposes.
-        </li>
-        <li>
-            <strong>Curriculum:</strong> Specify the curriculum followed at your school (e.g., NECTA, Cambridge, IB).
-        </li>
-        <li>
-            <strong>Multiple Schools:</strong> If you attended more than one school, provide details for the most recent institution attended.
-        </li>
-        <li>
-            <strong>Double-Check:</strong> Review all entries for accuracy before proceeding to the next section.
-        </li>
-    </ul>
-{% endblock %}
-
 
 {% block form_content %}
 <style>
-    .required{
+    .required {
         color: rgb(255, 144, 144) !important;
     }
 </style>
-<form method="POST" enctype="multipart/form-data" class="form-container">
+
+<form method="POST" enctype="multipart/form-data" class="space-y-6">
     {% csrf_token %}
 
-    <!-- Advanced School Information -->
-
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
+    <!-- Advanced Level Education -->
+    <h2 class="text-2xl font-bold mb-6 text-center text-secondary">
         Advanced Level Education
     </h2>
-    <br>
-    <div class="mb-4">
-        <p id="id_adv_school_name" class="form-label">
-            <i class="fas fa-school me-2"></i> Advanced School Name<span class="required">*</span>
-        </p>
-        {{ form.adv_school_name|add_class:"form-control" }}
+
+    <!-- Advanced School Name -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Advanced School Name</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="text" id="adv_school_name" name="adv_school_name" 
+                   value="{{ form.adv_school_name.value|default:'' }}" required
+                   placeholder="Enter your advanced level school name"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-university text-gray-400"></i>
+            </div>
+        </div>
         {% if form.adv_school_name.errors %}
-        <div class="text-danger">{{ form.adv_school_name.errors }}</div>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.adv_school_name.errors }}
+        </small>
         {% endif %}
     </div>
-    <div class="mb-4">
-        <p id="id_adv_school_phone" class="form-label">
-            <i class="fas fa-phone me-2"></i> Advanced School Phone<span class="required">*</span>
-        </p>
-        {{ form.adv_school_phone|add_class:"form-control" }}
+
+    <!-- Advanced School Phone -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-phone mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Advanced School Phone</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="tel" id="adv_school_phone" name="adv_school_phone" 
+                   value="{{ form.adv_school_phone.value|default:'' }}" required
+                   placeholder="Enter school phone number"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-phone-alt text-gray-400"></i>
+            </div>
+        </div>
         {% if form.adv_school_phone.errors %}
-        <div class="text-danger">{{ form.adv_school_phone.errors }}</div>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.adv_school_phone.errors }}
+        </small>
         {% endif %}
     </div>
-    <div class="mb-4">
-        <p id="id_adv_school_email" class="form-label">
-            <i class="fas fa-envelope me-2"></i> Advanced School Email<span class="required">*</span>
-        </p>
-        {{ form.adv_school_email|add_class:"form-control" }}
+
+    <!-- Advanced School Email -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-envelope mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Advanced School Email</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="email" id="adv_school_email" name="adv_school_email" 
+                   value="{{ form.adv_school_email.value|default:'' }}" required
+                   placeholder="Enter school email address"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-at text-gray-400"></i>
+            </div>
+        </div>
         {% if form.adv_school_email.errors %}
-        <div class="text-danger">{{ form.adv_school_email.errors }}</div>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.adv_school_email.errors }}
+        </small>
         {% endif %}
     </div>
-    <div class="mb-4">
-        <p id="id_adv_curriculum" class="form-label">
-            <i class="fas fa-book me-2"></i> Advanced School Curriculum<span class="required">*</span>
-        </p>
-        {{ form.adv_curriculum|add_class:"form-control" }}
+
+    <!-- Advanced School Curriculum -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-book mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Advanced School Curriculum</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <select id="adv_curriculum" name="adv_curriculum" required
+                class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+                <option value="" disabled selected>Select Curriculum</option>
+                {% for option in form.adv_curriculum.field.choices %}
+                <option value="{{ option.0 }}" {% if form.adv_curriculum.value == option.0 %}selected{% endif %}>
+                    {{ option.1 }}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-graduation-cap text-gray-400"></i>
+            </div>
+        </div>
         {% if form.adv_curriculum.errors %}
-        <div class="text-danger">{{ form.adv_curriculum.errors }}</div>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.adv_curriculum.errors }}
+        </small>
         {% endif %}
     </div>
 
-    <!-- Other Advanced School -->
-    <!-- <div class="mb-4">
-            <label class="form-label">
-                <i class="fas fa-question-circle me-2"></i> Would you like to report another advanced school you attended?</p>
+    <!-- Other Advanced School Toggle -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+        <div class="flex items-center">
+            <input type="checkbox" id="id_report_other_adv" name="report_other_adv" 
+                   class="h-5 w-5 rounded border-gray-300 text-secondary focus:ring-secondary"
+                   {% if form.report_other_adv.value %}checked{% endif %}>
+            <label for="id_report_other_adv" class="ml-3 text-gray-800 dark:text-gray-200">
+                <!-- <strong>Have you attended any other Advanced Level school?</strong> (Checking this box means YES and not checking this checkbox automatically means NO) -->
+
+      <strong>Have you attended any other Advanced Level school?</strong>
+      <em>(Checking this box means YES. Leaving it unchecked means NO.)</em>
             </label>
-            <div class="form-check">
-                <input class="form-check-input" style="width: 5px;" type="radio" name="report_other_adv" id="report_other_adv_yes" value="yes" onclick="toggleAdvancedSchool(true)">
-                <label class="form-check-label" for="report_other_adv_yes">Yes</label>
-            </div>
-            <div class="form-check">
-                <input style="width: 30px; height: 10px;" class="form-check-input" type="radio" name="report_other_adv" id="report_other_adv_no" value="no" checked onclick="toggleAdvancedSchool(false)">
-                <label class="form-check-label" for="report_other_adv_no">No</label>
-            </div>
-        </div> -->
-    <div class="mb-4">
-        <div class="form-check mb-4">
-            <br>
-            <p class="form-label">Have you attended any other Advanced Level school besides the one mentioned above? (Not checking the checkbox below automatically means NO)</p>
-
-            <p class="form-label">
-            <input style="width: 30px; " type="checkbox" class="form-check-input"
-                id="id_report_other_adv" nmeansame="report_other_adv" {% if form.report_other_adv.value %}checked{% endif %}>
-                Yes</p>
-            {% if form.report_other_adv.errors %}
-            <div class="text-danger">{{ form.report_other_adv.errors }}</div>
-            {% endif %}
         </div>
+        {% if form.report_other_adv.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.report_other_adv.errors }}
+        </small>
+        {% endif %}
     </div>
-    <div id="other-adv-school-fields" style="display: none;">
-        <div class="mb-4">
-            <p id="id_other_adv_school_name" class="form-label">
-                <i class="fas fa-school me-2"></i> Other Advanced School Name
-            </p>
-            {{ form.other_adv_school_name|add_class:"form-control" }}
+
+    <!-- Other Advanced School Fields -->
+    <div id="other-adv-school-fields" class="space-y-6" style="display: none;">
+        <!-- Other Advanced School Name -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Advanced School Name</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="text" id="other_adv_school_name" name="other_adv_school_name" 
+                       value="{{ form.other_adv_school_name.value|default:'' }}"
+                       placeholder="Enter other advanced school name"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-university text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_adv_school_name.errors %}
-            <div class="text-danger">{{ form.other_adv_school_name.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_adv_school_name.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_adv_school_phone" class="form-label">
-                <i class="fas fa-phone me-2"></i> Other Advanced School Phone
-            </p>
-            {{ form.other_adv_school_phone|add_class:"form-control" }}
+
+        <!-- Other Advanced School Phone -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-phone mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Advanced School Phone</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="tel" id="other_adv_school_phone" name="other_adv_school_phone" 
+                       value="{{ form.other_adv_school_phone.value|default:'' }}"
+                       placeholder="Enter other school phone number"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-phone-alt text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_adv_school_phone.errors %}
-            <div class="text-danger">{{ form.other_adv_school_phone.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_adv_school_phone.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_adv_school_email" class="form-label">
-                <i class="fas fa-envelope me-2"></i> Other Advanced School Email
-            </p>
-            {{ form.other_adv_school_email|add_class:"form-control" }}
+
+        <!-- Other Advanced School Email -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-envelope mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Advanced School Email</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="email" id="other_adv_school_email" name="other_adv_school_email" 
+                       value="{{ form.other_adv_school_email.value|default:'' }}"
+                       placeholder="Enter other school email address"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-at text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_adv_school_email.errors %}
-            <div class="text-danger">{{ form.other_adv_school_email.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_adv_school_email.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_adv_curriculum" class="form-label">
-                <i class="fas fa-book me-2"></i> Other Advanced School Curriculum
-            </p>
-            {{ form.other_adv_curriculum|add_class:"form-control" }}
+
+        <!-- Other Advanced School Curriculum -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-book mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Advanced School Curriculum</span>
+            </label>
+            <div class="relative mt-2">
+                <select id="other_adv_curriculum" name="other_adv_curriculum"
+                    class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+                    <option value="" disabled selected>Select Curriculum</option>
+                    {% for option in form.other_adv_curriculum.field.choices %}
+                    <option value="{{ option.0 }}" {% if form.other_adv_curriculum.value == option.0 %}selected{% endif %}>
+                        {{ option.1 }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-graduation-cap text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_adv_curriculum.errors %}
-            <div class="text-danger">{{ form.other_adv_curriculum.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_adv_curriculum.errors }}
+            </small>
             {% endif %}
         </div>
     </div>
 
-    <!-- Ordinary Level School Information -->
-     
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-    <br>
+    <!-- Ordinary Level Education -->
+    <hr class="my-4 border-gray-600/20" />
+
+    <h2 class="text-2xl font-bold mb-6 text-center text-secondary mt-12">
         Ordinary Level Education
     </h2>
-    <br>
-    <div class="mb-4">
-        <p id="id_olv_school_name" class="form-label">
-            <i class="fas fa-school me-2"></i> Ordinary Level School Name<span class="required">*</span>
-        </p>
-        {{ form.olv_school_name|add_class:"form-control" }}
-        {% if form.olv_school_name.errors %}
-        <div class="text-danger">{{ form.olv_school_name.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-        <p id="id_olv_school_phone" class="form-label">
-            <i class="fas fa-phone me-2"></i> Ordinary Level School Phone<span class="required">*</span>
-        </p>
-        {{ form.olv_school_phone|add_class:"form-control" }}
-        {% if form.olv_school_phone.errors %}
-        <div class="text-danger">{{ form.olv_school_phone.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-        <p id="id_olv_school_email" class="form-label">
-            <i class="fas fa-envelope me-2"></i> Ordinary Level School Email<span class="required">*</span>
-        </p>
-        {{ form.olv_school_email|add_class:"form-control" }}
-        {% if form.olv_school_email.errors %}
-        <div class="text-danger">{{ form.olv_school_email.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-        <p id="id_olv_curriculum" class="form-label">
-            <i class="fas fa-book me-2"></i> Ordinary Level School Curriculum<span class="required">*</span>
-        </p>
-        {{ form.olv_curriculum|add_class:"form-control" }}
-        {% if form.olv_curriculum.errors %}
-        <div class="text-danger">{{ form.olv_curriculum.errors }}</div>
-        {% endif %}
-    </div>
 
-    <!-- Add other O-Level fields similarly -->
-    <div class="mb-4">
-
-        <div class="form-check mb-4">
-            <!-- <input style="width: 30px; " type="checkbox" class="form-check-input" id="{{ form.agreed.id_for_label }}" name="{{ form.agreed.name }}" {% if form.report_other_olv.value %}checked{% endif %}> -->
-            <br>
-
-            <p class="form-label">Have you attended any other Ordinary Level school besides the one mentioned above? (Not checking the checkbox below automatically means NO)</p>
-
-            <p class="form-label">
-            <input style="width: 30px; " type="checkbox" class="form-check-input"
-                id="id_report_other_olv" name="report_other_olv" {% if form.report_other_olv.value %}checked{% endif %}>
-                Yes</p>
-            {% if form.report_other_olv.errors %}
-            <div class="text-danger">{{ form.report_other_olv.errors }}</div>
-            {% endif %}
-        </div>
-        <!-- <div class="form-check">
-                <input class="form-check-input" style="width: 5px;" type="radio" name="report_other_olv" id="report_other_olv_yes" value="yes" onclick="toggleOrdinarySchool(true)">
-                <label class="form-check-label" for="report_other_olv_yes">Yes</label>
+    <!-- Ordinary Level School Name -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Ordinary Level School Name</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="text" id="olv_school_name" name="olv_school_name" 
+                   value="{{ form.olv_school_name.value|default:'' }}" required
+                   placeholder="Enter your ordinary level school name"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-university text-gray-400"></i>
             </div>
-            <div class="form-check">
-                <input style="width: 30px; height: 10px;" class="form-check-input" type="radio" name="report_other_olv" id="report_other_olv_no" value="no" checked onclick="toggleOrdinarySchool(false)">
-                <label class="form-check-label" for="report_other_olv_no">No</label>
-            </div> -->
+        </div>
+        {% if form.olv_school_name.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.olv_school_name.errors }}
+        </small>
+        {% endif %}
     </div>
-    <div id="other-olv-school-fields" style="display: none;">
-        <div class="mb-4">
-            <p id="id_other_olv_school_name" class="form-label">
-                <i class="fas fa-school me-2"></i> Other Ordinary Level School Name
-            </p>
-            {{ form.other_olv_school_name|add_class:"form-control" }}
+
+    <!-- Ordinary Level School Phone -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-phone mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Ordinary Level School Phone</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="tel" id="olv_school_phone" name="olv_school_phone" 
+                   value="{{ form.olv_school_phone.value|default:'' }}" required
+                   placeholder="Enter school phone number"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-phone-alt text-gray-400"></i>
+            </div>
+        </div>
+        {% if form.olv_school_phone.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.olv_school_phone.errors }}
+        </small>
+        {% endif %}
+    </div>
+
+    <!-- Ordinary Level School Email -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-envelope mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Ordinary Level School Email</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <input type="email" id="olv_school_email" name="olv_school_email" 
+                   value="{{ form.olv_school_email.value|default:'' }}" required
+                   placeholder="Enter school email address"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-at text-gray-400"></i>
+            </div>
+        </div>
+        {% if form.olv_school_email.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.olv_school_email.errors }}
+        </small>
+        {% endif %}
+    </div>
+
+    <!-- Ordinary Level School Curriculum -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+        <label class="form-label">
+            <i class="fas fa-book mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Ordinary Level School Curriculum</span>
+            <span class="text-red-500 ml-1">*</span>
+        </label>
+        <div class="relative mt-2">
+            <select id="olv_curriculum" name="olv_curriculum" required
+                class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+                <option value="" disabled selected>Select Curriculum</option>
+                {% for option in form.olv_curriculum.field.choices %}
+                <option value="{{ option.0 }}" {% if form.olv_curriculum.value == option.0 %}selected{% endif %}>
+                    {{ option.1 }}
+                </option>
+                {% endfor %}
+            </select>
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-graduation-cap text-gray-400"></i>
+            </div>
+        </div>
+        {% if form.olv_curriculum.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.olv_curriculum.errors }}
+        </small>
+        {% endif %}
+    </div>
+
+    <!-- Other Ordinary Level School Toggle -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+        <div class="flex items-center">
+            <input type="checkbox" id="id_report_other_olv" name="report_other_olv" 
+                   class="h-5 w-5 rounded border-gray-300 text-secondary focus:ring-secondary"
+                   {% if form.report_other_olv.value %}checked{% endif %}>
+            <label for="id_report_other_olv" class="ml-3 text-gray-800 dark:text-gray-200">
+                <strong>Have you attended any other Ordinary Level school?</strong>
+              <em>(Checking this box means YES. Leaving it unchecked means NO.)</em>
+
+            </label>
+        </div>
+        {% if form.report_other_olv.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.report_other_olv.errors }}
+        </small>
+        {% endif %}
+    </div>
+
+    <!-- Other Ordinary Level School Fields -->
+    <div id="other-olv-school-fields" class="space-y-6" style="display: none;">
+        <!-- Other Ordinary Level School Name -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Ordinary Level School Name</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="text" id="other_olv_school_name" name="other_olv_school_name" 
+                       value="{{ form.other_olv_school_name.value|default:'' }}"
+                       placeholder="Enter other ordinary level school name"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-university text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_olv_school_name.errors %}
-            <div class="text-danger">{{ form.other_olv_school_name.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_olv_school_name.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_olv_school_phone" class="form-label">
-                <i class="fas fa-phone me-2"></i> Other Ordinary Level School Phone
-            </p>
-            {{ form.other_olv_school_phone|add_class:"form-control" }}
+
+        <!-- Other Ordinary Level School Phone -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-phone mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Ordinary Level School Phone</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="tel" id="other_olv_school_phone" name="other_olv_school_phone" 
+                       value="{{ form.other_olv_school_phone.value|default:'' }}"
+                       placeholder="Enter other school phone number"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-phone-alt text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_olv_school_phone.errors %}
-            <div class="text-danger">{{ form.other_olv_school_phone.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_olv_school_phone.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_olv_school_email" class="form-label">
-                <i class="fas fa-envelope me-2"></i> Other Ordinary Level School Email
-            </p>
-            {{ form.other_olv_school_email|add_class:"form-control" }}
+
+        <!-- Other Ordinary Level School Email -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-envelope mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Ordinary Level School Email</span>
+            </label>
+            <div class="relative mt-2">
+                <input type="email" id="other_olv_school_email" name="other_olv_school_email" 
+                       value="{{ form.other_olv_school_email.value|default:'' }}"
+                       placeholder="Enter other school email address"
+                       class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-at text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_olv_school_email.errors %}
-            <div class="text-danger">{{ form.other_olv_school_email.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_olv_school_email.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="mb-4">
-            <p id="id_other_olv_curriculum" class="form-label">
-                <i class="fas fa-book me-2"></i> Other Ordinary Level School Curriculum
-            </p>
-            {{ form.other_olv_curriculum|add_class:"form-control" }}
+
+        <!-- Other Ordinary Level School Curriculum -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-book mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Other Ordinary Level School Curriculum</span>
+            </label>
+            <div class="relative mt-2">
+                <select id="other_olv_curriculum" name="other_olv_curriculum"
+                    class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+                    <option value="" disabled selected>Select Curriculum</option>
+                    {% for option in form.other_olv_curriculum.field.choices %}
+                    <option value="{{ option.0 }}" {% if form.other_olv_curriculum.value == option.0 %}selected{% endif %}>
+                        {{ option.1 }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-graduation-cap text-gray-400"></i>
+                </div>
+            </div>
             {% if form.other_olv_curriculum.errors %}
-            <div class="text-danger">{{ form.other_olv_curriculum.errors }}</div>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.other_olv_curriculum.errors }}
+            </small>
             {% endif %}
         </div>
     </div>
 
     <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
+    <hr class="my-4 border-gray-600/20" />
+    <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+        <a href="{{ previous_url }}"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
         </a>
-        <button type="submit" class="btn btn-primary">
-            Save & Continue <i class="fas fa-arrow-right"></i>
+    
+        <button type="submit"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <span>Save & Continue</span>
+            <i class="fas fa-arrow-right"></i>
         </button>
     </div>
-</form>
+    </form>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const olvCheckbox = document.getElementById('id_report_other_olv');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Advanced Level Toggle
         const advCheckbox = document.getElementById('id_report_other_adv');
-        const olvFields = document.getElementById('other-olv-school-fields');
         const advFields = document.getElementById('other-adv-school-fields');
-
-        if (olvCheckbox) {
-            // Toggle fields on change
-            olvCheckbox.addEventListener('change', function () {
-                olvFields.style.display = olvCheckbox.checked ? 'block' : 'none';
-            });
-
-            // Initialize field visibility
-            olvFields.style.display = olvCheckbox.checked ? 'block' : 'none';
-        } else {
-            console.error("Checkbox with ID 'id_report_other_olv' not found!");
+        
+        // Ordinary Level Toggle
+        const olvCheckbox = document.getElementById('id_report_other_olv');
+        const olvFields = document.getElementById('other-olv-school-fields');
+        
+        // Function to toggle fields
+        function toggleFields(checkbox, fields) {
+            if (checkbox && fields) {
+                // Set initial state
+                fields.style.display = checkbox.checked ? 'block' : 'none';
+                
+                // Add event listener
+                checkbox.addEventListener('change', function() {
+                    fields.style.display = this.checked ? 'block' : 'none';
+                    
+                    // Smooth transition
+                    fields.style.transition = 'all 0.3s ease';
+                    setTimeout(() => {
+                        fields.style.transition = '';
+                    }, 300);
+                });
+            }
         }
-
-        if (advCheckbox) {
-            // Toggle fields on change
-            advCheckbox.addEventListener('change', function () {
-                advFields.style.display = advCheckbox.checked ? 'block' : 'none';
-            });
-
-            // Initialize field visibility
-            advFields.style.display = advCheckbox.checked ? 'block' : 'none';
-        } else {
-            console.error("Checkbox with ID 'id_report_other_adv' not found!");
-        }
+        
+        // Initialize toggles
+        toggleFields(advCheckbox, advFields);
+        toggleFields(olvCheckbox, olvFields);
     });
 </script>
 {% endblock %}
 
+{% block info_hints %}
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-school mr-2 text-secondary"></i> School Name
+        </h4>
+        <p class="text-gray-300 text-base">
+            Enter the full name of your school as it appears in official records.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-address-book mr-2 text-secondary"></i> School Contact
+        </h4>
+        <p class="text-gray-300 text-base">
+            Ensure the provided phone number and email address are accurate for verification purposes.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-book-open mr-2 text-secondary"></i> Curriculum
+        </h4>
+        <p class="text-gray-300 text-base">
+            Specify the curriculum followed at your school (e.g., NECTA, Cambridge, IB).
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-exchange-alt mr-2 text-secondary"></i> Multiple Schools
+        </h4>
+        <p class="text-gray-300 text-base">
+            If you attended more than one school, provide details for the most recent institution attended.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-check-double mr-2 text-secondary"></i> Double-Check
+        </h4>
+        <p class="text-gray-300 text-base">
+            Review all entries for accuracy before proceeding to the next section.
+        </p>
+    </div>
+</div>
+{% endblock %}
+
 {% block extra_js %}
-<script src="{% static 'js/contact_info.js' %}"></script>
+<script src="{% static 'js/school_info.js' %}"></script>
 {% endblock %}

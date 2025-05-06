@@ -652,23 +652,14 @@ Extracurricular Activities
                                         <td class="info-label">Has taken SAT:</td>
                                         <td class="info-response">{{ application.sat_for_sat }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_type %}
                                     <tr>
                                         <td class="info-label">SAT Type:</td>
                                         <td class="info-response">{{ application.sat_type }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_score %}
                                     <tr>
                                         <td class="info-label">SAT Score:</td>
                                         <td class="info-response">{{ application.sat_score }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_date %}
                                     <tr>
                                         <td class="info-label">SAT Date:</td>
                                         <td class="info-response">{{ application.sat_date }}</td>
@@ -680,23 +671,14 @@ Extracurricular Activities
                                         <td class="info-label">Has taken English Proficiency Test:</td>
                                         <td class="info-response">{{ application.sat_for_eng }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_type %}
                                     <tr>
                                         <td class="info-label">English Test Type:</td>
                                         <td class="info-response">{{ application.eng_type }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_score %}
                                     <tr>
                                         <td class="info-label">English Test Score:</td>
                                         <td class="info-response">{{ application.eng_score }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_date %}
                                     <tr>
                                         <td class="info-label">English Test Date:</td>
                                         <td class="info-response">{{ application.eng_date }}</td>
@@ -995,8 +977,13 @@ Essays
                                         <td class="info-response"><a href="{{ application.supps.url }}"
                                                 target="_blank">View File</a></td>
                                     </tr>
-                                    {% endif %}
+                                    {% endif %} 
+                                    {% if application.user.is_intern%}
                                     <tr>
+                                        <td class="info-label">Considered for cohort?</td>
+                                        <td class="info-response">{{ application.consider_cohort }}</td>
+                                    </tr>
+                                    {% endif %}                                     <tr>
                                         <td class="info-label">Agreed to the terms and conditions?</td>
                                         <td class="info-response">{{ application.agreed }}</td>
                                     </tr>
@@ -1073,7 +1060,8 @@ Essays
             const element = document.getElementById('preview-contenti');
             const opt = {
                 margin: 0.5, // Adjust margin as needed
-                filename: '{{ application.first_name }} {{ application.middle_name }} TanSAF_Application.pdf',
+                // filename: '{{ application.first_name }} {{ application.middle_name }} TanSAF_Application.pdf',
+                filename: '{% if application.user.is_intern %}INTERN - {% else %}COHORT - {% endif %} {{ application.first_name }} {{ application.middle_name }} TanSAF Application.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,

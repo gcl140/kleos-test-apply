@@ -1,328 +1,488 @@
-{% extends 'application_intern/shared_form_base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Preview Application{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
 
-{% block content %}
-<h1 class="page-title">All Applications</h1>
-<div class="applications-container">
-    <p class="total-applications">Total Applications: {{ applications|length }}</p>
-<!-- Trigger Button -->
-<button id="openModalBtn" class="custom-btn">Activate a User</button>
-<br>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
-<!-- Modal Form -->
-<div id="customModal" class="custom-modal">
-  <div class="custom-modal-content">
-    <form method="post" action="{% url 'activate_user_by_email' %}">
-      {% csrf_token %}
-      <div class="custom-modal-header">
-        <h5>Activate User by Email</h5>
-        <span class="custom-close" id="closeModalBtn">&times;</span>
-      </div>
-      <div class="custom-modal-body">
-        <label for="email">User Email</label>
-        <input type="email" name="email" placeholder="Enter user's email" required>
-      </div>
-      <div class="custom-modal-footer">
-        <button type="submit" class="custom-submit-btn">Activate</button>
-      </div>
-    </form>
-  </div>
-</div>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#4f46e5',
+                            DEFAULT: '#006994',
+                            dark: '#3730a3',
+                        },
+                        secondary: {
+                            // light: '#fbbf24',
+                            DEFAULT: '#f59e0b',
+                            dark: '#d97706',
+                            light: '#D4AF37',
+                            // DEFAULT: '#D4AF37',
+                            // dark: '#f59e0b',
+                        },
+                        dark: {
+                            DEFAULT: '#1e1b4b',
+                            light: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Inter', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
-<!-- Modal Styles -->
-<style></style>
+    <!-- htmx -->
+    <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"
+        integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
 
-<!-- Modal Script -->
-<script>
-  const openBtn = document.getElementById('openModalBtn');
-  const closeBtn = document.getElementById('closeModalBtn');
-  const modal = document.getElementById('customModal');
-
-  openBtn.addEventListener('click', () => modal.style.display = 'flex');
-  closeBtn.addEventListener('click', () => modal.style.display = 'none');
-  window.addEventListener('click', (e) => {
-    if (e.target == modal) modal.style.display = 'none';
-  });
-</script>
-
-
-    <!-- Intern Applications Table -->
-    <h2 style="color: white;">Intern Applications</h2>
-    <table class="applications-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Applicant's Name</th>
-                <th>School</th>
-                <th>Submission Status</th>
-                <th>Date Applied</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-                {% if application.user.is_intern %}
-                <tr>
-                    <td>{{ forloop.counter }}.</td>
-                    <td>
-                        {% if application.user %}
-                            {{ application.user.first_name }} {{ application.user.last_name }} <br>
-                            <a href="mailto:{{ application.user.email }}" style="color: wheat; text-decoration: none;">
-                                {{ application.user.email }}
-                            </a>
-                        {% else %}
-                            No User Assigned
-                        {% endif %}
-                    </td>
-                    <td>{{ application.adv_school_name }}</td>
-                    
-                    <td>
-                        <span class="step-dot">
-                            {% if application.submitted %}
-                                <i class="fa-regular fa-circle-check" style="color: green; margin-right: 5px;"></i> Submitted
-                            {% else %}
-                                <i class="fa-regular fa-circle" style="color: rgb(255, 70, 101); margin-right: 5px"></i> Not Submitted
-                            {% endif %}
-                        </span>
-                    </td>
-                    <td>{{ application.created|date:"M d, Y" }}</td>
-                    <td>
-                        {% if application.user %}
-                            <a href="{% url 'intern_preview_application_viewo' application.user.id %}" class="action-link">
-                                <i class="fas fa-eye"></i> View
-                            </a>
-                        {% else %}
-                            <span>N/A</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- Cohort Applications Table -->
-     <br>
-     <br>
-    <h2 style="color: white;">Cohort Applications</h2>
-    <table class="applications-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Applicant's Name</th>
-                <th>School</th>
-                <th>Submission Status</th>
-                <th>Date Applied</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-                {% if not application.user.is_intern %}
-                <tr>
-                    <td>{{ forloop.counter }}.</td>
-                    <td>
-                        {% if application.user %}
-                            {{ application.user.first_name }} {{ application.user.last_name }} <br>
-                            <a href="mailto:{{ application.user.email }}" style="color: wheat; text-decoration: none;">
-                                {{ application.user.email }}
-                            </a>
-                        {% else %}
-                            No User Assigned
-                        {% endif %}
-                    </td>
-                    <td>{{ application.adv_school_name }}</td>
-                    <td>
-                        <span class="step-dot">
-                            {% if application.submitted %}
-                                <i class="fa-regular fa-circle-check" style="color: green; margin-right: 5px;"></i> Submitted
-                            {% else %}
-                                <i class="fa-regular fa-circle" style="color: rgb(255, 70, 101); margin-right: 5px"></i> Not Submitted
-                            {% endif %}
-                        </span>
-                    </td>
-                    <td>{{ application.created|date:"M d, Y" }}</td>
-                    <td>
-                        {% if application.user %}
-                            <a href="{% url 'intern_preview_application_viewo' application.user.id %}" class="action-link">
-                                <i class="fas fa-eye"></i> View
-                            </a>
-                        {% else %}
-                            <span>N/A</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
-
-{% block extra_css %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-    .page-title {
-        text-align: center;
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: #333;
-        color: var(--tansaf-gold);
-    }
-
-    .applications-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    .total-applications {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-        color: #555;
-        color: wheat;
-    }
-
-    .applications-table {
-        width: 100%;
-        border-collapse: collapse;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .applications-table th,
-    .applications-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-        color: wheat;
-    }
-
-    .applications-table th {
-        background-color: #e0e0e0;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .applications-table tbody tr:hover {
-        background-color: #f1f1f163;
-        opacity: 0.8;
-    }
-
-    .action-link {
-        color: #007bff;
-        color: var(--tansaf-gold);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .action-link:hover {
-        text-decoration: underline;
-    }
-
-    .action-link i {
-        font-size: 1rem;
-    }
-
-    @media (max-width: 768px) {
-        .applications-table {
-            display: block;
-            overflow-x: auto;
+    <style>
+        body {
+            /* background-image: url("{% static 'images/education-illustration.svg' %}"); */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
         }
 
-        .applications-table th,
-        .applications-table td {
-            white-space: nowrap;
+        .btn-primary {
+            @apply bg-secondary hover:bg-secondary-dark text-dark font-bold py-2 px-6 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50;
         }
-    }
+
+        .btn-secondary {
+            @apply bg-primary-dark hover:bg-primary-light text-white font-bold py-2 px-6 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+        }
+
+        .toast-message {
+            @apply relative overflow-hidden mb-2 rounded-lg shadow-lg;
+            animation: slideIn 0.3s ease-out;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="min-h-screen font-inter text-gray-500">
+    <!-- Navigation -->
+    <nav class="bg-dark border-b border-primary/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="https://beta.tansaf.or.tz/" class="flex-shrink-0 flex items-center">
+                        <img class="h-10 w-10" src="{% static 'fav-1-150x150.png' %}" alt="TanSAF Logo">
+                        <span
+                            class="ml-3 text-xl font-bold text-white font-poppins hover:text-secondary-light">TanSAF</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="{% url 'homepage' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-home mr-1"></i> Home
+                        </a>
+                        <a href="https://beta.tansaf.or.tz/contact/"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-envelope mr-1"></i> Contact
+                        </a>
+                        {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <a href="{% url 'intern_view_all_applications' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fa-solid fa-gauge-high mr-1"></i> Dashboard
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-sign-in-alt mr-1"></i> Login
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mob-btn"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-secondary-light hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'homepage' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a href="https://beta.tansaf.or.tz/contact/"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-envelope mr-2"></i> Contact
+                </a>
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <a href="{% url 'intern_view_all_applications' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fa-solid fa-gauge-high mr-2"></i> Dashboard
+                </a>
+                {% endif %}
+                <a href="{% url 'logout' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="min-h-screen bg-gray-00 p-2">
+            <!-- Dashboard Header -->
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">Applications Dashboard</h1>
+                        <p class="text-gray-600 mt-2">Manage and review all submitted applications</p>
+                    </div>
+                    <div class="mt-4 flex flex-col md:flex-row md:items-start lg:items-center gap-4">
+                        <!-- Total Applications Box -->
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200 w-full md:w-auto">
+                            <p class="text-lg font-semibold text-primary-600">
+                                <span class="text-gray-700">Total:</span> {{ applications|length }} application{{applications|length|pluralize }}
+                            </p>
+                        </div>
+
+                        <!-- Buttons Container -->
+                        <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                            <!-- Activate User Button -->
+                            <button id="openModalBtn"
+                                class="w-full sm:w-auto px-4 py-2 bg-primary hover:bg-secondary-light text-white font-medium rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Activate a User
+                            </button>
+
+                            <!-- Send Emails Button -->
+                            <a href="{% url 'send_custom_email' %}"
+                                class="w-full sm:w-auto px-4 py-2 bg-secondary-light hover:bg-primary text-white font-medium rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-center">
+                                Send emails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Form -->
+                <div id="customModal"
+                    class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                        <form method="post" action="{% url 'activate_user_by_email' %}">
+                            {% csrf_token %}
+                            <div class="flex justify-between items-center border-b p-4">
+                                <h5 class="text-lg font-semibold text-gray-800">Activate User by Email</h5>
+                                <button type="button" id="closeModalBtn"
+                                    class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                                    <span class="text-2xl">&times;</span>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">User
+                                    Email</label>
+                                <input type="email" name="email" placeholder="Enter user's email" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+
+                                <p class="mt-3 text-sm text-yellow-700 bg-yellow-50 p-2 rounded">
+                                    ⚠️ Before activating, ensure the user has not already submitted an application. If
+                                    already submitted, do not activate.
+                                </p>
+                            </div>
+                            <div class="flex justify-end border-t p-4">
+                                <button type="submit"
+                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    Activate
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rest of your content -->
+
+
+            <!-- Modal Script -->
+            <script>
+                const openBtn = document.getElementById('openModalBtn');
+                const closeBtn = document.getElementById('closeModalBtn');
+                const modal = document.getElementById('customModal');
+
+                openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+                closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+                window.addEventListener('click', (e) => {
+                    if (e.target == modal) modal.classList.add('hidden');
+                });
+            </script>
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Interns</h1>
+            <!-- Applications Table -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    #</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Applicant</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    School</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Date</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for application in applications %}
+                            {% if application.user.is_intern%}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ application.user.id }}.
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ application.user.first_name }} {{ application.user.last_name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                <a href="mailto:
+                                                    {{ application.user.email }}">
+                                                    {{ application.user.email }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full" >
+                                        <!-- {% if application.user.is_intern %}Internship{% else %}Cohort{% endif %} -->
+                                         {{application.adv_school_name}}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        {% if application.submitted %}
+                                        <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                                        <span class="text-sm text-gray-700">Submitted</span>
+                                        {% else %}
+                                        <div class="h-3 w-3 rounded-full bg-red-500 mr-2"></div>
+                                        <span class="text-sm text-gray-700">Incomplete</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap text-sm text-gray-500">
+                                    {{ application.created|date:"M d, Y" }}
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap text-sm font-medium">
+                                    <a href="{% url 'intern_preview_application_viewo' application.user.id %}"
+                                        class="text-primary-600 hover:text-primary-900 flex items-center hover:text-gray-900">
+                                        <i class="fas fa-eye mr-2"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Cohorts</h1>
+            <!-- Applications Table -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    #</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Applicant</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    School</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Date</th>
+                                <th
+                                    class="py-4 px-6 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for application in applications %}
+                            {% if not application.user.is_intern%}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ application.user.id }}.
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ application.user.first_name }} {{ application.user.last_name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                <a href="mailto:
+                                                    {{ application.user.email }}">
+                                                    {{ application.user.email }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full" >
+                                        <!-- {% if application.user.is_intern %}Internship{% else %}Cohort{% endif %} -->
+                                         {{application.adv_school_name}}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        {% if application.submitted %}
+                                        <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                                        <span class="text-sm text-gray-700">Submitted</span>
+                                        {% else %}
+                                        <div class="h-3 w-3 rounded-full bg-red-500 mr-2"></div>
+                                        <span class="text-sm text-gray-700">Incomplete</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap text-sm text-gray-500">
+                                    {{ application.created|date:"M d, Y" }}
+                                </td>
+                                <td class="py-4 px-6 whitespace-nowrap text-sm font-medium">
+                                    <a href="{% url 'intern_preview_application_viewo' application.user.id %}"
+                                        class="text-primary-600 hover:text-primary-900 flex items-center hover:text-gray-900">
+                                        <i class="fas fa-eye mr-2"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
     
-    
-    
-    
-    
-  .custom-btn {
-    background-color: var(--tansaf-gold, #f0ad4e);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-  }
 
-  .custom-modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-  }
+  <!-- TOAST MESSAGES -->
+  {% if messages %}
+    <div class="fixed top-6 right-6 space-y-3 z-50">
+      {% for message in messages %}
+        <div class="relative glass-effect bg-gray-900 rounded-lg overflow-hidden min-w-80 max-w-sm">
+          <div class="p-4 flex items-start">
+            <div class="flex-shrink-0">
+              {% if message.tags == 'success' %}
+                <i class="fas fa-check-circle text-green-400 text-xl mr-3"></i>
+              {% elif message.tags == 'error' %}
+                <i class="fas fa-exclamation-circle text-red-400 text-xl mr-3"></i>
+              {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle text-yellow-400 text-xl mr-3"></i>
+              {% else %}
+                <i class="fas fa-info-circle text-blue-400 text-xl mr-3"></i>
+              {% endif %}
+            </div>
+            <div class="flex-grow">
+              <p class="text-sm">{{ message }}</p>
+            </div>
+            <button type="button" class="ml-4 text-gray-400 hover:text-white" onclick="this.parentElement.parentElement.remove()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="h-1 w-full bg-gradient-to-r from-secondary-dark to-secondary-light"></div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 
-  .custom-modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-  }
+  <!-- SCRIPTS -->
+  
+  <!-- SCRIPTS -->
+  <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mob-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-  .custom-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
 
-  .custom-close {
-    font-size: 24px;
-    cursor: pointer;
-  }
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#mobileMenu') && !e.target.closest('#mobileMenuBtn') && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
 
-  .custom-modal-body {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .custom-modal-body label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-
-  .custom-modal-body input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-
-  .custom-modal-footer {
-    margin-top: 20px;
-    text-align: right;
-  }
-
-  .custom-submit-btn {
-    background-color: green;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-
-</style>
-
-{% endblock %}
-
-{% block extra_js %}
-<!-- Bootstrap JS Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-{% endblock %}
+</html>

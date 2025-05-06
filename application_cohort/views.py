@@ -14,6 +14,12 @@ User = get_user_model()
 # def is_staff_user(user):
 #     return user.is_staff or user.has_perm('applications.view_all_applications')
 
+def cohort_required(view_func):
+    decorated_view_func = login_required(
+        user_passes_test(lambda user: not user.is_intern, login_url='login')(view_func)
+    )
+    return decorated_view_func
+
 
 def get_application_for_cohort(user):
 # def get_application_for_user(user):
@@ -177,6 +183,7 @@ class SignatureView(FormMixin, UpdateView):
         return response
 
 @login_required
+@cohort_required
 def intro_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -200,6 +207,7 @@ def intro_view(request):
     return render(request, 'application_cohort/1_intro.html', context)
 
 @login_required
+@cohort_required
 def general_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -222,6 +230,7 @@ def general_info_view(request):
     return render(request, 'application_cohort/2_general_info.html', context)
 
 @login_required
+@cohort_required
 def contact_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -243,6 +252,7 @@ def contact_info_view(request):
     return render(request, 'application_cohort/3_contact_info.html', context)
 
 @login_required
+@cohort_required
 def school_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -265,6 +275,7 @@ def school_info_view(request):
     return render(request, 'application_cohort/4_school_info.html', context)
 
 @login_required
+@cohort_required
 def parent_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -287,6 +298,7 @@ def parent_info_view(request):
     return render(request, 'application_cohort/5_parents_info.html', context)
 
 @login_required
+@cohort_required
 def financial_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -310,6 +322,7 @@ def financial_info_view(request):
     return render(request, 'application_cohort/8_financial_info.html', context)
 
 @login_required
+@cohort_required
 def additional_info_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -333,6 +346,7 @@ def additional_info_view(request):
     return render(request, 'application_cohort/11_other_inquiries.html', context)
 
 @login_required
+@cohort_required
 def writing_section_view(request):
     application = get_application_for_cohort(request.user)
 
@@ -357,6 +371,7 @@ def writing_section_view(request):
 
 
 @login_required
+@cohort_required
 def files_signature(request):
     application = get_application_for_cohort(request.user)
 
@@ -380,6 +395,7 @@ def files_signature(request):
 
 
 @login_required
+@cohort_required
 def addsiblings(request):
     application = get_application_for_cohort(request.user)
     siblings = Sibling.objects.filter(application=application)
@@ -396,6 +412,7 @@ def addsiblings(request):
 
 
 @login_required
+@cohort_required
 def create_sibling(request):
     if request.method == "POST":
         form = SiblingForm(request.POST)
@@ -439,6 +456,7 @@ def update_sibling(request, sibling_id):
 
 
 @login_required
+@cohort_required
 def delete_sibling(request, sibling_id):
     sibling = get_object_or_404(Sibling, id=sibling_id)
     application = get_application_for_cohort(request.user)
@@ -449,6 +467,7 @@ def delete_sibling(request, sibling_id):
 
 
 @login_required
+@cohort_required
 def adddistinctions(request):
     application = get_application_for_cohort(request.user)
     
@@ -465,6 +484,7 @@ def adddistinctions(request):
 
 
 @login_required
+@cohort_required
 def create_distinction(request):
     if request.method == "POST":
         form = DistinctionForm(request.POST)
@@ -482,6 +502,7 @@ def create_distinction(request):
 
 
 @login_required
+@cohort_required
 def update_distinction(request, distinction_id):
     distinction = get_object_or_404(Distinction, id=distinction_id)
     
@@ -498,6 +519,7 @@ def update_distinction(request, distinction_id):
 
 
 @login_required
+@cohort_required
 def delete_distinction(request, distinction_id):
     distinction = get_object_or_404(Distinction, id=distinction_id)
     application = get_application_for_cohort(request.user)
@@ -507,6 +529,7 @@ def delete_distinction(request, distinction_id):
     return redirect('adddistinctions')
 
 @login_required
+@cohort_required
 def adddependents(request):
     application = get_application_for_cohort(request.user)
     
@@ -524,6 +547,7 @@ def adddependents(request):
 
 
 @login_required
+@cohort_required
 def create_dependent(request):
     if request.method == "POST":
         form = DependentForm(request.POST)
@@ -540,6 +564,7 @@ def create_dependent(request):
     return render(request, 'partials/dependents.html', {'form': form})
 
 @login_required
+@cohort_required
 def update_dependent(request, dependent_id):
     dependent = get_object_or_404(Dependent, id=dependent_id)
     
@@ -555,6 +580,7 @@ def update_dependent(request, dependent_id):
     return render(request, 'partials/dependents_update.html', context)
 
 @login_required
+@cohort_required
 def delete_dependent(request, dependent_id):
     dependent = get_object_or_404(Dependent, id=dependent_id)
     application = get_application_for_cohort(request.user)
@@ -565,6 +591,7 @@ def delete_dependent(request, dependent_id):
 
 
 @login_required
+@cohort_required
 def addactivities(request):
     application = get_application_for_cohort(request.user)
     
@@ -580,6 +607,7 @@ def addactivities(request):
     return render(request, 'application_cohort/9_addactivities.html', context)
 
 @login_required
+@cohort_required
 def create_activity(request):
     if request.method == "POST":
         form = ActivityForm(request.POST)
@@ -597,6 +625,7 @@ def create_activity(request):
 
 
 @login_required
+@cohort_required
 def update_activity(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
     
@@ -613,6 +642,7 @@ def update_activity(request, activity_id):
 
 
 @login_required
+@cohort_required
 def delete_activity(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
     application = get_application_for_cohort(request.user)
@@ -622,6 +652,7 @@ def delete_activity(request, activity_id):
     return redirect('addactivities')
 
 @login_required
+@cohort_required
 def preview_application_view(request):
     application = get_application_for_cohort(request.user)
     

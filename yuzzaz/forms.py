@@ -57,3 +57,20 @@ class CustomUserForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
         }
+
+
+
+
+class BulkEmailForm(forms.Form):
+    subject = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}))
+    heading = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Heading'}))
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 6, 'placeholder': 'Main message'}))
+    content1 = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 6, 'placeholder': 'Main message'}))
+    content2 = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 6, 'placeholder': 'Main message'}))
+    attachment = forms.FileField(required=False)
+    send_to_all = forms.BooleanField(initial=True, required=False)
+    selected_users = forms.ModelMultipleChoiceField(
+        queryset=CustomUser.objects.all(),
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )

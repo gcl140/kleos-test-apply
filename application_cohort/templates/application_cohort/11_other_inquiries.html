@@ -1,4 +1,4 @@
-{% extends 'application_cohort/shared_form_base.html' %}
+{% extends 'application_cohort/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
@@ -8,280 +8,357 @@
 {% block info_title %}Personal Interests and Assessments{% endblock %}
 
 {% block info_description %}
-This section collects information about your personal interests, hobbies, and any standardized tests you have taken.
-This helps us understand your extracurricular involvement and academic readiness.
+<div class="text-gray-300 mb-6">
+    <p>
+        This section collects information about your personal interests, hobbies, and any standardized tests you have taken.
+        <strong class="text-white">
+            Be specific about your hobbies and provide accurate test information where applicable.
+        </strong>
+    </p>
+</div>
+
+<div class="text-gray-300 mb-6">
+    <p>
+        <strong>Note:</strong> Word limits are strictly enforced. Provide complete and accurate information about any tests you've taken.
+    </p>
+</div>
 {% endblock %}
 
 {% block info_hints %}
-<li>Be specific about your hobbies and interests; include examples where possible.</li>
-<li>For standardized tests, provide accurate dates and scores.</li>
-<li>If you have taken multiple tests, feel free to list them all.</li>
-<li>Indicate how you learned about TanSAF to help us improve outreach efforts.</li>
-<li>Review your entries for completeness before submission.</li>
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-heart mr-2 text-secondary"></i> Hobbies & Interests
+        </h4>
+        <p class="text-gray-300 text-base">
+            Be specific about your favorite activities and include examples.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-graduation-cap mr-2 text-secondary"></i> Standardized Tests
+        </h4>
+        <p class="text-gray-300 text-base">
+            Include all relevant test scores (SAT, ACT, TOEFL, IELTS, etc.).
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-passport mr-2 text-secondary"></i> Documentation
+        </h4>
+        <p class="text-gray-300 text-base">
+            Disclose if you have a passport and your reasons for obtaining it.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-mobile-alt mr-2 text-secondary"></i> Technology
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide details about the phone you own, if applicable.
+        </p>
+    </div>
+</div>
 {% endblock %}
 
 {% block form_content %}
-
-<form method="POST" enctype="multipart/form-data" class="form-container">
-    {% csrf_token %}
-    <!-- Parent 1/Guardian Section -->
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-        <!-- Other Inquiries -->
-        Short Questions
-    </h2>
-    <br>
-    <div class="mb-4">
-        <p class="form-label">
-            <i class="fa-brands fa-gratipay"></i>
-            What are your favorite pastimes, hobbies, and interests? For instance, if you enjoy reading, you could mention a few recent books and authors.            [50 words max]
-        </p>
-        {{ form.fav_hobby|add_class:"form-control word-count-input"|attr:"data-max-words:50" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-        {% if form.fav_hobby.errors %}
-        <div class="text-danger">{{ form.fav_hobby.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-        <p class="form-label">
-            <i class="fas fa-clock"></i>
-            How did you spend your time after completing Form 4/Grade 11? Please write a brief paragraph describing the most significant activity you engaged in, which may include something you have already mentioned.            [50 words max]
-        </p>
-        {{ form.form4_holiday|add_class:"form-control word-count-input"|attr:"data-max-words:50" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-        {% if form.form4_holiday.errors %}
-        <div class="text-danger">{{ form.form4_holiday.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-        <p class="form-label">
-            <i class="fa-solid fa-face-sad-tear"></i>
-            In your opinion, what is the most significant challenge that society faces?       </p>
-        {{ form.soc_challenge|add_class:"form-control word-count-input"|attr:"data-max-words:50" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-        {% if form.soc_challenge.errors %}
-        <div class="text-danger">{{ form.soc_challenge.errors }}</div>
-        {% endif %}
-    </div>
-    <br>
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white; font-size: larger;">
-        Testing Information
-    </h2>
-    <br>
-    <p class="form-label">
-        <i class="fa-solid fa-laptop"></i>
-        Have you ever taken any standardized tests, such as ACT, SAT, SAT Subject Tests, or AP?(Not checking the checkbox below automatically means NO)
-
-    </p>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="sat_for_sat"
-            name="sat_for_sat" {% if form.sat_for_sat.value %}checked {%endif%}>
-        Yes, I have ever sat for a standardized test
-        {% if form.sat_for_sat.errors %}
-        <div class="text-danger">{{ form.sat_for_sat.errors }}</div>
-        {% endif %}
-    </div>
-    <div id="sat-test-fields" style="display: none;">
-        <p class="form-label">
-            If yes, please provide the test date, overall score, and indicate the total scores (if applicable).
-    
-        </p>
-    
-        <div class="mb-4">
-            <p class="form-label">
-                What type of test among these did you take?
-            </p>
-            {{ form.sat_type |add_class:"form-control" }}
-        </div>
-        <div class="mb-4">
-            <p class="form-label">
-                When did you take this test?
-            </p>
-            {{ form.sat_date |add_class:"form-control"|attr:"type:date" }}
-        </div>
-        <div class="mb-4">
-            <p class="form-label">
-                What was your score?
-            </p>
-            {{ form.sat_score |add_class:"form-control" }}
-        </div>
-
-    </div>
-<br>
-    <p class="form-label">
-        <i class="fa-solid fa-language"></i>
-        Have you ever taken any English proficiency
-        test, such as TOEFL, IELTS, Duolingo, etc?(Not checking the checkbox below automatically means NO)
-    </p>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="sat_for_eng"
-            name="sat_for_eng" {% if form.sat_for_eng.value %}checked {%endif%}>
-        Yes, I have ever sat for an English test
-        {% if form.sat_for_eng.errors %}
-        <div class="text-danger">{{ form.sat_for_eng.errors }}</div>
-        {% endif %}
-    </div>
-
-    <!-- Parent 2/Guardian Section -->
-    <div id="eng-test-fields" style="display: none;">
-        <p class="form-label">
-            If yes, please provide the test date, the overall score, and indicate the
-            total
-            scores (if applicable)
-    
-        </p>
-        <div class="mb-4">
-            <p class="form-label">
-                What type of test among these did you take?
-            </p>
-            {{ form.eng_type |add_class:"form-control" }}
-        </div>
-        <div class="mb-4">
-            <p class="form-label">
-                When did you take this test?
-            </p>
-            {{ form.eng_date |add_class:"form-control"|attr:"type:date" }}
-        </div>
-        <div class="mb-4">
-            <p class="form-label">
-                What was your score?
-            </p>
-            {{ form.eng_score |add_class:"form-control" }}
-        </div>
-    </div>
-    <br>
-    <p class="form-label">
-        <i class="fa-solid fa-passport"></i>
-        Do you have a passport? (Not checking the checkbox below automatically means NO)
-    </p>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="has_passport"
-            name="has_passport" {% if form.has_passport.value %}checked {%endif%}>
-        Yes, I have a passport
-    </div>
-
-    <div id="passport-fields" style="display: none;">
-        <p class="form-label">
-            Please explain why you obtained it. [50 words max]
-        </p>
-        {{ form.passport_purpose|add_class:"form-control word-count-input"|attr:"data-max-words:50"|attr:"placeholder:Reason" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-    </div>
-    <br>
-
-    <p class="form-label">
-        <i class="fa-solid fa-mobile-button"></i>
-        Do you own a phone? (Not checking the checkbox below automatically means NO)
-    </p>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="owns_phone"
-            name="owns_phone" {% if form.owns_phone.value %}checked {%endif%}>
-        Yes, I own a phone
-    </div>
-
-    <div id="phone-fields" style="display: none;">
-        <p class="form-label">
-            Please provide the phone's manufacturer and model. For example: Manufacturer: iPhone, Model: XR.
-        </p>
-        <p class="form-label">
-            Manufacturer: </p>
-
-        {{ form.phone_maker|add_class:"form-control"|attr:"placeholder:Phone Maker" }}
-        <br>
-        <p class="form-label">
-            Model: </p>
-        {{ form.phone_model|add_class:"form-control"|attr:"placeholder:Phone Model" }}
-    </div>
-    <br>
-
-    <p class="form-label">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        How did you find out about TanSAF?
-    </p>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="id_known_tansaf_ig"
-            name="known_tansaf_ig" {% if form.known_tansaf_ig.value %}checked {%endif%}>
-        Friend
-    </div>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="id_known_tansaf_fb"
-            name="known_tansaf_fb" {% if form.known_tansaf_fb.value %}checked {%endif%}>
-
-        Social Media
-    </div>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input"
-            id="id_known_tansaf_int" name="known_tansaf_int" {% if form.known_tansaf_int.value %}checked {%endif%}>
-        Personal Online Research
-    </div>
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input"
-            id="id_known_tansaf_tans" name="known_tansaf_tans" {% if form.known_tansaf_tans.value %}checked {%endif%}>
-        TanSAF Alumni
-    </div>
-
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input"
-            id="id_known_tansaf_tans" name="known_tansaf_tans" {% if form.known_tansaf_tans.value %}checked {%endif%}>
-        Family
-    </div>
-
-    <div class="form-check mb-4">
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="known_tansaf_other"
-            name="known_tansaf_other" {% if form.known_tansaf_other.value %}checked {%endif%}>
-        Other
-    </div>
-    <div id="others-fields" style="display: none;">
-        <p class="form-label">
-            Please elaborate the other field [50 words max]
-        </p>
-        {{ form.known_tansaf_other_write|add_class:"form-control word-count-input"|attr:"data-max-words:50" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-    </div>
-
-    <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <button type="submit" class="btn btn-primary" id="next-button" style="opacity: 1;">
-            Save & Continue <i class="fas fa-arrow-right"></i>
-        </button>
-    </div>
-
-</form>
-
 <style>
-    .form-check {
-        color: wheat;
-        margin-bottom: 10px;
+    .required {
+        color: rgb(255, 144, 144) !important;
     }
-
-    button:disabled {
-        opacity: 0.5 !important;
-        cursor: not-allowed !important;
-        pointer-events: all !important;
+    
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
     }
-
+    
     .word-count.exceeded {
         color: red !important;
     }
+    
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
 </style>
 
+<form method="POST" enctype="multipart/form-data" class="">
+    {% csrf_token %}
+    <h2 class="text-2xl font-bold mb-6 text-secondary text-center">
+        <!-- Personal Interests and Assessments -->
+    </h2>
+    
+    <div class="space-y-6">
+        <!-- Short Questions Section -->
+        <div class="">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-question-circle"></i>
+                Short Questions
+            </h3>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-heart mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">
+                        What are your favorite pastimes, hobbies, and interests? For instance, if you enjoy reading, you could mention a few recent books and authors. [50 words max]</span>
+                </label>
+                {{ form.fav_hobby|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 word-count-input"|attr:"data-max-words:50" }}
+                <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+                {% if form.fav_hobby.errors %}
+                <div class="text-danger mt-2 text-red-400">{{ form.fav_hobby.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-clock mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">How did you spend your time after completing Form 4/Grade 11? Please write a brief paragraph describing the most significant activity you engaged in, which may include something you have already mentioned.            [50 words max]</span>
+                </label>
+                {{ form.form4_holiday|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 word-count-input"|attr:"data-max-words:50" }}
+                <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+                {% if form.form4_holiday.errors %}
+                <div class="text-danger mt-2 text-red-400">{{ form.form4_holiday.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-exclamation-triangle mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">In your opinion, what is the most significant challenge that society faces?       </span>
+                </label>
+                {{ form.soc_challenge|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 word-count-input"|attr:"data-max-words:50" }}
+                <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+                {% if form.soc_challenge.errors %}
+                <div class="text-danger mt-2 text-red-400">{{ form.soc_challenge.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Testing Information Section -->
+        <div class="bg-white/80 dark:bg-gray-800/10 rounded-xl shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-graduation-cap"></i>
+                Testing Information
+            </h3>
+            
+            <!-- Standardized Tests -->
+            <div class="mb-4">
+                <label class="checkbox-label">
+                    {{ form.sat_for_sat|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Have you ever taken any standardized tests, such as ACT, SAT, SAT Subject Tests, or AP? <em>(Checking this box means YES. Leaving it unchecked means NO.)</em></span>
+                </label>
+                
+                <div id="sat-test-fields" class="mt-4 space-y-4" style="display: none;">
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-clipboard-list mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">
+                                What type of test among these did you take?</span>
+                        </label>
+                        {{ form.sat_type|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">
+                                When did you take this test?</span>
+                        </label>
+                        {{ form.sat_date|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"|attr:"type:date" }}
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-star mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">
+                                What was your score?</span>
+                        </label>
+                        {{ form.sat_score|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- English Tests -->
+            <div class="mb-4">
+                <label class="checkbox-label">
+                    {{ form.sat_for_eng|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>
+                        Have you ever taken any English proficiency
+                        test, such as TOEFL, IELTS, Duolingo, etc?<em>(Checking this box means YES. Leaving it unchecked means NO.)</em></span>
+                </label>
+                
+                <div id="eng-test-fields" class="mt-4 space-y-4" style="display: none;">
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-language mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">                What type of test among these did you take?
+                                What type of test among these did you take?
+                            </span>
+                        </label>
+                        {{ form.eng_type|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">
+                                When did you take this test?</span>
+                        </label>
+                        {{ form.eng_date|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"|attr:"type:date" }}
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-star mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">
+                                What was your score?</span>
+                        </label>
+                        {{ form.eng_score|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Personal Information Section -->
+        <div class="bg-white/80 dark:bg-gray-800/10  rounded-xl shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-user-circle"></i>
+                Personal Information
+            </h3>
+            
+            <!-- Passport -->
+            <div class="mb-4">
+                <label class="checkbox-label">
+                    {{ form.has_passport|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Do you have a passport? <em>(Checking this box means YES. Leaving it unchecked means NO.)</em></span>
+                </label>
+                
+                <div id="passport-fields" class="mt-4" style="display: none;">
+                    <label class="form-label">
+                        <i class="fas fa-comment mr-2 text-blue-600 dark:text-blue-400"></i>
+                        <span class="text-gray-800 dark:text-gray-200">            Please explain why you obtained it. [50 words max]
+                        </span>
+                    </label>
+                    {{ form.passport_purpose|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 word-count-input"|attr:"data-max-words:50" }}
+                    <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+                </div>
+            </div>
+            
+            <!-- Phone -->
+            <div class="mb-4">
+                <label class="checkbox-label">
+                    {{ form.owns_phone|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Do you own a phone? <em>(Checking this box means YES. Leaving it unchecked means NO.)</em></span>
+                </label>
+                
+                <div id="phone-fields" class="mt-4 space-y-4" style="display: none;">
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-mobile-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">Please provide the name of the phone's manufacturer </span>
+                        </label>
+                        {{ form.phone_maker|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"|attr:"placeholder:e.g. iPhone" }}
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">
+                            <i class="fas fa-mobile mr-2 text-blue-600 dark:text-blue-400"></i>
+                            <span class="text-gray-800 dark:text-gray-200">Please provide the name of the phone's model</span>
+                        </label>
+                        {{ form.phone_model|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"|attr:"placeholder:e.g. XR" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TanSAF Discovery Section -->
+        <div class="bg-white/80 dark:bg-gray-800/10  rounded-xl shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-info-circle"></i>
+                How did you find out about TanSAF?
+
+            </h3>
+            
+            <div class="space-y-2">
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_ig|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Friend</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_fb|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Social Media</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_int|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Personal Online Research</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_tans|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>TanSAF Alumni</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_fam|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Family</span>
+                </label>
+                
+                <label class="checkbox-label">
+                    {{ form.known_tansaf_other|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                    <span>Other</span>
+                </label>
+                
+                <div id="others-fields" class="mt-4" style="display: none;">
+                    <label class="form-label">
+                        <i class="fas fa-comment mr-2 text-blue-600 dark:text-blue-400"></i>
+                        <span class="text-gray-800 dark:text-gray-200">Please specify (50 words max)</span>
+                    </label>
+                    {{ form.known_tansaf_other_write|add_class:"form-input w-full mt-4 rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 word-count-input"|attr:"data-max-words:50" }}
+                    <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+    <hr class="my-4 border-gray-600/20" />
+
+        <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+            <a href="{{ previous_url }}"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        
+            <button type="submit" id="next-button"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+                <span>Save & Continue</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</form>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const satForSat = document.getElementById('sat_for_sat');
+        const satForSat = document.getElementById('id_sat_for_sat');
         const satForSatFields = document.getElementById('sat-test-fields');
-        const satForEng = document.getElementById('sat_for_eng');
+        const satForEng = document.getElementById('id_sat_for_eng');
         const satForEngFields = document.getElementById('eng-test-fields');
-        const hasPassport = document.getElementById('has_passport');
+        const hasPassport = document.getElementById('id_has_passport');
         const passportFields = document.getElementById('passport-fields');
-        const ownsPhone = document.getElementById('owns_phone');
+        const ownsPhone = document.getElementById('id_owns_phone');
         const phoneFields = document.getElementById('phone-fields');
-        const knownTansafOther = document.getElementById('known_tansaf_other');
+        const knownTansafOther = document.getElementById('id_known_tansaf_other');
         const othersFields = document.getElementById('others-fields');
         const nextButton = document.getElementById('next-button');
 
-        // Word counter functionality
         function countWords(str) {
             str = str.trim();
             return str === '' ? 0 : str.split(/\s+/).length;
@@ -293,69 +370,54 @@ This helps us understand your extracurricular involvement and academic readiness
             const countDisplay = input.nextElementSibling;
             countDisplay.textContent = `${wordCount}/${maxWords} words`;
 
-            // Check if any textarea is over its word limit
-            const allTextareas = document.querySelectorAll('.word-count-input');
             let hasOverflow = false;
-
+            const allTextareas = document.querySelectorAll('.word-count-input');
             allTextareas.forEach(textarea => {
-                if (textarea.style.display !== 'none') {  // Only check visible textareas
+                if (textarea.offsetParent !== null) {
                     const max = parseInt(textarea.dataset.maxWords);
                     const count = countWords(textarea.value);
                     if (count > max) {
                         hasOverflow = true;
+                        textarea.nextElementSibling.classList.add('exceeded');
+                        textarea.style.borderColor = 'red';
+                    } else {
+                        textarea.nextElementSibling.classList.remove('exceeded');
+                        textarea.style.borderColor = '';
                     }
                 }
             });
 
-            // Disable/enable the next button based on word count
             if (nextButton) {
                 nextButton.disabled = hasOverflow;
-                if (hasOverflow) {
-                    nextButton.setAttribute('title', 'Please fix the word count limits before proceeding');
-                } else {
-                    nextButton.removeAttribute('title');
-                }
-            }
-
-            // Visual feedback
-            if (wordCount > maxWords) {
-                countDisplay.classList.add('exceeded');
-                countDisplay.style.color = 'red';
-                input.style.borderColor = 'red';
-            } else {
-                countDisplay.classList.remove('exceeded');
-                countDisplay.style.color = 'wheat';
-                input.style.borderColor = '';
+                nextButton.title = hasOverflow ? 'Please fix the word count limits before proceeding' : '';
+                nextButton.classList.toggle('opacity-50', hasOverflow);
+                nextButton.classList.toggle('cursor-not-allowed', hasOverflow);
             }
         }
 
-        // Add event listeners to all textareas with word count
-        const textareas = document.querySelectorAll('.word-count-input');
-        textareas.forEach(textarea => {
-            // Add input event listener
-            textarea.addEventListener('input', () => updateWordCount(textarea));
-            // Add paste event listener to handle pasted content
-            textarea.addEventListener('paste', () => {
-                setTimeout(() => updateWordCount(textarea), 0);
+        function toggleFieldsAndUpdateCounts(checkbox, target) {
+            if (!checkbox || !target) return;
+            checkbox.addEventListener('change', () => {
+                target.style.display = checkbox.checked ? 'block' : 'none';
+                const visibleTextareas = target.querySelectorAll('.word-count-input');
+                visibleTextareas.forEach(textarea => updateWordCount(textarea));
             });
-            // Initialize word count
+            // Initialize visibility on page load
+            if (checkbox.checked) {
+                target.style.display = 'block';
+                const visibleTextareas = target.querySelectorAll('.word-count-input');
+                visibleTextareas.forEach(textarea => updateWordCount(textarea));
+            }
+        }
+
+        // Initialize word counters
+        document.querySelectorAll('.word-count-input').forEach(textarea => {
+            textarea.addEventListener('input', () => updateWordCount(textarea));
+            textarea.addEventListener('paste', () => setTimeout(() => updateWordCount(textarea), 0));
             updateWordCount(textarea);
         });
 
-        // Toggle fields visibility and update word counts when fields are shown/hidden
-        function toggleFieldsAndUpdateCounts(checkbox, fields) {
-            if (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    fields.style.display = checkbox.checked ? 'block' : 'none';
-                    // Update word counts after toggling visibility
-                    const textareas = fields.querySelectorAll('.word-count-input');
-                    textareas.forEach(textarea => updateWordCount(textarea));
-                });
-                fields.style.display = checkbox.checked ? 'block' : 'none';
-            }
-        }
-
-        // Apply toggle functionality
+        // Toggle dependent fields
         toggleFieldsAndUpdateCounts(satForSat, satForSatFields);
         toggleFieldsAndUpdateCounts(satForEng, satForEngFields);
         toggleFieldsAndUpdateCounts(hasPassport, passportFields);
@@ -363,8 +425,8 @@ This helps us understand your extracurricular involvement and academic readiness
         toggleFieldsAndUpdateCounts(knownTansafOther, othersFields);
     });
 </script>
-{% endblock %}
 
+{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/general_info.js' %}"></script>

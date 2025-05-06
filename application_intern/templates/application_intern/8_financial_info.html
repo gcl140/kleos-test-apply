@@ -1,4 +1,4 @@
-{% extends 'application_intern/shared_form_base.html' %}
+{% extends 'application_intern/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
@@ -8,154 +8,232 @@
 {% block info_title %}Financial Information{% endblock %}
 
 {% block info_description %}
-This section collects information regarding the financial support you received during your secondary and Advanced Level education. This helps us understand your financial background and any challenges you may have faced.
+<div class="text-gray-300 mb-6">
+    <p>
+        This section collects information regarding the financial support you received during your secondary and Advanced Level education.
+        <strong class="text-white">
+            Provide accurate details about who funded your education and the costs involved.
+        </strong>
+    </p>
+</div>
 
-<p>
-    <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
-</p>
-
+<div class="text-gray-300 mb-6">
+    <p>
+        <strong>Note:</strong> Fields marked with <span class="required">*</span> are mandatory. Specify amounts in TZS for clarity.
+    </p>
+</div>
 {% endblock %}
 
 {% block info_hints %}
-<li>Ensure all financial details are accurate and complete</li>
-<li>Provide clear information about who funded your education</li>
-<li>Specify amounts in TZS for clarity</li>
-<li>If applicable, indicate any additional sources of support</li>
-<li>Review all entries for accuracy before submission</li>
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-money-bill-wave mr-2 text-secondary"></i> Financial Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Be precise about who funded your education and the amounts involved.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-school mr-2 text-secondary"></i> Education Costs
+        </h4>
+        <p class="text-gray-300 text-base">
+            Include all costs for both O-level and A-level education.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-hand-holding-usd mr-2 text-secondary"></i> Additional Support
+        </h4>
+        <p class="text-gray-300 text-base">
+            Mention any other sources of financial support you received.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-exclamation-circle mr-2 text-secondary"></i> Challenges
+        </h4>
+        <p class="text-gray-300 text-base">
+            Disclose if you faced any financial difficulties during your education.
+        </p>
+    </div>
+</div>
 {% endblock %}
 
 {% block form_content %}
 <style>
-    .required{
+    .required {
         color: rgb(255, 144, 144) !important;
     }
-</style>
-<form method="POST" enctype="multipart/form-data" class="form-container">
-    {% csrf_token %}
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-        Financial Information
-        </h2>
-        <br>
-    <!-- Parent 1/Guardian Section -->
-    <div class="mb-4">
-        <p class="form-label">
-            <!-- <i class="fas fa-cash"></i> -->
-            <i class="fa-solid fa-money-check-dollar"></i>
-             School Fees
-        </p>
-        <p class="form-label">
-            Who financed your O-level education?<span class="required">*</span>
-        </p>
-        {{ form.f_payer_olevel|add_class:"form-control" }}
-        {% if form.f_payer_olevel.errors %}
-        <div class="text-danger">{{ form.f_payer_olevel.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-
-        <p class="form-label">
-            What was the total cost of attendance for your O-level education? (Please provide the amount in Tanzanian Shillings, TZS)<span class="required">*</span>
-        </p>
-        {{ form.o_fee|add_class:"form-control" }}
-    </div>
-    <div>
-        <p class="form-label">
-            Who financed your A-level education? <span class="required">*</span>
-        </p>
-        {{ form.f_payer_alevel|add_class:"form-control" }}
-        {% if form.f_payer_alevel.errors %}
-        <div class="text-danger">{{ form.f_payer_alevel.errors }}</div>
-        {% endif %}
-    </div>
-    <div class="mb-4">
-
-        <p class="form-label">
-            What was the total cost of attendance for your A-level education? (Please provide the amount in Tanzanian Shillings, TZS)<span class="required">*</span>
-        </p>
-        {{ form.a_fee|add_class:"form-control" }}
-    </div>
-    <p class="form-label">
-        Did you receive any additional financial support for your school fees from other sources? (Not checking the checkbox below automatically means NO)
-    </p>
-    <div class="form-check mb-4" style="color: wheat;">
-    <p class="form-label">
-
-        <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="id_suprt"
-            name="suprt" {% if form.suprt.value %}checked {%endif%}> Yes
-    </p>
-        {% if form.suprt.errors %}
-        <div class="text-danger">{{ form.suprt.errors }}</div>
-        {% endif %}
-    </div>
-    <br>
-
-    <!-- Parent 2/Guardian Section -->
-    <div id="parent2-fields" style="display: none;">
-        <div class="mb-4">
-            <p class="form-label">
-                <i class="fas fa-user me-2"></i> Name of the Supporter or Supporting Company
-            </p>
-            {{ form.suprt_name|add_class:"form-control" }}
-        </div>
-        <div class="mb-4">
-            <p class="form-label">
-                <i class="fa-solid fa-money-check-dollar"></i> Amount (in TZS) of the support amount per year
-            </p>
-            {{ form.suprt_amnt|add_class:"form-control" }}
-        </div>
-    </div>
-
-
-    <p class="form-label">
-        Have you ever been sent home from school due to an inability to pay school fees?
-    </p>
-    <div class="mb-4">
-        <div class="form-check mb-4" style="color: wheat;">
-    <p class="form-label">
-
-            <input style="width: 20px; margin-right: 10px;" type="checkbox" class="form-check-input" id="id_home_fees"
-                name="home_fees" {% if form.home_fees.value %}checked {%endif%}> Yes
-            </p>
-            {% if form.home_fees.errors %}
-            <div class="text-danger">{{ form.home_fees.errors }}</div>
-            {% endif %}
-        </div>
-    </div>
-    <br>
-
-
-    <!-- Parent 2/Guardian Section -->
-    <div id="home_fees_fields" style="display: none;">
-
-        <p class="form-label">
-            Please elaborate in less than 50 words
-        </p>
-        {{ form.suprtc|add_class:"form-control mb-2 word-count-input"|attr:"data-max-words:50" }}
-        <p class="word-count text-muted mt-1" style="font-size: 0.8rem; color: wheat !important;">0/50 words</p>
-    </div>
-
-
-    <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <button type="submit" class="btn btn-primary" id="next-button" style="opacity: 1;">
-            Save & Continue <i class="fas fa-arrow-right"></i>
-        </button>
-    </div>
-</form>
-
-<style>
-    button:disabled {
-        opacity: 0.5 !important;
-        cursor: not-allowed !important;
-        pointer-events: all !important;
+    
+    .form-container {
+        max-width: 800px;
+        margin: 0 auto;
     }
+    
     .word-count.exceeded {
         color: red !important;
     }
 </style>
+
+<form method="POST" enctype="multipart/form-data" class="space-y-6">
+    {% csrf_token %}
+    <h2 class="text-2xl font-bold mb-6 text-secondary text-center">
+        <!-- Financial Information -->
+    </h2>
+    
+    <!-- School Fees Section -->
+    <div class="space-y-6">
+        <!-- O-level Section -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-graduation-cap"></i>
+                O-Level Education
+            </h3>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-user-tie mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">Who financed your O-level education?<span class="required">*</span></span>
+                </label>
+                <div class="relative mt-2">
+                    {{ form.f_payer_olevel|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user-tie text-gray-400"></i>
+                    </div>
+                </div>
+                {% if form.f_payer_olevel.errors %}
+                <div class="text-danger mt-2 text-red-400">{{ form.f_payer_olevel.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-money-bill-wave mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">
+                        What was the total cost of attendance for your O-level education? (Please provide the amount in Tanzanian Shillings, TZS)<span class="required">*</span></span>
+                </label>
+                <div class="relative mt-2">
+                    {{ form.o_fee|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-money-bill-wave text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- A-level Section -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+            <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+                <i class="fas fa-graduation-cap"></i>
+                A-Level Education
+            </h3>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-user-tie mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">Who financed your A-level education?<span class="required">*</span></span>
+                </label>
+                <div class="relative mt-2">
+                    {{ form.f_payer_alevel|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-user-tie text-gray-400"></i>
+                    </div>
+                </div>
+                {% if form.f_payer_alevel.errors %}
+                <div class="text-danger mt-2 text-red-400">{{ form.f_payer_alevel.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">
+                    <i class="fas fa-money-bill-wave mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">
+                        What was the total cost of attendance for your A-level education? (Please provide the amount in Tanzanian Shillings, TZS)<span class="required">*</span></span>
+                </label>
+                <div class="relative mt-2">
+                    {{ form.a_fee|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-money-bill-wave text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Support -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+            <label class="form-label flex items-center gap-2">
+                <i class="fas fa-hand-holding-usd text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Did you receive any additional financial support for your school fees from other sources?               <em>(Checking this box means YES. Leaving it unchecked means NO.)</em>
+                </span>
+                <div class="ml-auto">
+                    {{ form.suprt|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                </div>
+            </label>
+            
+            <div id="parent2-fields" class="mt-4 space-y-4" style="display: {% if form.suprt.value %}block{% else %}none{% endif %};">
+                <div>
+                    <label class="form-label">
+                        <i class="fas fa-user mr-2 text-blue-600 dark:text-blue-400"></i>
+                        <span class="text-gray-800 dark:text-gray-200">Name of Supporter/Supporting Company</span>
+                    </label>
+                    {{ form.suprt_name|add_class:"form-input w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                </div>
+                
+                <div>
+                    <label class="form-label">
+                        <i class="fas fa-money-bill-wave mr-2 text-blue-600 dark:text-blue-400"></i>
+                        <span class="text-gray-800 dark:text-gray-200">Amount (in TZS) of the support amount per year</span>
+                    </label>
+                    {{ form.suprt_amnt|add_class:"form-input w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Financial Challenges -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+            <label class="form-label flex items-center gap-2">
+                <i class="fas fa-exclamation-triangle text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">
+                    Have you ever been sent home from school due to an inability to pay school fees?
+                    <em>(Checking this box means YES. Leaving it unchecked means NO.)</em></span>
+                <div class="ml-auto">
+                    {{ form.home_fees|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+                </div>
+            </label>
+            
+            <div id="home_fees_fields" class="mt-4" style="display: {% if form.home_fees.value %}block{% else %}none{% endif %};">
+                <label class="form-label">
+                    <i class="fas fa-comment mr-2 text-blue-600 dark:text-blue-400"></i>
+                    <span class="text-gray-800 dark:text-gray-200">Please elaborate (max 50 words)</span>
+                </label>
+                {{ form.suprtc|add_class:"form-input w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 mb-2 word-count-input"|attr:"data-max-words:50" }}
+                <p class="word-count text-muted mt-1 text-sm">0/50 words</p>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons -->
+    <hr class="my-4 border-gray-600/20" />
+
+        <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+            <a href="{{ previous_url }}"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back</span>
+            </a>
+        
+            <button type="submit"
+                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300" id="next-button">
+                <span>Save & Continue</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        </div>
+</form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -182,11 +260,16 @@ This section collects information regarding the financial support you received d
             let hasOverflow = false;
             
             allTextareas.forEach(textarea => {
-                if (textarea.style.display !== 'none') {  // Only check visible textareas
+                if (textarea.offsetParent !== null) {  // Only check visible textareas
                     const max = parseInt(textarea.dataset.maxWords);
                     const count = countWords(textarea.value);
                     if (count > max) {
                         hasOverflow = true;
+                        textarea.nextElementSibling.classList.add('exceeded');
+                        textarea.style.borderColor = 'red';
+                    } else {
+                        textarea.nextElementSibling.classList.remove('exceeded');
+                        textarea.style.borderColor = '';
                     }
                 }
             });
@@ -196,61 +279,42 @@ This section collects information regarding the financial support you received d
                 nextButton.disabled = hasOverflow;
                 if (hasOverflow) {
                     nextButton.setAttribute('title', 'Please fix the word count limits before proceeding');
+                    nextButton.classList.add('opacity-50');
+                    nextButton.classList.add('cursor-not-allowed');
                 } else {
                     nextButton.removeAttribute('title');
+                    nextButton.classList.remove('opacity-50');
+                    nextButton.classList.remove('cursor-not-allowed');
                 }
-            }
-
-            // Visual feedback
-            if (wordCount > maxWords) {
-                countDisplay.classList.add('exceeded');
-                countDisplay.style.color = 'red';
-                input.style.borderColor = 'red';
-            } else {
-                countDisplay.classList.remove('exceeded');
-                countDisplay.style.color = 'wheat';
-                input.style.borderColor = '';
             }
         }
 
         // Add event listeners to all textareas with word count
         const textareas = document.querySelectorAll('.word-count-input');
         textareas.forEach(textarea => {
-            // Add input event listener
             textarea.addEventListener('input', () => updateWordCount(textarea));
-            // Add paste event listener to handle pasted content
             textarea.addEventListener('paste', () => {
                 setTimeout(() => updateWordCount(textarea), 0);
             });
-            // Initialize word count
             updateWordCount(textarea);
         });
 
         if (parCheckbox) {
-            // Toggle fields on change
             parCheckbox.addEventListener('change', function () {
-                parFields.style.display = parCheckbox.checked ? 'block' : 'none';
+                parFields.style.display = this.checked ? 'block' : 'none';
             });
-
-            // Initialize field visibility
-            parFields.style.display = parCheckbox.checked ? 'block' : 'none';
         }
 
         if (homeFees) {
-            // Toggle fields on change
             homeFees.addEventListener('change', function () {
-                homeFeesFields.style.display = homeFees.checked ? 'block' : 'none';
-                // Update word counts after toggling visibility
+                homeFeesFields.style.display = this.checked ? 'block' : 'none';
                 const textareas = homeFeesFields.querySelectorAll('.word-count-input');
                 textareas.forEach(textarea => updateWordCount(textarea));
             });
-            
-            // Initialize field visibility
-            homeFeesFields.style.display = homeFees.checked ? 'block' : 'none';
         }
     });
 </script>
-    {% endblock %}
+{% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/contact_info.js' %}"></script>

@@ -24,41 +24,7 @@ from datetime import datetime
 
 from django.http import HttpResponseForbidden
 
-# from resources.models import Resource
-
 User = get_user_model()
-
-# Register view: Handles user registration and sending activation email
-# def register(request):
-#     if request.method == "POST":
-#         form = UserRegistrationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_active = False  # Deactivate account until email verification
-#             user.save()
-
-#             # Send activation email
-#             current_site = get_current_site(request)
-#             mail_subject = "Activate your user account"
-#             message = render_to_string("yuzzaz/activate_account.html", {
-#                 'user': user,
-#                 'domain': current_site.domain,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': account_activation_token.make_token(user),
-#                 'protocol': 'https' if request.is_secure() else 'http',
-#                 'current_year': datetime.datetime.now().year,
-#             })
-#             email = EmailMessage(mail_subject, message, to=[user.email])
-#             email.content_subtype = "html"  # Ensure the email content type is HTML
-#             email.send()
-
-#             messages.success(
-#                 request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration.")
-#             return redirect('homepage')  # Redirect to login page
-#     else:
-#         form = UserRegistrationForm()
-
-#     return render(request, 'yuzzaz/register.html', {'form': form})
 
 
 def register(request, user_type):
@@ -94,7 +60,7 @@ def register(request, user_type):
             email.send()
 
             messages.success(
-                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration (Remember to check your spam too)."
+                request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration (Remember to check your spam too, you can't proceed without that email)."
             )
             return redirect('homepage')  # Redirect to login page
     else:
@@ -168,8 +134,8 @@ def login(request):
 
 def homepage(request):
     now = timezone.now()
-    open_date = timezone.make_aware(datetime(2025, 5, 1))
-    close_date = timezone.make_aware(datetime(2025, 6, 1))
+    open_date = timezone.make_aware(datetime(2025, 4, 26))
+    close_date = timezone.make_aware(datetime(2025, 6, 26))
     portal_open = open_date <= now < close_date
     return render(request, 'yuzzaz/homepage.html', {
         'portal_open': portal_open
@@ -221,3 +187,70 @@ def activate_user_by_email(request):
         messages.error(request, f"No user found with email '{email}'.")
 
     return redirect('intern_view_all_applications')
+
+
+
+
+
+# views.py
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import BulkEmailForm
+from .models import CustomUser
+from django.template.loader import render_to_string
+
+
+def is_staff_user(user):
+    return user.is_staff
+
+@login_required
+@user_passes_test(is_staff_user)
+def send_custom_email(request):
+    if request.method == 'POST':
+        form = BulkEmailForm(request.POST, request.FILES)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            heading = form.cleaned_data['heading']
+            content = form.cleaned_data['content']
+            content1 = form.cleaned_data['content1']
+            content2 = form.cleaned_data['content2']
+            attachment = form.cleaned_data.get('attachment')
+            send_to_all = form.cleaned_data['send_to_all']
+            selected_users = form.cleaned_data['selected_users']
+
+            if send_to_all:
+                recipients = CustomUser.objects.all()
+            else:
+                recipients = selected_users
+
+            for user in recipients:
+                context = {
+                    'full_name': user.get_full_name(),
+                    'user': user,
+                    'heading': heading,
+                    'content': content,
+                    'content1': content1,
+                    'content2': content2,
+                }
+                html_content = render_to_string('emails/custom_email.html', context)
+                plain_content = strip_tags(html_content)
+
+                email = EmailMultiAlternatives(subject, plain_content, to=[user.email])
+                email.attach_alternative(html_content, "text/html")
+
+                if attachment:
+                    email.attach(attachment.name, attachment.read(), attachment.content_type)
+
+                email.send()
+
+            messages.success(request, "Emails have been sent successfully!")
+            return redirect('intern_view_all_applications')
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+    else:
+        form = BulkEmailForm()
+
+    return render(request, 'emails/send_custom_email.html', {'form': form})

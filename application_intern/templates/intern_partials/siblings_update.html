@@ -1,76 +1,161 @@
-{% extends 'application_intern/shared_form_base.html' %}
+{% extends 'application_intern/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
 
 {% block title %}Sibling Update{% endblock %}
 {% block info_hints %}
+<div class="sibling-list-section hidden lg:block">
 
-<ul>
-    <li>Ensure the sibling's name is entered correctly and is easy to understand.</li>
-    <li>Provide accurate details about the sibling's age.</li>
-    <li>For each sibling, indicate their level of education.</li>
-    <li>Double-check all entries for accuracy before submission.</li>
-</ul>
+</div>
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-id-card mr-2"></i> Sibling Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Include full names, birth years, and current educational status for each sibling.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-graduation-cap mr-2"></i> Education Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Specify all post-secondary institutions attended and degrees earned.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-briefcase mr-2"></i> Occupation Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide current occupation or job title for working siblings.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-save mr-2"></i> Saving Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Remember to click "Save" after editing the sibling.
+        </p>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block form_content %}
+<h2 class="text-2xl font-bold mb-6  text-secondary">
+    Update Sibling
+</h2>
+<hr class="my-4 border-gray-600/20" />
+
 <form method="POST" enctype="multipart/form-data" class="form-container">
     {% csrf_token %}
-    <div class="col-md-4">
-        <label for="{{ form.sibling_name.id_for_label }}" class="form-label">
-            {{ form.sibling_name.label }}
-        </label>
-        {{ form.sibling_name|add_class:"form-control" }}
+    <div class="space-y-4">
+        <!-- Sibling Name -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-user mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Name of Sibling</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.sibling_name|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-user text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Age -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-calendar mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">{{ form.age.label }}</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.age|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-calendar-alt text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-graduation-cap mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Highest Education Level Completed</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.education|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-graduation-cap text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Institute -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Educational Institution</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Name of the school where this sibling completed their highest education</p>
+            <div class="relative mt-2">
+                {{ form.institute|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-university text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degree -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-scroll mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Highest Qualification</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Degree, Certificate, Diploma, etc. (e.g., Bachelor of Science in Computer Science)</p>
+            <div class="relative mt-2">
+                {{ form.degree|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-certificate text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Occupation -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-briefcase mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Current Occupation</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Leave blank if not currently working</p>
+            <div class="relative mt-2">
+                {{ form.occupation|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-user-tie text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3 pt-4">
+            <!-- <button type="button" 
+                    class="px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-lg transition-all flex items-center gap-2"
+                    hx-on:click="this.closest('form').remove()">
+                <i class="fas fa-times"></i> Cancel
+            </button> -->
+            <button type="submit" 
+                    class="px-4 py-2 bg-secondary hover:bg-secondary-dark text-white rounded-lg transition-all flex items-center gap-2 btn-save-sibling">
+                <i class="fas fa-save"></i> Save
+            </button>
+        </div>
     </div>
-    <div class="col-md-4">
-        <label for="{{ form.age.id_for_label }}" class="form-label">
-            {{ form.age.label }}
-        </label>
-        {{ form.age|add_class:"form-control" }}
-    </div>
-    <div class="col-md-4">
-        <label for="{{ form.education.id_for_label }}" class="form-label">
-            {{ form.education.label }}
-        </label>
-        {{ form.education|add_class:"form-control" }}
-    </div>
-    <div class="col-md-4">
-        <label for="{{ form.institute.id_for_label }}" class="form-label">
-            {{ form.institute.label }}
-        </label>
-        {{ form.institute|add_class:"form-control" }}
-    </div>
-    <div class="col-md-4">
-        <label for="{{ form.degree.id_for_label }}" class="form-label">
-            {{ form.degree.label }}
-        </label>
-        {{ form.degree|add_class:"form-control" }}
-    </div>
-    <div class="col-md-4">
-        <label for="{{ form.occupation.id_for_label }}" class="form-label">
-            {{ form.occupation.label }}
-        </label>
-        {{ form.occupation|add_class:"form-control" }}
-    </div>
-    <div class="activity-actions">
-        <button class="btn-submit-all" type="submit" id="submit-allo">
-            <i class="fas fa-check-circle"></i> Save Changes
-        </button>
-    </div>
-</form><style>
-    .btn-submit-all {
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        color: white;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        background: var(--tansaf-gold);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-    }
-</style>
-{% endblock %}
+</form>
+    {% endblock %}

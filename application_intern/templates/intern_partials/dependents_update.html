@@ -1,53 +1,90 @@
-{% extends 'application_intern/shared_form_base.html' %}
+{% extends 'application_intern/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
 
-{% block title %}Distinction Update{% endblock %}
+{% block title %}Dependent Update{% endblock %}
 {% block info_hints %}
+<div class="dependent-list-section hidden lg:block">
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-id-card mr-2"></i> Dependent Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Include full names and their relationship to you.
+        </p>
+    </div>
 
-<ul>
-    <li>Ensure the dependent's name is entered correctly and is easy to understand.</li>
-    <li>Provide accurate details about the relationship between you and the dependent.</li>
-    <li>Double-check all entries for accuracy before submission.</li>
-</ul>
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-hand-holding-heart mr-2"></i> Support Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Only include dependents who receive regular financial support from your family.
+        </p>
+    </div>
+
+    
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-save mr-2"></i> Saving Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Remember to click "Save" after editing the dependent.
+        </p>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block form_content %}
+<h2 class="text-2xl font-bold mb-6  text-secondary">
+    Update Dependent
+</h2>
+<hr class="my-4 border-gray-600/20" />
 
 <form method="POST" enctype="multipart/form-data" class="form-container">
     {% csrf_token %}
-    <div class="col-md-4">
-        <label for="{{ form.dependent_name.id_for_label }}" class="form-label">
-            {{ form.dependent_name.label }}
-        </label>
-        {{ form.dependent_name|add_class:"form-control" }}
-    </div>
-    <div class="col-md-4">
-        <label for="{{ form.relationship.id_for_label }}" class="form-label">
-            Relationship
-        </label>
-        {{ form.relationship|add_class:"form-control" }}
-    </div>
-    <div class="activity-actions">
-        <button class="btn-submit-all" type="submit" id="submit-allo">
-            <i class="fas fa-check-circle"></i> Save Changes
-        </button>
+
+    <div class="space-y-4">
+        <!-- Dependent Name -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-user mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">{{ form.dependent_name.label }}</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.dependent_name|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-user text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Relationship -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-heart mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">{{ form.relationship.label }}</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Describe how this person is related to you (e.g. cousin, grandmother, etc.)</p>
+            <div class="relative mt-2">
+                {{ form.relationship|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-heart text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+
+    
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3 pt-4">
+            <button type="submit" 
+                    class="px-4 py-2 bg-secondary hover:bg-secondary-dark text-white rounded-lg transition-all flex items-center gap-2 btn-save-sibling">
+                <i class="fas fa-save"></i> Save
+            </button>
+                </div>
     </div>
 </form>
-<style>
-    .btn-submit-all {
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        color: white;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        background: var(--tansaf-gold);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        cursor: pointer;
-    }
-</style>
 {% endblock %}

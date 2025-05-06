@@ -1,224 +1,229 @@
-{% extends 'application_intern/shared_form_base.html' %}
-{% load crispy_forms_tags %}
-{% load widget_tweaks %}
+{% extends 'application_intern/besi.html' %}
 {% load static %}
 
-{% block title %}Sibling Information{% endblock %}
+{% block title %}Siblings Information{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/siblings.css' %}">
+{% block info_title %}Siblings Information{% endblock %}
+
+{% block info_description %}
+<div class="text-gray-300 mb-6">
+    <p>
+        This section gathers essential details about your siblings, including their occupation and education.
+        <strong class="text-white">
+            Provide details about your siblings including their names, birth years,
+            educational level reached (specify all post-secondary institutions if attended),
+            and current occupation.
+        </strong>
+    </p>
+</div>
+
+<div class="text-gray-300 mb-6">
+    <p>
+        <strong>Note:</strong> Specify all post-secondary institutions if attended, and degree(s) earned.
+    </p>
+</div>
 {% endblock %}
 
-{% block content %}
-<div class="content-wrapper" >
-    <!-- <div class="form-progress"> -->
+{% block form_content %}
+<style>
+    .required {
+        color: rgb(255, 144, 144) !important;
+    }
 
-        <div class="form-progress">
-            <a href="{% url 'intern_intro_view' %}" class="progress-step {% if application.intro_completed %}completed{% endif %} {% if current_section == 'intro' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.intro_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Intro</span>
-            </a>
-            <a href="{% url 'intern_general_info_view' %}" class="progress-step {% if application.general_info_completed %}completed{% endif %} {% if current_section == 'general_info' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.general_info_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">About You</span>
-            </a>
-            <a href="{% url 'intern_contact_info_view' %}" class="progress-step {% if application.contact_info_completed %}completed{% endif %} {% if current_section == 'contact_info' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.contact_info_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Contacts</span>
-            </a>
-            <a href="{% url 'intern_school_info_view' %}" class="progress-step {% if application.school_info_completed %}completed{% endif %} {% if current_section == 'school_info' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.school_info_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">School Info</span>
-            </a>
-            <a href="{% url 'intern_parent_info_view' %}" class="progress-step {% if application.family_info_completed %}completed{% endif %} {% if current_section == 'family_info' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.family_info_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Family Info</span>
-            </a>
-            <a href="{% url 'intern_addsiblings' %}" class="progress-step {% if application.siblings_completed %}completed{% endif %} {% if current_section == 'siblings' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.siblings_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Siblings</span>
-            </a>
-            <a href="{% url 'intern_adddependents' %}" class="progress-step {% if application.dependents_completed %}completed{% endif %} {% if current_section == 'dependents' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.dependents_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Dependents</span>
-            </a>
-            <a href="{% url 'intern_financial_info_view' %}" class="progress-step {% if application.financial_info_completed %}completed{% endif %} {% if current_section == 'financial_info' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.financial_info_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Financial Info</span>
-            </a>
-            <a href="{% url 'intern_addactivities' %}" class="progress-step {% if application.activities_completed %}completed{% endif %} {% if current_section == 'activities' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.activities_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Activities</span>
-            </a>
-            <a href="{% url 'intern_adddistinctions' %}" class="progress-step {% if application.distinctions_completed %}completed{% endif %} {% if current_section == 'distinctions' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.distinctions_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Distinctions</span>
-            </a>
-            <a href="{% url 'intern_additional_info_view' %}" class="progress-step {% if application.other_inquiries_completed %}completed{% endif %} {% if current_section == 'other_inquiries' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.other_inquiries_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Other Inquiries</span>
-            </a>
-            <a href="{% url 'intern_writing_section_view' %}" class="progress-step {% if application.writing_completed %}completed{% endif %} {% if current_section == 'writing' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.writing_completed %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Writing</span>
-            </a>
-            <a href="{% url 'intern_files_signature' %}" class="progress-step {% if application.files_signature %}completed{% endif %} {% if current_section == 'files_signature' %}active{% endif %}">
-                <span class="step-dot">
-                    {% if application.files_signature %}
-                        <i class="fa-regular fa-circle-check"></i>
-                    {% else %}
-                        <i class="fa-regular fa-circle"></i>
-                    {% endif %}
-                </span>
-                <span class="step-label">Uploads</span>
-            </a>
-            <a href="{% url 'intern_preview_application_view' %}" class="progress-step completed active">
-                <span class="step-dot">
-                        <i class="fa-regular fa-circle-check"></i>
-                </span>
-                <span class="step-label">Preview</span>
-            </a>
-        </div>
-    <!-- </div> -->
+    .sibling-form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
 
-    <div class="form-section" style="margin: auto !important;">
-        <div class="form-container">
-            <!-- Sibling Form Section -->
-            <div id="sibling-form" class="siblings-container">
-                <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-                    Siblings Information
-                    </h2>
-                    <br>
-    
-                <div class="form-row" style="color: wheat;">
-                    <!-- Sibling Name -->
-                    <div class="input-group">
-                        This section gathers essential details about your siblings, including their occupation,
-and education. Give names, birth years, educational level reached (please specify all post-secondary
-                        institutions if attended, and degree(s) earned) and occupation.
-                    </div>
-                </div>
-                
+    @media (min-width: 1024px) {
+        .sibling-form-container {
+            flex-direction: row;
+        }
+
+        .sibling-form-main {
+            flex: 2;
+        }
+
+        .sibling-list-section {
+            flex: 1;
+        }
+    }
+</style>
+
+<div class="sibling-form-container">
+    <!-- Left Column - Form Section -->
+    <div class="sibling-form-main">
+        <div class="">
+            <h2 class="text-2xl font-bold mb-6  text-secondary">
+                Siblings
+            </h2>
+
+            <div class="text-gray-300 mb-6">
+
+            </div>
+
+            <!-- Sibling Form Container -->
+            <div id="sibling-form">
                 {% include 'intern_partials/siblings.html' %}
-                
             </div>
 
-
-            <!-- Action Buttons Section -->
-            <div class="instr" style="color: wheat;">
-                <br>
-                Please remember to click the <b> SAVE ALL</b> button after adding sibling(s).
-            </div>
-            <div class="sibling-actions">
-                <button type="button" class="btn-add-sibling"
-                    hx-get="{% url 'intern_create_sibling' %}" 
-                    hx-target="#sibling-form" 
-                    hx-swap="beforeend">
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                <button type="button"
+                    class="btn-secondary flex items-center justify-center gap-2 px-6 py-3 bg-secondary-dark"
+                    hx-get="{% url 'intern_create_sibling' %}" hx-target="#sibling-form" hx-swap="beforeend">
                     <i class="fas fa-plus-circle"></i> Add Sibling
                 </button>
-                <button class="btn-submit-all" type="button" id="submit-all">
+
+                <button class="btn-primary flex items-center justify-center gap-2 px-6 py-3 bg-primary-dark"
+                    type="button" id="submit-all">
                     <i class="fas fa-check-circle"></i> Save All
                 </button>
             </div>
 
-            <!-- Navigation Buttons -->
-            <div class="button-group">
-                <a href="{{ previous_url }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Back
-                </a>
-                <a href="{{ next_url }}" class="btn btn-primary">
-                    Continue <i class="fas fa-arrow-right"></i>
-                </a>
+            <div class="mt-4 text-sm text-gray-400">
+                <p>Please remember to click the <strong class="text-white">SAVE ALL</strong> button after adding
+                    sibling(s).</p>
             </div>
-        </div>
 
-        <div class="siblings-list-container">
-            <h3 class="section-title">
-                <i class="fas fa-users"></i>
-                Added Siblings
-            </h3>
-            <div id="sibling-list" class="siblings-grid">
-                {% for sibling in siblings %}
-                {% include 'intern_partials/siblings_list.html' %}
-                {% endfor %}
+            <!-- Navigation Buttons -->
+            <hr class="my-6 border-gray-600/20" />
+            <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+                <a href="{{ previous_url }}"
+                    class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </a>
+
+                <a href="{{ next_url }}"
+                    class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+                    <span>Continue</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
+    </div>
+
+    <!-- Right Column - Siblings List (Desktop) -->
+</div>
+
+
+{% endblock %}
+
+
+{% block info_hints %}
+<div class="sibling-list-section hidden lg:block">
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-lg sticky top-8">
+        <hr class="my-4 border-gray-600/20" />
+        <h3 class="text-xl font-bold mb-4 text-secondary flex items-center gap-2">
+            <i class="fas fa-users"></i>
+            Added Siblings
+        </h3>
+
+        <div id="sibling-list" class="space-y-4">
+            {% for sibling in siblings %}
+            {% include 'intern_partials/siblings_list.html' %}
+            {% empty %}
+            <div class="bg-primary-dark/20 p-4 rounded-lg text-center">
+                <i class="fas fa-user-friends text-2xl text-gray-400 mb-2"></i>
+                <p class="text-gray-400">No siblings added yet</p>
+            </div>
+            {% endfor %}
+        </div>
+        <hr class="my-4 border-gray-600/20" />
+
+    </div>
+</div>
+<!-- Mobile Siblings List (Hidden on Desktop) -->
+<div class="lg:hidden mt-8">
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-lg">
+        <h3 class="text-xl font-bold mb-4 text-secondary flex items-center gap-2">
+            <i class="fas fa-users"></i>
+            Added Siblings
+        </h3>
+
+        <div id="mobile-sibling-list" class="space-y-4">
+            {% for sibling in siblings %}
+            {% include 'intern_partials/siblings_list.html' %}
+            {% empty %}
+            <div class="bg-primary-dark/20 p-4 rounded-lg text-center">
+                <i class="fas fa-user-friends text-2xl text-gray-400 mb-2"></i>
+                <p class="text-gray-400">No siblings added yet</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-id-card mr-2 text-secondary"></i> Sibling Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Include full names, birth years, and current educational status for each sibling.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-graduation-cap mr-2 text-secondary"></i> Education Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Specify all post-secondary institutions attended and degrees earned.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-briefcase mr-2 text-secondary"></i> Occupation Details
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide current occupation or job title for working siblings.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-save mr-2 text-secondary"></i> Saving Information
+        </h4>
+        <p class="text-gray-300 text-base">
+            Remember to click "Save All" after adding each sibling. (For mobile devices, after saving, refresh the page to see the changes.)
+        </p>
     </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/siblings.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle the Save All button click
+        document.getElementById('submit-all').addEventListener('click', function () {
+            // Find all save buttons in the form and click them
+            document.querySelectorAll('#sibling-form .btn-save-sibling').forEach(btn => {
+                btn.click();
+            });
+
+            // Show a success message
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg p-8';
+            toast.innerHTML = '<i class="fas fa-check-circle mr-2 text-secondary"></i> All siblings saved successfully';
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 10000);
+        });
+
+        // HTMX after swap handler to reinitialize any elements
+        document.body.addEventListener('htmx:afterSwap', function (evt) {
+            if (evt.detail.target.id === 'sibling-form' ||
+                evt.detail.target.id === 'sibling-list' ||
+                evt.detail.target.id === 'mobile-sibling-list') {
+                // Any additional initialization can go here
+            }
+        });
+    });
+</script>
 {% endblock %}

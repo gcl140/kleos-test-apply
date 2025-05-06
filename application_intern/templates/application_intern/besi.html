@@ -1,0 +1,855 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#4f46e5',
+                            DEFAULT: '#006994',
+                            dark: '#3730a3',
+                        },
+                        secondary: {
+                            // light: '#fbbf24',
+                            DEFAULT: '#D4AF35',
+                            dark: '#D4AF33',
+                            light: '#f5c020',
+                            // DEFAULT: '#D4AF37',
+                            // dark: '#f59e0b',
+                        },
+                        dark: {
+                            DEFAULT: '#1e1b4b',
+                            light: '#312e81',
+                        }
+                    },
+                    fontFamily: {
+                        poppins: ['Inter', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- htmx -->
+    <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"
+        integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{% static 'fav-1-150x150.png' %}" type="image/x-icon">
+
+    <style>
+        body {
+            background-image: url("{% static 'images/education-illustration.svg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .btn-primary {
+            @apply bg-secondary hover:bg-secondary-dark text-dark font-bold py-2 px-6 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50;
+        }
+
+        .btn-secondary {
+            @apply bg-primary-dark hover:bg-primary-light text-white font-bold py-2 px-6 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+        }
+
+        .toast-message {
+            @apply relative overflow-hidden mb-2 rounded-lg shadow-lg;
+            animation: slideIn 0.3s ease-out;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' class="min-h-screen font-inter text-white">
+    <!-- Navigation -->
+    <nav class="bg-dark border-b border-primary/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="https://beta.tansaf.or.tz/" class="flex-shrink-0 flex items-center">
+                        <img class="h-10 w-10" src="{% static 'fav-1-150x150.png' %}" alt="TanSAF Logo">
+                        <span class="ml-3 text-xl font-bold text-white font-poppins hover:text-secondary-light">TanSAF</span>
+                    </a>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="{% url 'homepage' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-home mr-1"></i> Home
+                        </a>
+                        <a href="https://beta.tansaf.or.tz/contact/"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-envelope mr-1"></i> Contact
+                        </a>
+                        {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <a href="{% url 'intern_view_all_applications' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fa-solid fa-gauge-high mr-1"></i> Dashboard
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}"
+                            class="text-gray-300 hover:text-secondary-light px-3 py-2 rounded-md text-sm font-medium transition-all">
+                            <i class="fas fa-sign-in-alt mr-1"></i> Login
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-secondary-light hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'homepage' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a href="https://beta.tansaf.or.tz/contact/"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-envelope mr-2"></i> Contact
+                </a>
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <a href="{% url 'intern_view_all_applications' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fa-solid fa-gauge-high mr-2"></i> Dashboard
+                </a>
+                {% endif %}
+                <a href="{% url 'logout' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="text-gray-300 hover:text-secondary-light block px-3 py-2 rounded-md text-base font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Progress Bar - Mobile First -->
+        <!-- Progress Bar - Mobile -->
+        <div class="mb-8 bg-dark/70 rounded-xl p-6 pt-6 shadow-lg lg:hidden overflow-x-auto py-2">
+            <div class="flex space-x-4 pb-4" style="min-width: max-content;">
+                <div class="flex space-x-4">
+                    <a href="{% url 'intern_intro_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+                            {% if application.intro_completed %}bg-secondary text-dark
+                            {% elif current_section == 'intro' %}bg-white text-dark ring-2 ring-secondary/70
+                            {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.intro_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">1</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+                            {% if application.intro_completed %}text-secondary
+                            {% elif current_section == 'intro' %}text-white
+                            {% else %}text-gray-400{% endif %}">
+                            Intro
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- About You Step -->
+                    <a href="{% url 'intern_general_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+                            {% if application.general_info_completed %}bg-secondary text-dark
+                            {% elif current_section == 'general_info' %}bg-white text-dark ring-2 ring-secondary/70
+                            {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.general_info_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">2</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+                            {% if application.general_info_completed %}text-secondary
+                            {% elif current_section == 'general_info' %}text-white
+                            {% else %}text-gray-400{% endif %}">
+                            About You
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+                    <a href="{% url 'intern_contact_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.contact_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'contact_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.contact_info_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">3</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.contact_info_completed %}text-secondary
+        {% elif current_section == 'contact_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Contact Info
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+                    <!-- School Info Step -->
+                    <a href="{% url 'intern_school_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.school_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'school_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.school_info_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">4</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.school_info_completed %}text-secondary
+        {% elif current_section == 'school_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            School Info
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+                    <!-- School Info Step -->
+                    <!-- Family Info Step -->
+                    <a href="{% url 'intern_parent_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.family_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'family_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.family_info_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">5</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.family_info_completed %}text-secondary
+        {% elif current_section == 'family_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Family Info
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Siblings Step -->
+                    <a href="{% url 'intern_addsiblings' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.siblings_completed %}bg-secondary text-dark
+        {% elif current_section == 'siblings' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.siblings_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">6</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.siblings_completed %}text-secondary
+        {% elif current_section == 'siblings' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Siblings
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Dependents Step -->
+                    <a href="{% url 'intern_adddependents' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.dependents_completed %}bg-secondary text-dark
+        {% elif current_section == 'dependents' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.dependents_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">7</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.dependents_completed %}text-secondary
+        {% elif current_section == 'dependents' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Dependents
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Financial Info Step -->
+                    <a href="{% url 'intern_financial_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.financial_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'financial_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.financial_info_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">8</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.financial_info_completed %}text-secondary
+        {% elif current_section == 'financial_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Financial Info
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Activities Step -->
+                    <a href="{% url 'intern_addactivities' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.activities_completed %}bg-secondary text-dark
+        {% elif current_section == 'activities' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.activities_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">9</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.activities_completed %}text-secondary
+        {% elif current_section == 'activities' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Activities
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Distinctions Step -->
+                    <a href="{% url 'intern_adddistinctions' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.distinctions_completed %}bg-secondary text-dark
+        {% elif current_section == 'distinctions' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.distinctions_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">10</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.distinctions_completed %}text-secondary
+        {% elif current_section == 'distinctions' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Distinctions
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Other Inquiries Step -->
+                    <a href="{% url 'intern_additional_info_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.other_inquiries_completed %}bg-secondary text-dark
+        {% elif current_section == 'other_inquiries' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.other_inquiries_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">11</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.other_inquiries_completed %}text-secondary
+        {% elif current_section == 'other_inquiries' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Other Inquiries
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Writing Step -->
+                    <a href="{% url 'intern_writing_section_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.writing_completed %}bg-secondary text-dark
+        {% elif current_section == 'writing' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.writing_completed %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">12</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.writing_completed %}text-secondary
+        {% elif current_section == 'writing' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Writing
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Uploads Step -->
+                    <a href="{% url 'intern_files_signature' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.files_signature %}bg-secondary text-dark
+        {% elif current_section == 'files_signature' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                            {% if application.files_signature %}
+                            <i class="fas fa-check text-xs"></i>
+                            {% else %}
+                            <span class="text-xs">13</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-sm hover:text-gray-200
+        {% if application.files_signature %}text-secondary
+        {% elif current_section == 'files_signature' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                            Uploads
+                        </span>
+                        <span class="text-gray-500">—</span>
+                    </a>
+        
+                    <!-- Preview Step -->
+                    <a href="{% url 'intern_preview_application_view' %}" class="flex items-center space-x-2">
+                        <div class="w-5 h-5 rounded-full flex items-center justify-center bg-secondary text-dark">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <span class="text-sm hover:text-gray-200text-secondary">Preview</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Bar - Desktop -->
+        
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Left Column - Form Content -->
+            <div class="md:w-2/3 flex flex-col">
+                <!-- Progress Bar - Desktop -->
+                <div class="hidden lg:block mb-8 bg-dark/70 rounded-xl p-6 shadow-lg overflow-x-auto">
+                    <div class="flex justify-between min-w-max w-full items-center space-x-4">
+        
+                        <!-- Intro Step -->
+                        <a href="{% url 'intern_intro_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+                                {% if application.intro_completed %}bg-secondary text-dark
+                                {% elif current_section == 'intro' %}bg-white text-dark ring-2 ring-secondary/70
+                                {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.intro_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">1</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+                                {% if application.intro_completed %}text-secondary
+                                {% elif current_section == 'intro' %}text-white
+                                {% else %}text-gray-400{% endif %}">
+                                Intro
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- About You Step -->
+                        <a href="{% url 'intern_general_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+                                {% if application.general_info_completed %}bg-secondary text-dark
+                                {% elif current_section == 'general_info' %}bg-white text-dark ring-2 ring-secondary/70
+                                {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.general_info_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">2</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+                                {% if application.general_info_completed %}text-secondary
+                                {% elif current_section == 'general_info' %}text-white
+                                {% else %}text-gray-400{% endif %}">
+                                About You
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+        
+        
+                        <!-- School Info Step -->
+                        <a href="{% url 'intern_contact_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.contact_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'contact_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.contact_info_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">3</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.contact_info_completed %}text-secondary
+        {% elif current_section == 'contact_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Contact Info
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+        
+                        <a href="{% url 'intern_school_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.school_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'school_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.school_info_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">4</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.school_info_completed %}text-secondary
+        {% elif current_section == 'school_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                School Info
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Family Info Step -->
+                        <a href="{% url 'intern_parent_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.family_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'family_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.family_info_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">5</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.family_info_completed %}text-secondary
+        {% elif current_section == 'family_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Family Info
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Siblings Step -->
+                        <a href="{% url 'intern_addsiblings' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.siblings_completed %}bg-secondary text-dark
+        {% elif current_section == 'siblings' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.siblings_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">6</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.siblings_completed %}text-secondary
+        {% elif current_section == 'siblings' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Siblings
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Dependents Step -->
+                        <a href="{% url 'intern_adddependents' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.dependents_completed %}bg-secondary text-dark
+        {% elif current_section == 'dependents' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.dependents_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">7</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.dependents_completed %}text-secondary
+        {% elif current_section == 'dependents' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Dependents
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Financial Info Step -->
+                        <a href="{% url 'intern_financial_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.financial_info_completed %}bg-secondary text-dark
+        {% elif current_section == 'financial_info' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.financial_info_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">8</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.financial_info_completed %}text-secondary
+        {% elif current_section == 'financial_info' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Financial Info
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Activities Step -->
+                        <a href="{% url 'intern_addactivities' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.activities_completed %}bg-secondary text-dark
+        {% elif current_section == 'activities' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.activities_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">9</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.activities_completed %}text-secondary
+        {% elif current_section == 'activities' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Activities
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Distinctions Step -->
+                        <a href="{% url 'intern_adddistinctions' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.distinctions_completed %}bg-secondary text-dark
+        {% elif current_section == 'distinctions' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.distinctions_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">10</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.distinctions_completed %}text-secondary
+        {% elif current_section == 'distinctions' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Distinctions
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Other Inquiries Step -->
+                        <a href="{% url 'intern_additional_info_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.other_inquiries_completed %}bg-secondary text-dark
+        {% elif current_section == 'other_inquiries' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.other_inquiries_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">11</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.other_inquiries_completed %}text-secondary
+        {% elif current_section == 'other_inquiries' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Other Inquiries
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Writing Step -->
+                        <a href="{% url 'intern_writing_section_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.writing_completed %}bg-secondary text-dark
+        {% elif current_section == 'writing' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.writing_completed %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">12</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.writing_completed %}text-secondary
+        {% elif current_section == 'writing' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Writing
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Uploads Step -->
+                        <a href="{% url 'intern_files_signature' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center 
+        {% if application.files_signature %}bg-secondary text-dark
+        {% elif current_section == 'files_signature' %}bg-white text-dark ring-2 ring-secondary/70
+        {% else %}bg-gray-600 text-gray-300{% endif %}">
+                                {% if application.files_signature %}
+                                <i class="fas fa-check text-xs"></i>
+                                {% else %}
+                                <span class="text-xs">13</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-sm hover:text-gray-200
+        {% if application.files_signature %}text-secondary
+        {% elif current_section == 'files_signature' %}text-white
+        {% else %}text-gray-400{% endif %}">
+                                Uploads
+                            </span>
+                            <span class="text-gray-500">—</span>
+                        </a>
+        
+                        <!-- Preview Step -->
+                        <a href="{% url 'intern_preview_application_view' %}" class="flex items-center space-x-2">
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center bg-secondary text-dark">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <span class="text-sm hover:text-gray-200text-secondary">Preview</span>
+                        </a>
+                    </div>
+                </div>
+        
+
+                <!-- Form Container -->
+                <div class="bg-dark/50 backdrop-blur-sm rounded-xl p-6 shadow-lg flex-grow">
+                    <h2 class="text-3xl font-bold mb-6 text-center text-secondary">
+                        {% block info_title %}{% endblock %}
+                    </h2>
+
+                    {% block info_description %}
+                    {% endblock %}
+                    <hr class="my-4 border-gray-600/20" />
+                        {% block form_content %}
+                        {% endblock %}
+
+                </div>
+            </div>
+
+            <!-- Right Column - Info and Hints -->
+            <div class="md:w-1/3">
+                <div class="bg-dark/50 backdrop-blur-sm rounded-xl p-6 shadow-lg sticky top-8">
+                    <h3 class="text-2xl font-bold mb-4 text-secondary">
+                        <i class="fas fa-lightbulb mr-2"></i> Helpful Tips
+                    </h3>
+
+                    <div class="space-y-4">
+                        {% block info_hints %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Messages -->
+    {% if messages %}
+    <div class="fixed top-4 right-4 rounded-md z-50 w-80 space-y-2">
+        {% for message in messages %}
+        <!-- <div class="toast-message bg-dark-light text-white rounded-md border-right-green-800"> -->
+        <div
+            class="toast-message bg-dark-light text-white mb-4 rounded-md border-l-4 {% if message.tags == 'success' %}border-green-600{% elif message.tags == 'error' %}border-red-600{% elif message.tags == 'warning' %}border-yellow-600{% elif message.tags == 'info' %}border-blue-600{% else %}border-gray-600{% endif %}">
+
+            <div class="p-4 flex justify-between items-center">
+                <div class="flex-1">
+                    <div class="font-medium">{{ message }}</div>
+                </div>
+                <button type="button" class="ml-4 text-white opacity-70 hover:opacity-100 focus:outline-none"
+                    onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="h-1 bg-white/30 w-full">
+                <div
+                    class="h-full {% if message.tags == 'success' %}bg-green-600{% elif message.tags == 'error' %}bg-red-600{% elif message.tags == 'warning' %}bg-yellow-600{% elif message.tags == 'info' %}bg-blue-600{% else %}bg-gray-700{% endif %}  animate-toast-progress">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Auto-dismiss toast messages
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastMessages = document.querySelectorAll('.toast-message');
+            toastMessages.forEach(toast => {
+                setTimeout(() => {
+                    toast.remove();
+                }, 5000);
+
+                // Add animation for progress bar
+                const progressBar = toast.querySelector('.animate-toast-progress');
+                if (progressBar) {
+                    progressBar.style.animation = 'progress 5s linear forwards';
+                }
+            });
+        });
+
+        // Add keyframes for progress bar animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes progress {
+                from { width: 100%; }
+                to { width: 0%; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

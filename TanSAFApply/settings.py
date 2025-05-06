@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x#)+v+p^&9xq&w-4xsl@9x0h!ht7*cotxf0!kug19@6_zu!n!%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = False
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ['gcl.pythonanywhere.com']
+ALLOWED_HOSTS = ['apply.tansaf.or.tz', 'www.apply.tansaf.or.tz']
 # ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'crispy_bootstrap5',
+    'whitenoise.runserver_nostatic',  # Add this
 
 ]
 
@@ -60,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
+
 ]
 
 ROOT_URLCONF = 'TanSAFApply.urls'
@@ -92,6 +95,17 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # Use 'django.db.backends.postgresql' for PostgreSQL
+#         'NAME': 'tansafor_apply',  # Database name from cPanel
+#         'USER': 'tansafor_admin',  # Database user from cPanel
+#         'PASSWORD': 'Lukoonge14@0',  # Database user password
+#         'HOST': 'localhost',  # Use '127.0.0.1' if localhost doesn’t work
+#         'PORT': '3306',  # Default MySQL port, change if needed
+#     }
+# }
 
 
 # Password validation
@@ -141,13 +155,25 @@ AUTH_USER_MODEL = 'yuzzaz.CustomUser'
 
 
 # settings.py
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'gftinity01@gmail.com'  # Use your Gmail address here
+# # EMAIL_HOST_PASSWORD = 'pjrrcldgbkeiwapb'  # Use the app password (not your Google account password)
+# EMAIL_HOST_PASSWORD = 'lwuhmvurprfjbdso'  # Use the app password (not your Google account password)
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'gftinity01@gmail.com'  # Use your Gmail address here
-# EMAIL_HOST_PASSWORD = 'pjrrcldgbkeiwapb'  # Use the app password (not your Google account password)
-EMAIL_HOST_PASSWORD = 'lwuhmvurprfjbdso'  # Use the app password (not your Google account password)
+EMAIL_HOST = 'mail.tansaf.or.tz'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True  # <-- change this
+EMAIL_USE_TLS = False  # <-- add this line
+# EMAIL_HOST_USER = 'admissions@tansaf.or.tz'
+# EMAIL_HOST_PASSWORD = '5xGTh451287#'
+from decouple import config
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'admissions@tansaf.or.tz'
 
 
 # In settings.py

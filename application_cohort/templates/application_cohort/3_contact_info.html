@@ -1,4 +1,4 @@
-{% extends 'application_cohort/shared_form_base.html' %}
+{% extends 'application_cohort/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
@@ -8,115 +8,221 @@
 {% block info_title %}Contact Information{% endblock %}
 
 {% block info_description %}
+<div class="text-gray-300 mb-6">
     <p>
         Please provide your current contact information so we can stay in touch with you throughout the application process.
-        Accurate and up-to-date information ensures you don't miss any important updates.
+        <strong class="text-white">Accurate and up-to-date information ensures you don't miss any important updates.</strong>
     </p>
-    <p>
-        <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
-    </p>
-{% endblock %}
+</div>
 
-{% block info_hints %}
-    <ul>
-        <li>
-            <strong>Email Address:</strong> Provide an active email address that you check regularly. This will be used for all official communication.
-        </li>
-        <li>
-            <strong>Secondary Email Address:</strong> Optional, but recommended as a backup in case we can't reach you on your primary email.
-        </li>
-        <li>
-            <strong>Primary Phone Number:</strong> Provide a phone number where we can reach you directly. Include the country code if applicable.
-        </li>
-        <li>
-            <strong>Secondary Phone Number:</strong> Optional, but useful as a backup contact number.
-        </li>
-        <li>
-            <strong>Home Address:</strong> Provide your current residential address. This helps us verify your location and send any physical correspondence if needed.
-        </li>
-        <li>
-            <strong>Double-Check:</strong> Review all entries for accuracy before proceeding to the next section.
-        </li>
-    </ul>
+<div class="text-gray-300 mb-6">
+    <p>
+        <strong>Note:</strong> Fields marked with an asterisk (<span class="text-red-400">*</span>) are mandatory.
+    </p>
+</div>
 {% endblock %}
 
 {% block form_content %}
 <style>
-    .required{
+    .required {
         color: rgb(255, 144, 144) !important;
     }
 </style>
-<form method="POST" class="form-container">
+
+<form method="POST" class="space-y-6">
     {% csrf_token %}
     
     <!-- Contact Information -->
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-        Contact Information
+    <h2 class="text-2xl font-bold mb-6 text-center text-secondary">
+        <!-- Contact Information -->
+
     </h2>
-    <br>
-    <div class="form-group">
+
+    <!-- Primary Email -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
         <label class="form-label">
-            <i class="fas fa-envelope"></i> Primary Email Address<span class="required">*</span>
+            <i class="fas fa-envelope mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Primary Email Address</span>
+            <span class="text-red-500 ml-1">*</span>
         </label>
-        {{ form.email1|add_class:"form-control"|attr:"required"|attr:"type:email"|attr:"placeholder:Enter your email address" }}
+        <div class="relative mt-2">
+            <input type="email" id="email1" name="email1" 
+                   value="{{ form.email1.value|default:'' }}" required
+                   placeholder="Enter your email address"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-at text-gray-400"></i>
+            </div>
+        </div>
         {% if form.email1.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.email1.errors }}</small>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.email1.errors }}
+        </small>
         {% endif %}
     </div>
 
-    <div class="form-group">
+    <!-- Secondary Email -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
         <label class="form-label">
-            <i class="fas fa-envelope-open"></i> Secondary Email Address 
+            <i class="fas fa-envelope-open mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Secondary Email Address</span>
         </label>
-        {{ form.email2|add_class:"form-control"|attr:"type:email"|attr:"placeholder:Enter your secondary email address" }}
+        <div class="relative mt-2">
+            <input type="email" id="email2" name="email2" 
+                   value="{{ form.email2.value|default:'' }}"
+                   placeholder="Enter secondary email (optional)"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-envelope-open-text text-gray-400"></i>
+            </div>
+        </div>
         {% if form.email2.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.email2.errors }}</small>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.email2.errors }}
+        </small>
         {% endif %}
     </div>
 
-    <div class="form-group">
+    <!-- Primary Phone -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
         <label class="form-label">
-            <i class="fas fa-phone"></i> Primary Phone Number<span class="required">*</span>
+            <i class="fas fa-phone mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Primary Phone Number</span>
+            <span class="text-red-500 ml-1">*</span>
         </label>
-        {{ form.tel1|add_class:"form-control"|attr:"required"|attr:"type:tel"|attr:"placeholder:Enter your primary phone number" }}
+        <div class="relative mt-2">
+            <input type="tel" id="tel1" name="tel1" 
+                   value="{{ form.tel1.value|default:'' }}" required
+                   placeholder="Enter primary phone number"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-mobile-alt text-gray-400"></i>
+            </div>
+        </div>
         {% if form.tel1.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.tel1.errors }}</small>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.tel1.errors }}
+        </small>
         {% endif %}
     </div>
 
-    <div class="form-group">
+    <!-- Secondary Phone -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
         <label class="form-label">
-            <i class="fas fa-phone-alt"></i> Secondary Phone Number 
+            <i class="fas fa-phone-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Secondary Phone Number</span>
         </label>
-        {{ form.tel2|add_class:"form-control"|attr:"type:tel"|attr:"placeholder:Enter your secondary phone number" }}
+        <div class="relative mt-2">
+            <input type="tel" id="tel2" name="tel2" 
+                   value="{{ form.tel2.value|default:'' }}"
+                   placeholder="Enter secondary phone (optional)"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-phone-volume text-gray-400"></i>
+            </div>
+        </div>
         {% if form.tel2.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.tel2.errors }}</small>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.tel2.errors }}
+        </small>
         {% endif %}
     </div>
 
-    <!-- Address Information -->
-    <div class="form-group">
+    <!-- Home Address -->
+    <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
         <label class="form-label">
-            <i class="fas fa-home"></i> Home Address<span class="required">*</span>
+            <i class="fas fa-home mr-2 text-blue-600 dark:text-blue-400"></i>
+            <span class="text-gray-800 dark:text-gray-200">Home Address</span>
+            <span class="text-red-500 ml-1">*</span>
         </label>
-        {{ form.residency|add_class:"form-control"|attr:"required"|attr:"placeholder:Enter your home address" }}
+        <div class="relative mt-2">
+            <textarea id="residency" name="residency" required
+                   placeholder="Enter your full home address"
+                   class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 min-h-[100px]">{{ form.residency.value|default:'' }}</textarea>
+            <div class="absolute top-3 left-3">
+                <i class="fas fa-map-marker-alt text-gray-400"></i>
+            </div>
+        </div>
         {% if form.residency.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.residency.errors }}</small>
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.residency.errors }}
+        </small>
         {% endif %}
     </div>
 
     <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
+    <hr class="my-4 border-gray-600/20" />
+    <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+        <a href="{{ previous_url }}"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
         </a>
-        <button type="submit" class="btn btn-primary">
-            Save & Continue <i class="fas fa-arrow-right"></i>
+    
+        <button type="submit"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <span>Save & Continue</span>
+            <i class="fas fa-arrow-right"></i>
         </button>
     </div>
-</form>
+    </form>
 {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/contact_info.js' %}"></script>
+{% block info_hints %}
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-envelope mr-2 text-secondary"></i> Email Address
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide an active email address that you check regularly. This will be used for all official communication.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-envelope-open-text mr-2 text-secondary"></i> Secondary Email Address
+        </h4>
+        <p class="text-gray-300 text-base">
+            Optional, but recommended as a backup in case we can't reach you on your primary email.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-mobile-alt mr-2 text-secondary"></i> Primary Phone Number
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide a phone number where we can reach you directly. Include the country code if applicable.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-phone-volume mr-2 text-secondary"></i> Secondary Phone Number
+        </h4>
+        <p class="text-gray-300 text-base">
+            Optional, but useful as a backup contact number.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-map-marked-alt mr-2 text-secondary"></i> Home Address
+        </h4>
+        <p class="text-gray-300 text-base">
+            Provide your current residential address. This helps us verify your location and send any physical correspondence if needed.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-check-double mr-2 text-secondary"></i> Double-Check
+        </h4>
+        <p class="text-gray-300 text-base">
+            Review all entries for accuracy before proceeding to the next section.
+        </p>
+    </div>
+</div>
 {% endblock %}
+

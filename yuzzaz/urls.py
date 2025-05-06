@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('logout/', views.logout, name='logout'),
+    path('send_custom_email/', views.send_custom_email, name='send_custom_email'),
+
 
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='yuzzaz/password_reset_form.html'), name='password_reset'),
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(template_name='yuzzaz/password_reset_done.html'), name='password_reset_done'),

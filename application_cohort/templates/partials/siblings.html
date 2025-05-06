@@ -1,115 +1,111 @@
 {% load widget_tweaks %}
 
-<!-- <form hx-post="{% url 'create_sibling' %}" hx-target="#sibling-list" hx-swap="beforeend"      hx-on::after-request="this.remove()" hx-trigger="click from:#submit-all"> -->
-<form hx-post="{% url 'create_sibling' %}" hx-target="#sibling-list" hx-swap="beforeend"      hx-on::after-request="this.remove()" hx-trigger="click from:#submit-all">
-    
-        <div class="form-group">
-            <div class="form-row">
-                <!-- Sibling Name -->
-                <div class="input-group">
-                    <label for="{{ form.sibling_name.id_for_label }}" class="form-label">
-                        <i class="fas fa-user"></i> Name of Sibling
-                    </label>
-                    {{ form.sibling_name|add_class:"form-control" }}
+<form hx-post="{% url 'create_sibling' %}" 
+      hx-target="#sibling-list" 
+      hx-swap="beforeend"      
+      hx-on::after-request="this.remove()" 
+      hx-trigger="click from:#submit-all"
+      class="bg-white/10 dark:bg-gray-800/20 p-4 rounded-xl shadow-md mb-6 border border-primary/20">
+
+    <div class="space-y-4">
+        <!-- Sibling Name -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-user mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Name of Sibling</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.sibling_name|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-user text-gray-400"></i>
                 </div>
             </div>
+        </div>
 
-        <div class="form-row">
-            <!-- Age -->
-            <div class="input-group">
-                <label for="{{ form.age.id_for_label }}" class="form-label">
-                    <i class="fas fa-calendar"></i> {{ form.age.label }}
-                </label>
-                {{ form.age|add_class:"form-control" }}
+        <!-- Age -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-calendar mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">{{ form.age.label }}</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.age|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-calendar-alt text-gray-400"></i>
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <!-- Education -->
-            <div class="input-group">
-                <label for="{{ form.education.id_for_label }}" class="form-label">
-                    <i class="fas fa-graduation-cap"></i> Highest Education Level Completed
-                </label>
-                {{ form.education|add_class:"form-control" }}
+        <!-- Education -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-graduation-cap mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Highest Education Level Completed</span>
+            </label>
+            <div class="relative mt-2">
+                {{ form.education|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-graduation-cap text-gray-400"></i>
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <!-- Institute -->
-            <div class="input-group">
-                <label for="{{ form.institute.id_for_label }}" class="form-label">
-                    <i class="fas fa-school"></i> 
-                    Please provide the name of the educational institution (school) where this sibling completed their highest level of education.
-                </label>
-                {{ form.institute|add_class:"form-control" }}
+        <!-- Institute -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-school mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Educational Institution</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Name of the school where this sibling completed their highest education</p>
+            <div class="relative mt-2">
+                {{ form.institute|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-university text-gray-400"></i>
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <!-- Degree -->
-            <div class="input-group">
-                <label for="{{ form.degree.id_for_label }}" class="form-label">
-                    <i class="fas fa-scroll"></i> Please provide the highest qualification this sibling has earned (e.g., Degree, Certificate, Diploma, etc.). For example, if the sibling has a degree, you can write it as: Bachelor of Science in Computer Science.
-                </label>
-                {{ form.degree|add_class:"form-control" }}
+        <!-- Degree -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-scroll mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Highest Qualification</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Degree, Certificate, Diploma, etc. (e.g., Bachelor of Science in Computer Science)</p>
+            <div class="relative mt-2">
+                {{ form.degree|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-certificate text-gray-400"></i>
+                </div>
             </div>
         </div>
 
-        <div class="form-row">
-            <!-- Occupation -->
-            <div class="input-group">
-                <label for="{{ form.occupation.id_for_label }}" class="form-label">
-                    <i class="fas fa-briefcase"></i> 
-                    What is this sibling’s current occupation? If this sibling is not currently working, please leave this section blank.
-                </label>
-                {{ form.occupation|add_class:"form-control" }}
+        <!-- Occupation -->
+        <div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+            <label class="form-label">
+                <i class="fas fa-briefcase mr-2 text-blue-600 dark:text-blue-400"></i>
+                <span class="text-gray-800 dark:text-gray-200">Current Occupation</span>
+            </label>
+            <p class="text-xs text-gray-500 mb-2">Leave blank if not currently working</p>
+            <div class="relative mt-2">
+                {{ form.occupation|add_class:"form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" }}
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-user-tie text-gray-400"></i>
+                </div>
             </div>
         </div>
-        <div class="col-3 align-self-end">
-            <button type="button"  style="width: fit-content; background-color: rgb(255, 108, 108);" class="btn btn-danger" hx-on:click="this.closest('form').remove()">
-                Cancel
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3 pt-4">
+            <button type="button" 
+                    class="px-4 py-2 bg-red-500/90 hover:bg-red-600 text-white rounded-lg transition-all flex items-center gap-2"
+                    hx-on:click="this.closest('form').remove()">
+                <i class="fas fa-times"></i> Cancel
             </button>
+            <!-- <button type="submit" 
+                    class="px-4 py-2 bg-secondary hover:bg-secondary-dark text-white rounded-lg transition-all flex items-center gap-2 btn-save-sibling">
+                <i class="fas fa-save"></i> Save
+            </button> -->
         </div>
     </div>
 </form>
-
-<style>
-    .sibling-form {
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .input-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--tansaf-blue);
-        margin-bottom: 0.5rem;
-    }
-
-    .form-label i {
-        color: var(--tansaf-gold);
-    }
-
-    .form-control {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: rgb(214, 214, 214);
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: var(--tansaf-blue);
-        box-shadow: none;
-    }
-
-
-</style>
-

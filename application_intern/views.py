@@ -14,6 +14,23 @@ User = get_user_model()
 
 def is_staff_user(user):
     return user.is_staff or user.has_perm('applications.view_all_applications')
+    
+def intern_required(view_func):
+    decorated_view_func = login_required(
+        user_passes_test(lambda user: user.is_intern, login_url='login')(view_func)
+    )
+    return decorated_view_func
+
+# def intern_required(view_func):
+#     @wraps(view_func)
+#     def _wrapped_view(request, *args, **kwargs):
+#         if not request.user.is_authenticated:
+#             return redirect('login')
+#         if not request.user.is_intern:
+#             messages.warning(request, "Only interns can visit this page.")
+#             return redirect('login')
+#         return view_func(request, *args, **kwargs)
+#     return _wrapped_view
 
 # def get_application_for_user(user):
 def get_application_for_intern(user):
@@ -177,6 +194,7 @@ class SignatureView(FormMixin, UpdateView):
         return response
 
 @login_required
+@intern_required
 def intro_view(request):
     application = get_application_for_intern(request.user)
 
@@ -200,6 +218,7 @@ def intro_view(request):
     return render(request, 'application_intern/1_intro.html', context)
 
 @login_required
+@intern_required
 def general_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -222,6 +241,7 @@ def general_info_view(request):
     return render(request, 'application_intern/2_general_info.html', context)
 
 @login_required
+@intern_required
 def contact_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -243,6 +263,7 @@ def contact_info_view(request):
     return render(request, 'application_intern/3_contact_info.html', context)
 
 @login_required
+@intern_required
 def school_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -265,6 +286,7 @@ def school_info_view(request):
     return render(request, 'application_intern/4_school_info.html', context)
 
 @login_required
+@intern_required
 def parent_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -287,6 +309,7 @@ def parent_info_view(request):
     return render(request, 'application_intern/5_parents_info.html', context)
 
 @login_required
+@intern_required
 def financial_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -310,6 +333,7 @@ def financial_info_view(request):
     return render(request, 'application_intern/8_financial_info.html', context)
 
 @login_required
+@intern_required
 def additional_info_view(request):
     application = get_application_for_intern(request.user)
 
@@ -333,6 +357,7 @@ def additional_info_view(request):
     return render(request, 'application_intern/11_other_inquiries.html', context)
 
 @login_required
+@intern_required
 def writing_section_view(request):
     application = get_application_for_intern(request.user)
 
@@ -357,6 +382,7 @@ def writing_section_view(request):
 
 
 @login_required
+@intern_required
 def files_signature(request):
     application = get_application_for_intern(request.user)
 
@@ -380,6 +406,7 @@ def files_signature(request):
 
 
 @login_required
+@intern_required
 def addsiblings(request):
     application = get_application_for_intern(request.user)
     siblings = InternSibling.objects.filter(application=application)
@@ -396,6 +423,7 @@ def addsiblings(request):
 
 
 @login_required
+@intern_required
 def create_sibling(request):
     if request.method == "POST":
         form = InternSiblingForm(request.POST)
@@ -439,6 +467,7 @@ def update_sibling(request, sibling_id):
 
 
 @login_required
+@intern_required
 def delete_sibling(request, sibling_id):
     sibling = get_object_or_404(InternSibling, id=sibling_id)
     application = get_application_for_intern(request.user)
@@ -449,6 +478,7 @@ def delete_sibling(request, sibling_id):
 
 
 @login_required
+@intern_required
 def adddistinctions(request):
     application = get_application_for_intern(request.user)
     
@@ -465,6 +495,7 @@ def adddistinctions(request):
 
 
 @login_required
+@intern_required
 def create_distinction(request):
     if request.method == "POST":
         form = InternDistinctionForm(request.POST)
@@ -482,6 +513,7 @@ def create_distinction(request):
 
 
 @login_required
+@intern_required
 def update_distinction(request, distinction_id):
     distinction = get_object_or_404(InternDistinction, id=distinction_id)
     
@@ -498,6 +530,7 @@ def update_distinction(request, distinction_id):
 
 
 @login_required
+@intern_required
 def delete_distinction(request, distinction_id):
     distinction = get_object_or_404(InternDistinction, id=distinction_id)
     application = get_application_for_intern(request.user)
@@ -507,6 +540,7 @@ def delete_distinction(request, distinction_id):
     return redirect('intern_adddistinctions')
 
 @login_required
+@intern_required
 def adddependents(request):
     application = get_application_for_intern(request.user)
     
@@ -524,6 +558,7 @@ def adddependents(request):
 
 
 @login_required
+@intern_required
 def create_dependent(request):
     if request.method == "POST":
         form = InternDependentForm(request.POST)
@@ -555,6 +590,7 @@ def update_dependent(request, dependent_id):
     return render(request, 'intern_partials/dependents_update.html', context)
 
 @login_required
+@intern_required
 def delete_dependent(request, dependent_id):
     dependent = get_object_or_404(InternDependent, id=dependent_id)
     application = get_application_for_intern(request.user)
@@ -565,6 +601,7 @@ def delete_dependent(request, dependent_id):
 
 
 @login_required
+@intern_required
 def addactivities(request):
     application = get_application_for_intern(request.user)
     
@@ -580,6 +617,7 @@ def addactivities(request):
     return render(request, 'application_intern/9_addactivities.html', context)
 
 @login_required
+@intern_required
 def intern_create_activity(request):
     if request.method == "POST":
         form = InternActivityForm(request.POST)
@@ -613,6 +651,7 @@ def update_activity(request, activity_id):
 
 
 @login_required
+@intern_required
 def delete_activity(request, activity_id):
     activity = get_object_or_404(InternActivity, id=activity_id)
     application = get_application_for_intern(request.user)
@@ -622,6 +661,7 @@ def delete_activity(request, activity_id):
     return redirect('intern_addactivities')
 
 @login_required
+@intern_required
 def preview_application_view(request):
     application = get_application_for_intern(request.user)
     

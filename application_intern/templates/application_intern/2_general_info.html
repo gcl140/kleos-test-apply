@@ -1,144 +1,286 @@
-{% extends 'application_intern/shared_form_base.html' %}
-{% load crispy_forms_tags %}
-{% load widget_tweaks %}
-{% load static %}
-
+{% extends 'application_intern/besi.html' %}
 {% block title %}Personal Information{% endblock %}
-
 {% block info_title %}Personal Information{% endblock %}
-
 {% block info_description %}
-    <p>
-        This section collects basic information about you that will help us process your application effectively.
-       <strong> Please ensure all details are accurate and match your official documents (e.g., passport, ID card).</strong>
-    </p>
-    <p>
-        <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
-    </p>
+<p class="text-gray-300 mb-6">
+    This section collects basic information about you that will help us process your application
+    effectively.
+    <strong class="text-white"> Please ensure all details are accurate and match your official
+        documents (e.g., passport,
+        ID card).</strong>
+</p>
+
+<p class="text-gray-300 mb-6">
+    <strong>Note:</strong> Fields marked with an asterisk (<span class="text-red-400">*</span>) are
+    mandatory.
+</p>
 {% endblock %}
 
-{% block info_hints %}
-    <ul>
-        <li>
-            <strong>Full Name:</strong> Enter your full name.
-            <ul>
-                <li>First Name: Your given name.</li>
-                <li>Middle Name: Optional, but include if applicable.</li>
-                <li>Last Name: Your family name or surname.</li>
-            </ul>
-        </li>
-        <li>
-            <strong>Date of Birth:</strong> Enter your date of birth in the format <strong>DD/MM/YYYY</strong>.
-        </li>
-        <li>
-            <strong>Gender:</strong> Select your gender from the dropdown menu. This information is required for identification purposes.
-        </li>
-        <li>
-            <strong>Country of Origin:</strong> From the dropdown menu, please select the country you hold citizenship in.
-        </li>
-        <li>
-            <strong>Place of Birth:</strong> Enter the city/region where you were born.
-        </li>
-        <li>
-            <strong>Double-Check:</strong> Review all entries for accuracy before proceeding to the next section.
-        </li>
-    </ul>
-{% endblock %}
+
 
 {% block form_content %}
 <style>
-    .required{
+    .required {
         color: rgb(255, 144, 144) !important;
     }
 </style>
-<form method="POST" enctype="multipart/form-data" class="form-container">
-    {% csrf_token %}
+<form method="POST" enctype="multipart/form-data" class="space-y-6">
+{% csrf_token %}
+<!-- Applicant's Full Name -->
+<div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+    <label class="form-label">
+        <i class="fas fa-user mr-2 text-blue-600 dark:text-blue-400"></i>
+        <span class="text-gray-800 dark:text-gray-200">Applicant's Full Name</span>
+        <span class="text-red-500 ml-1">*</span>
+    </label>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+        <div>
+            <div class="relative">
+                <input type="text" id="first_name" name="first_name" placeholder="First Name"
+                    value="{{ form.first_name.value|default:'' }}" required
+                    class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-signature text-gray-400"></i>
+                </div>
+            </div>
 
-    <!-- Applicant's Full Name -->
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;">
-        Applicant's General Information
-    </h2>
-    <br>
-    <div class="form-group">
-        <label class="form-label">
-            <i class="fas fa-user"></i> Applicant's Full Name (First, Middle, Surname)<span class="required">*</span>
-        </label>
-        <div class="form-row">
-            {{ form.first_name|add_class:"form-control"|attr:"placeholder:First Name"|attr:"required" }}
             {% if form.first_name.errors %}
-                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.first_name.errors }}</small>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.first_name.errors }}
+            </small>
             {% endif %}
         </div>
-        <div class="form-row">
-            {{ form.middle_name|add_class:"form-control"|attr:"placeholder:Middle Name" }}
+
+        <div>
+            <div class="relative">
+                <input type="text" id="middle_name" name="middle_name" placeholder="Middle Name"
+                    value="{{ form.middle_name.value|default:'' }}"
+                    class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-signature text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Optional error display -->
             {% if form.middle_name.errors %}
-                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.middle_name.errors }}</small>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.middle_name.errors }}
+            </small>
             {% endif %}
+
         </div>
-        <div class="form-row">
-            {{ form.last_name|add_class:"form-control"|attr:"placeholder:Last Name"|attr:"required" }}
+
+        <div>
+            <div class="relative">
+                <input type="text" id="last_name" name="last_name" placeholder="Last Name"
+                    value="{{ form.last_name.value|default:'' }}" required
+                    class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-signature text-gray-400"></i>
+                </div>
+            </div>
+
             {% if form.last_name.errors %}
-                <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.last_name.errors }}</small>
+            <small class="text-red-500 text-xs mt-1 flex items-center">
+                <i class="fas fa-exclamation-circle mr-1"></i> {{ form.last_name.errors }}
+            </small>
             {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Date of Birth -->
+<div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+    <label class="form-label">
+        <i class="fas fa-calendar-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+        <span class="text-gray-800 dark:text-gray-200">Date of Birth</span>
+        <span class="text-red-500 ml-1">*</span>
+    </label>
+    <div>
+        <div class="relative mt-2">
+            <input type="date" id="dob" name="dob" required value="{{ form.dob.value|date:'Y-m-d' }}"
+                class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-birthday-cake text-gray-400"></i>
+            </div>
+        </div>
+
+        {% if form.dob.errors %}
+        <small class="text-red-500 text-xs mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i> {{ form.dob.errors }}
+        </small>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Gender -->
+<div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+    <label class="form-label">
+        <i class="fas fa-venus-mars mr-2 text-blue-600 dark:text-blue-400"></i>
+        <span class="text-gray-800 dark:text-gray-200">Gender</span>
+        <span class="text-red-500 ml-1">*</span>
+    </label>
+    <div class="relative mt-2">
+        <select id="gender" name="gender" required
+            class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+            <option value="" disabled selected>Select Gender</option>
+            {% for option in form.gender.field.choices %}
+            <option value="{{ option.0 }}" {% if form.gender.value == option.0%}selected{%endif%}>
+                {{ option.1 }}
+            </option>
+            {% endfor %}
+        </select>
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-user-tag text-gray-400"></i>
         </div>
     </div>
 
-    <!-- Date of Birth -->
-    <div class="form-group">
-        <label class="form-label">
-            <i class="fas fa-calendar-alt"></i> Date of Birth<span class="required">*</span>
-        </label>
-        {{ form.dob|add_class:"form-control"|attr:"required"|attr:"type:date" }}
-        {% if form.dob.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.dob.errors }}</small>
-        {% endif %}
+    {% if form.gender.errors %}
+    <small class="text-red-500 text-xs mt-1 flex items-center">
+        <i class="fas fa-exclamation-circle mr-1"></i> {{ form.gender.errors }}
+    </small>
+    {% endif %}
+</div>
+
+<!-- Nationality -->
+<div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+    <label class="form-label">
+        <i class="fas fa-flag mr-2 text-blue-600 dark:text-blue-400"></i>
+        <span class="text-gray-800 dark:text-gray-200">Country of Origin</span>
+        <span class="text-red-500 ml-1">*</span>
+    </label>
+    <div class="relative mt-2">
+        <select id="nationality" name="nationality" required
+            class="form-select pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50">
+            <option value="" disabled selected>Select Nationality</option>
+            {% for option in form.nationality.field.choices %}
+            <option value="{{ option.0 }}" {% if form.nationality.value == option.0%}selected{%endif %}>
+                {{ option.1 }}
+            </option>
+            {% endfor %}
+        </select>
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-globe-americas text-gray-400"></i>
+        </div>
     </div>
 
-    <!-- Gender -->
-    <div class="form-group">
-        <label class="form-label">
-            <i class="fas fa-venus-mars"></i> Gender<span class="required">*</span>
-        </label>
-        {{ form.gender|add_class:"form-control"|attr:"required" }}
-        {% if form.gender.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.gender.errors }}</small>
-        {% endif %}
+    {% if form.nationality.errors %}
+    <small class="text-red-500 text-xs mt-1 flex items-center">
+        <i class="fas fa-exclamation-circle mr-1"></i> {{ form.nationality.errors }}
+    </small>
+    {% endif %}
+
+</div>
+
+<!-- Place of Birth -->
+<div class="bg-white/80 dark:bg-gray-800/10 p-2 rounded-xl shadow-sm">
+    <label class="form-label">
+        <i class="fas fa-map-marker-alt mr-2 text-blue-600 dark:text-blue-400"></i>
+        <span class="text-gray-800 dark:text-gray-200">Region of Birth</span>
+        <span class="text-red-500 ml-1">*</span>
+    </label>
+
+    <div class="relative">
+        <input type="text" id="place_of_birth" name="place_of_birth" value="{{ form.place_of_birth.value|default:'' }}"
+            placeholder="Place of birth" required
+            class="form-input pl-10 w-full rounded-lg px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50" />
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-signature text-gray-400"></i>
+        </div>
     </div>
 
-    <!-- Nationality -->
-    <div class="form-group">
-        <label class="form-label">
-            <i class="fas fa-flag"></i> Country of Origin<span class="required">*</span>
-        </label>
-        {{ form.nationality|add_class:"form-control"|attr:"required" }}
-        {% if form.nationality.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.nationality.errors }}</small>
-        {% endif %}
-    </div>
+    {% if form.place_of_birth.errors %}
+    <small class="text-red-500 text-xs mt-1 flex items-center">
+        <i class="fas fa-exclamation-circle mr-1"></i> {{ form.place_of_birth.errors }}
+    </small>
+    {% endif %}
+</div>
 
-    <!-- Place of Birth -->
-    <div class="form-group">
-        <label class="form-label">
-            <i class="fas fa-map-marker-alt"></i> Region of Birth<span class="required">*</span>
-        </label>
-        {{ form.place_of_birth|add_class:"form-control"|attr:"required" }}
-        {% if form.place_of_birth.errors %}
-            <small class="error-text"><i class="fas fa-exclamation-circle"></i> {{ form.place_of_birth.errors }}</small>
-        {% endif %}
-    </div>
+<!-- Navigation Buttons -->
+<!-- Navigation Buttons -->
+<hr class="my-4 border-gray-600/20" />
+<div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+    <a href="{{ previous_url }}"
+        class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back</span>
+    </a>
 
-    <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <button type="submit" class="btn btn-primary">
-            Save & Continue <i class="fas fa-arrow-right"></i>
-        </button>
-    </div>
+    <button type="submit"
+        class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+        <span>Save & Continue</span>
+        <i class="fas fa-arrow-right"></i>
+    </button>
+</div>
+
 </form>
 {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/general_info.js' %}"></script>
-{% endblock %}
+{% block info_hints %}
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-user mr-2 text-secondary"></i> Full Name
+    </h4>
+    <p class="text-gray-300 text-base">
+        Enter your full name as it appears on official documents.
+    </p>
+    <ul class="mt-2 space-y-1 text-sm text-gray-300">
+        <li><i class="fas fa-circle text-xs mr-2 text-secondary"></i> First Name: Your given
+            name</li>
+        <li><i class="fas fa-circle text-xs mr-2 text-secondary"></i> Middle Name: Optional</li>
+        <li><i class="fas fa-circle text-xs mr-2 text-secondary"></i> Last Name: Family name
+        </li>
+    </ul>
+</div>
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-calendar-day mr-2 text-secondary"></i> Date of Birth
+    </h4>
+    <p class="text-gray-300 text-base">
+        Enter your date of birth in the format <strong>DD/MM/YYYY</strong>.
+    </p>
+</div>
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-venus-mars mr-2 text-secondary"></i> Gender
+    </h4>
+    <p class="text-gray-300 text-base">
+        Select your gender from the dropdown menu. This information is required for
+        identification purposes.
+    </p>
+</div>
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-globe-africa mr-2 text-secondary"></i> Country of Origin
+    </h4>
+    <p class="text-gray-300 text-base">
+        From the dropdown menu, please select the country you hold citizenship in.
+    </p>
+</div>
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-map-marked-alt mr-2 text-secondary"></i> Place of Birth
+    </h4>
+    <p class="text-gray-300 text-base">
+        Enter the city/region where you were born.
+    </p>
+</div>
+
+<div class="bg-primary-dark/30 p-4 rounded-lg">
+    <h4 class="font-bold text-white mb-2">
+        <i class="fas fa-check-double mr-2 text-secondary"></i> Double-Check
+    </h4>
+    <p class="text-gray-300 text-base">
+        Review all entries for accuracy before proceeding to the next section.
+    </p>
+</div>
+
+{% endblock%}

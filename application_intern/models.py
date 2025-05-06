@@ -192,6 +192,7 @@ class ApplicationIntern(models.Model):
     o_level_school_transcripts = models.FileField(upload_to=user_upload_path)
     official_id = models.FileField(upload_to=user_upload_path)
     supps = models.FileField(upload_to=user_upload_path, blank=True, null=True)
+    consider_cohort = models.BooleanField(default=False)
     signature  = models.CharField(max_length=500)
     signdate = models.DateField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)

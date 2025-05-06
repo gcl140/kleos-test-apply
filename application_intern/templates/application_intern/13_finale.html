@@ -1,277 +1,320 @@
-{% extends 'application_intern/shared_form_base.html' %}
+{% extends 'application_intern/besi.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% load static %}
 
 {% block title %}Document Submission{% endblock %}
 
-{% block info_title %}Document Submission{% endblock %}
+{% block info_title %}Document Submission & Signature{% endblock %}
 
 {% block info_description %}
-This section allows you to submit important documents required for your application. Providing accurate and complete
-documentation is essential for the evaluation of your application.
-<p>
-    <strong>Note:</strong> Fields marked with an asterisk (<span class="required">*</span>) are mandatory.
-</p>
+<div class="text-gray-300 mb-6">
+    <p>
+        This section allows you to submit important documents required for your application.
+        <strong class="text-white">
+            Providing accurate and complete documentation is essential for the evaluation of your application.
+        </strong>
+    </p>
+</div>
+
+<div class="text-gray-300 mb-6">
+    <p>
+        <strong>Note:</strong> Fields marked with <span class="required">*</span> are mandatory.
+    </p>
+</div>
 {% endblock %}
 
 {% block info_hints %}
-<li>Ensure all documents are legible and clearly labeled.</li>
-<li>For preliminary results, a screenshot with highlighted results is acceptable if the original slip is unavailable.
-</li>
-<li>Optional documents such as high school transcripts can enhance your application but are not mandatory.</li>
-<li>If you are under 18 and do not have an official ID, ensure that your leaving certificate meets the specified
-    requirements.</li>
-<li>Review all entries and document uploads for accuracy before submission.</li>
+<div class="space-y-4">
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-file-alt mr-2 text-secondary"></i> Document Legibility
+        </h4>
+        <p class="text-gray-300 text-base">
+            Ensure all documents are legible and clearly labeled, and avoid overly long file names.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-check-circle mr-2 text-secondary"></i> Preliminary Results
+        </h4>
+        <p class="text-gray-300 text-base">
+            For preliminary results, a screenshot with highlighted results is acceptable if the original slip is unavailable.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-file-upload mr-2 text-secondary"></i> Optional Documents
+        </h4>
+        <p class="text-gray-300 text-base">
+            Optional documents such as supplemental school awards and certificates can enhance your application but are not mandatory.
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-id-card mr-2 text-secondary"></i> Identification Requirements
+        </h4>
+        <p class="text-gray-300 text-base">
+            If you are under 18 and do not have an official ID, ensure that your leaving certificate meets the specified requirements.
+        </p>
+    </div>
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-tools mr-2 text-secondary"></i> Managing PDFs
+        </h4>
+        <p class="text-gray-300 text-base">
+            If you need to manage your PDFs—such as merging pages, compressing files, and more—you can use this
+<a href='https://www.ilovepdf.com/' target='_blank' class='underline text-blue-300 hover:text-blue-200'>website</a>
+        </p>
+    </div>
+
+    <div class="bg-primary-dark/30 p-4 rounded-lg">
+        <h4 class="font-bold text-white mb-2">
+            <i class="fas fa-search mr-2 text-secondary"></i> Review Before Submission
+        </h4>
+        <p class="text-gray-300 text-base">
+            Review all entries and document uploads for accuracy before submission.
+        </p>
+    </div>
+</div>
 {% endblock %}
+
 {% block form_content %}
-<style>
-    .required{
-        color: rgb(255, 144, 144) !important;
-    }
-    small i {
-        font-size: small !important;
-    }
-    .mb-4{
-        color: white ;
-    }
-    a {
-        color: wheat;
-    }
-</style>
+
+
 <form method="POST" enctype="multipart/form-data" class="form-container">
     {% csrf_token %}
-    <!-- Preliminary CSEE Results -->
-    <div class="mb-4" >
-        <p class="form-label">
+    
+    <!-- Financial Aid Application -->
 
-        <h2>Financial Aid Application</h2>
-        <p>
-            Click <button type="button" id="finf" onclick=financed()
-                style="cursor: pointer; color: var(--tansaf-blue);border: none; background-color: rgba(128, 128, 128, 0);">here</button>
+    <div class="document-section mt-6">   
+             <h2 class="text-xl font-semibold text-secondary mb-4">Financial Aid Application</h2>
+        <p class="text-gray-300 mb-4">
+            Click <button type="button" class="text-blue-400 underline hover:text-blue-300" onclick="financed()">here</button>
             to download the family financial form, follow the instructions, and be sure to attach the completed final version and supporting financial documents below.
         </p>
-        <i class="fas fa-cash me-2"></i>
-        <p class="form-label">
-            <i class="fa-solid fa-money-check-dollar"></i>
-
-            Upload the completed final version and any additional financial documents here<span class="required">*</span>
-        </p>
-
-        </p>
-        {{ form.financial|add_class:"form-control" }}
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-money-check-dollar mr-2 text-blue-400"></i>
+            Upload the completed final version and any additional financial documents here<span class="text-red-400">*</span>
+        </label>
+        {{ form.financial|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.financial.errors %}
-        <div class="text-danger">{{ form.financial.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.financial.errors }}</div>
         {% endif %}
     </div>
-    <div class="mb-4" >
-        <p class="form-label">
-        <h2>Recommendations</h2>
-        <p>
-            Please upload two (2) signed and stamped teacher recommendations.<span class="required">*</span>
+    
+    <!-- Recommendations -->
 
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">Recommendations</h2>
+        <p class="text-gray-300 mb-4">
+            Please upload two (2) signed and stamped teacher recommendations.<span class="text-red-400">*</span>
         </p>
-        <br>
-        </p>
-        <p class="form-label">
-            <i class="fas fa-file-signature me-2"></i>
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-signature mr-2 text-blue-400"></i>
             Recommendation Letter 1
-        </p>
-        {{ form.rec_letter1|add_class:"form-control" }}
+        </label>
+        {{ form.rec_letter1|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.rec_letter1.errors %}
-        <div class="text-danger">{{ form.rec_letter1.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.rec_letter1.errors }}</div>
         {% endif %}
-
-        <br>
-
-        <p class="form-label">
-            <i class="fas fa-file-signature me-2"></i>
+        
+        <label class="block text-white mt-4 mb-2">
+            <i class="fas fa-file-signature mr-2 text-blue-400"></i>
             Recommendation Letter 2
-        </p>
-        {{ form.rec_letter2|add_class:"form-control" }}
+        </label>
+        {{ form.rec_letter2|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.rec_letter2.errors %}
-        <div class="text-danger">{{ form.rec_letter2.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.rec_letter2.errors }}</div>
         {% endif %}
     </div>
-    <div class="mb-4" >
-        <p class="form-label">
+    
+    <!-- O-Level Certification -->
 
-        <h2>O-Level Certification</h2>
-        <p>If you took the Cambridge curriculum for your O Levels, upload your IGCSE results certificate.
-                    If you took the NECTA curriculum for your O Levels, upload your CSEE certificate.
-                    If you followed the International Baccalaureate (IB) curriculum, upload your Middle Years Program (MYP) certificate.
-            <br>
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">O-Level Certification</h2>
+        <p class="text-gray-300 mb-4">
+            If you took the Cambridge curriculum for your O Levels, upload your IGCSE results certificate.
+            If you took the NECTA curriculum for your O Levels, upload your CSEE certificate.
+            If you followed the International Baccalaureate (IB) curriculum, upload your Middle Years Program (MYP) certificate.
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-file-alt me-2"></i>
-            
-            Upload the certificate and/or results here
-            <span class="required">*</span>
-        </p>
-        {{ form.olv_certificates|add_class:"form-control" }}
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-alt mr-2 text-blue-400"></i>
+            Upload the certificate and/or results here<span class="text-red-400">*</span>
+        </label>
+        {{ form.olv_certificates|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.olv_certificates.errors %}
-        <div class="text-danger">{{ form.olv_certificates.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.olv_certificates.errors }}</div>
         {% endif %}
     </div>
-    <div class="mb-4" >
-        <p class="form-label">
+    
+    <!-- A-Level Certification -->
 
-            <h2>
-                A-Level Certification</h2>
-            <p>
-                    For Cambridge students, please upload your AS Level results certificate. If available, you may also upload a copy of your predicted A-level grades.
-                        For NECTA students, please upload your A-Level results slip if available.
-                        For International Baccalaureate (IB) students, please upload your most recent IB scores if available.
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">A-Level Certification</h2>
+        <p class="text-gray-300 mb-4">
+            For Cambridge students, please upload your AS Level results certificate. If available, you may also upload a copy of your predicted A-level grades.
+            For NECTA students, please upload your A-Level results slip if available.
+            For International Baccalaureate (IB) students, please upload your most recent IB scores if available.
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-file-alt me-2"></i>
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-alt mr-2 text-blue-400"></i>
             Upload the certificate and/or results here
-
-        </p>
-
-        {{ form.adv_certificates|add_class:"form-control" }}
+        </label>
+        {{ form.adv_certificates|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.adv_certificates.errors %}
-        <div class="text-danger">{{ form.adv_certificates.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.adv_certificates.errors }}</div>
         {% endif %}
     </div>
-    <div class="mb-4" >
-        <p class="form-label">
+    
+    <!-- O-Level School Transcripts -->
 
-        <h2>O-Level School Transcripts </h2>
-        <p>
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">O-Level School Transcripts</h2>
+        <p class="text-gray-300 mb-4">
             Please upload your school transcripts for Grades 9 and Grade 10, which are equivalent to Form 3 and 4. For IB students, please provide your school reports for the entire Middle Years program.
-
-            <!-- Please upload your school transcripts. (Recommended: Form 3-Form 6/Grade 9-Grade 12; to merge the PDF documents for O'level and A'level, you could use this <a href="https://www.ilovepdf.com/merge_pdf">website</a>. )<span class="required">*</span> -->
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-file-alt me-2"></i>
-            Upload the transcripts of your results here
-            <span class="required">*</span>
-
-        </p>
-        {{ form.o_level_school_transcripts|add_class:"form-control" }}
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-alt mr-2 text-blue-400"></i>
+            Upload the transcripts of your results here<span class="text-red-400">*</span>
+        </label>
+        {{ form.o_level_school_transcripts|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.o_level_school_transcripts.errors %}
-        <div class="text-danger">{{ form.o_level_school_transcripts.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.o_level_school_transcripts.errors }}</div>
         {% endif %}
     </div>
+    
+    <!-- A-Level School Transcripts -->
 
-    <div class="mb-4" >
-        <p class="form-label">
-
-        <h2>A-Level School Transcripts</h2>
-        <p>
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">A-Level School Transcripts</h2>
+        <p class="text-gray-300 mb-4">
             Please upload your school transcripts for Grades 12 and 13, which are equivalent to Form 5 and 6. For IB students, please provide your school reports for the entire Diploma Programme.
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-file-alt me-2"></i>
-            Upload the transcripts of your results here
-            <span class="required">*</span>
-        </p>
-
-        {{ form.a_level_school_transcripts|add_class:"form-control" }}
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-alt mr-2 text-blue-400"></i>
+            Upload the transcripts of your results here<span class="text-red-400">*</span>
+        </label>
+        {{ form.a_level_school_transcripts|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.a_level_school_transcripts.errors %}
-        <div class="text-danger">{{ form.a_level_school_transcripts.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.a_level_school_transcripts.errors }}</div>
         {% endif %}
     </div>
-    <div class="mb-4" >
-        <p class="form-label">
+    
+    <!-- Identification Documents -->
 
-        <h2>Identification Documents (ID)</h2>
-        <p>
-            Please upload an official photo ID (such as a National ID, passport, driver's license, voting ID, or school ID). If you are under 18 or do not have any of the listed IDs, a leaving certificate with an attached school-stamped photo will be accepted. The stamp must cover part of the photo and part of the certificate.<span class="required">*</span>
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">Identification Documents (ID)</h2>
+        <p class="text-gray-300 mb-4">
+            Please upload an official photo ID (such as a National ID, passport, driver's license, voting ID, or school ID). If you are under 18 or do not have any of the listed IDs, a leaving certificate with an attached school-stamped photo will be accepted. The stamp must cover part of the photo and part of the certificate.<span class="text-red-400">*</span>
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-id-card me-2"></i>
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-id-card mr-2 text-blue-400"></i>
             Upload your identification document here
-        </p>
-
-        {{ form.official_id|add_class:"form-control" }}
+        </label>
+        {{ form.official_id|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.official_id.errors %}
-        <div class="text-danger">{{ form.official_id.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.official_id.errors }}</div>
         {% endif %}
     </div>
+    
+    <!-- Supplemental Materials -->
 
-    <div class="mb-4" >
-        <p class="form-label">
-
-        <h2>Supplemental Materials</h2>
-        <p>
+    <hr class="my-4 border-gray-600/20" />
+    <div class="document-section mt-6">        <h2 class="text-xl font-semibold text-secondary mb-4">Supplemental Materials</h2>
+        <p class="text-gray-300 mb-4">
             If you have any supplemental materials you wish to submit with your application, 
             feel free to do so. These may include, but are not limited to, creative writings, 
             art portfolios, scholarly articles, research papers, presentations, performances, etc.
         </p>
-        <br>
-        <p class="form-label">
-            <i class="fas fa-file-upload me-2"></i>
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-file-upload mr-2 text-blue-400"></i>
             Upload your supplemental materials here
-        </p>
-
-        {{ form.supps|add_class:"form-control" }}
+        </label>
+        {{ form.supps|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600" }}
         {% if form.supps.errors %}
-        <div class="text-danger">{{ form.supps.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.supps.errors }}</div>
         {% endif %}
     </div>
-    <br>
-    
-    <h2 class="text-center text-secondary my-4" style="margin: auto; color: white;
-    border-top: 1px solid rgb(255 255 255 / 10%);">
-        <br>
-        SUBMISSION
-    </h2>
-    <div class="mb-4" >
-        <b>
-            <span class="form-label" style="font-family: 'Times New Roman', Times, serif;
-             font-style: italic;">
-             By submitting this application to TanSAF, I certify that the information provided is truthful and my own. I understand that providing false or misleading information will result in disqualification and if discovered after admission, may lead to expulsion from the program. (Please write your full name in all capital letters instead of signing.)
+    <div class="bg-white/80 dark:bg-gray-800/10 p-4 rounded-xl shadow-sm">
+        <h3 class="text-lg font-semibold mb-4 text-secondary flex items-center gap-2">
+            <i class="fas fa-exclamation-triangle"></i>
+            Cohort Position
+        </h3>
+        
+        <label class="checkbox-label">
+            {{ form.consider_cohort|add_class:"form-checkbox h-5 w-5 text-primary-500 rounded focus:ring-primary-500" }}
+            <span>If in case, you happen to not qualify as an intern, would you like your application to also be considered for the TanSAF cohort? <em>(Checking this box means YES. Leaving it unchecked means NO.)</em>
             </span>
-        </b><br>
-        <p class="form-label">
-            <i class="fas fa-signature me-2"></i>
-            Signature (Full Name in CAPITAL LETTERS)<span class="required">*</span>
-        </p>
-        {{ form.signature|add_class:"form-control"|attr:"style:text-transform: uppercase;" }}
-        {% if form.signature.errors %}
-        <div class="text-danger">{{ form.signature.errors }}</div>
-        {% endif %}
+        </label>
 
-        <p class="form-label mt-3">
-            <i class="fas fa-calendar me-2"></i>
-            Date<span class="required">*</span>
+    </div>
+    <!-- Submission Section -->
+    <div class="border-t border-gray-600 pt-8 mt-8">
+        <h2 class="text-center text-secondary text-xl font-semibold mb-6">SUBMISSION</h2>
+        
+        <p class="italic text-white mb-6">
+            By submitting this application to TanSAF, I certify that the information provided is truthful and my own. I understand that providing false or misleading information will result in disqualification and if discovered after admission, may lead to expulsion from the program. (Please write your full name in all capital letters instead of signing.)
         </p>
-        {{ form.signdate|add_class:"form-control"|attr:"type:date" }}
+        
+        <label class="block text-white mb-2">
+            <i class="fas fa-signature mr-2 text-blue-400"></i>
+            Signature (Full Name in CAPITAL LETTERS)<span class="text-red-400">*</span>
+        </label>
+        {{ form.signature|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 uppercase" }}
+        {% if form.signature.errors %}
+        <div class="text-red-400 mt-1">{{ form.signature.errors }}</div>
+        {% endif %}
+        
+        <label class="block text-white mt-4 mb-2">
+            <i class="fas fa-calendar mr-2 text-blue-400"></i>
+            Date<span class="text-red-400">*</span>
+        </label>
+        {{ form.signdate|add_class:"w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"|attr:"type:date" }}
         {% if form.signdate.errors %}
-        <div class="text-danger">{{ form.signdate.errors }}</div>
+        <div class="text-red-400 mt-1">{{ form.signdate.errors }}</div>
         {% endif %}
     </div>
-
+    
     <!-- Navigation Buttons -->
-    <div class="button-group">
-        <a href="{{ previous_url }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back
-        </a>
-        <button type="submit" class="btn btn-primary">
-            Save & Preview
-            <!-- <i class="fas fa-arrow-right"></i> -->
-            <i class="fas fa-eye"></i> 
+    <hr class="my-4 border-gray-600/20" />
 
+    <div class="flex flex-col sm:flex-row justify-between items-stretch gap-4 pt-8">
+        <a href="{{ previous_url }}"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-light text-white rounded-xl shadow hover:bg-primary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
+        </a>
+    
+        <button type="submit" id="next-button"
+            class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-secondary-light text-white rounded-xl shadow hover:bg-secondary-dark hover:shadow-blue-500/30 transition-all duration-300">
+            <span>Save & Preview</span>
+            <i class="fas fa-eye"></i>
         </button>
     </div>
 </form>
 
- <script>
+<script>
     function financed() { 
-        const pdfUrl = 'https://drive.google.com/file/d/1umx1rz9leapkGDQsNb9X99fRQnnxZpvT/view?usp=sharing'; // Adjust file path as needed
+        const pdfUrl = 'https://drive.google.com/file/d/1umx1rz9leapkGDQsNb9X99fRQnnxZpvT/view?usp=sharing';
         const link = document.createElement('a');
         link.href = pdfUrl;
+        link.target = '_blank';
         link.download = 'International_Financial_Aid_Form.pdf';
-        document.body.appendChild(link); // Append to body to make it work in all browsers
+        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link); // Clean up after download
+        document.body.removeChild(link);
     }
 </script>
 

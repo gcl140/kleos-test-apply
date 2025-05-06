@@ -671,23 +671,14 @@ Extracurricular Activities
                                         <td class="info-label">Has taken a standardized test:</td>
                                         <td class="info-response">{{ application.sat_for_sat }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_type %}
                                     <tr>
                                         <td class="info-label">Standardized test Type:</td>
                                         <td class="info-response">{{ application.sat_type }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_score %}
                                     <tr>
                                         <td class="info-label">Standardized test score:</td>
                                         <td class="info-response">{{ application.sat_score }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.sat_date %}
                                     <tr>
                                         <td class="info-label">Standardized test Date:</td>
                                         <td class="info-response">{{ application.sat_date }}</td>
@@ -699,23 +690,14 @@ Extracurricular Activities
                                         <td class="info-label">Has taken English Proficiency Test:</td>
                                         <td class="info-response">{{ application.sat_for_eng }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_type %}
                                     <tr>
                                         <td class="info-label">English Test Type:</td>
                                         <td class="info-response">{{ application.eng_type }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_score %}
                                     <tr>
                                         <td class="info-label">English Test Score:</td>
                                         <td class="info-response">{{ application.eng_score }}</td>
                                     </tr>
-                                    {% endif %}
-
-                                    {% if application.eng_date %}
                                     <tr>
                                         <td class="info-label">English Test Date:</td>
                                         <td class="info-response">{{ application.eng_date }}</td>
@@ -996,6 +978,10 @@ Essays
                                                 target="_blank">View File</a></td>
                                     </tr>
                                     {% endif %}
+                                    <tr>
+                                        <td class="info-label">Considered for cohort?</td>
+                                        <td class="info-response">{{ application.consider_cohort }}</td>
+                                    </tr>
                                     <tr>
                                         <td class="info-label">Agreed to the terms and conditions?</td>
                                         <td class="info-response">{{ application.agreed }}</td>

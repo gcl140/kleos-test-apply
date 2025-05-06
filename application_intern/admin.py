@@ -67,7 +67,7 @@ class ApplicationInternAdmin(admin.ModelAdmin):
         }),
         ('Files and Signature', {
             'fields': ('financial', 'rec_letter1', 'rec_letter2', 'adv_certificates', 'olv_certificates', 'a_level_school_transcripts',
-                       'o_level_school_transcripts', 'official_id', 'supps', 'signature', 'signdate')
+                       'o_level_school_transcripts', 'official_id', 'supps','consider_cohort', 'signature', 'signdate')
         }),
     )
 
