@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TanSAF - Preview</title>
+    <title>{{application.user.get_full_name}} - Preview</title>
     
     <!-- Google Fonts - Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -645,6 +645,12 @@ Extracurricular Activities
                                     <tr>
                                         <td class="info-label">Form 4 Holiday Details:</td>
                                         <td class="info-response">{{ application.form4_holiday }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if application.soc_challenge %}
+                                    <tr>
+                                        <td class="info-label">Society Challenge:</td>
+                                        <td class="info-response">{{ application.soc_challenge }}</td>
                                     </tr>
                                     {% endif %}
                                     {% if application.sat_for_sat %}

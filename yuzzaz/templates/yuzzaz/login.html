@@ -271,7 +271,7 @@
             right: 1rem;
             z-index: 1100;
             min-width: 300px;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0);
         }
         
         .toast-custom {
@@ -335,6 +335,34 @@
             from { width: 100%; }
             to { width: 0%; }
         }
+
+
+        /* Add this to your CSS */
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Optional: Fade out animation when closing */
+.toast {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* If you want the toasts to stack vertically with some spacing */
+.toast-container > .toast {
+    margin-bottom: 0.75rem;
+}
+
+/* If you want a bounce effect when appearing */
+@keyframes bounceIn {
+    0% { transform: translateX(100%) scale(0.7); opacity: 0; }
+    70% { transform: translateX(0) scale(1.05); }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.toast.show {
+    animation: bounceIn 0.5s ease-out;
+}
         
         /* Responsive Adjustments */
         @media (max-width: 991.98px) {
@@ -491,6 +519,7 @@
                         <button type="submit" class="btn btn-custom mt-4">
                             <span>Sign In</span>
                         </button>
+                        
                     
                         <div class="form-footer mt-3 text-center">
                             <p>Don't have an account?</p>
@@ -504,32 +533,51 @@
                                 </ul>
                             </div>
                         </div>
+                        <!-- Support Notice -->
+                        <div class="alert alert-info mt-3 text-sm" role="alert">
+                            <strong>Having trouble logging in?</strong> If you've just registered and are unable to access your account, please 
+                            <a href="mailto:gftinity01@gmail.com?subject=Trouble%20accessing%20my%20TANSAF%20account&body=Hello%20TANSAF%20Support%2C%0A%0AI%20recently%20registered%20on%20the%20platform%2C%20but%20I'm%20having%20issues%20logging%20in.%20I'm%20using%20the%20email%3A%20[insert%20your%20email%20here].%0A%0APlease%20assist.%0A%0AThank%20you." 
+                               class="text-decoration-underline fw-semibold">
+                               contact our support team
+                            </a> using the <b> same</b> email you registered with.
+                        </div>
                     </form>
                     
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Toast Messages -->
     {% if messages %}
-    <div class="toast-container">
+    <div class="toast-container position-fixed top-4 end-0" style="z-index: 1100; margin-right: 5px;">
         {% for message in messages %}
-        <div class="toast toast-custom show {% if message.tags %}toast-{{ message.tags }}{% endif %}" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header-custom d-flex justify-content-between">
-                <div class="toast-body-custom">
+        <div class="toast align-items-center text-white border-0 show
+            {% if message.tags == 'success' %}bg-success
+            {% elif message.tags == 'error' %}bg-danger
+            {% elif message.tags == 'warning' %}bg-warning
+            {% elif message.tags == 'info' %}bg-info
+            {% else %}bg-primary{% endif %}"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            
+            <div class="d-flex">
+                <div class="toast-body">
                     {{ message }}
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-progress">
-                <div class="progress-bar-custom {% if message.tags == 'success' %}bg-success{% elif message.tags == 'error' %}bg-danger{% elif message.tags == 'warning' %}bg-warning{% elif message.tags == 'info' %}bg-info{% else %}bg-primary{% endif %}"></div>
+            <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated 
+                    {% if message.tags == 'success' %}bg-white
+                    {% elif message.tags == 'error' %}bg-white
+                    {% elif message.tags == 'warning' %}bg-dark
+                    {% elif message.tags == 'info' %}bg-dark
+                    {% else %}bg-light{% endif %}"
+                    style="width: 100%; animation: progress 5s linear forwards;"></div>
             </div>
         </div>
         {% endfor %}
     </div>
     {% endif %}
-
+    
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     

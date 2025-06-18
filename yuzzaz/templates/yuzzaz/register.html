@@ -246,14 +246,14 @@
             color: #495057;
             font-size: 0.9rem;
         }
-        
-        /* Toast Messages */
-        .toast-container {
+                /* Toast Messages */
+                .toast-container {
             position: fixed;
             top: 1rem;
             right: 1rem;
             z-index: 1100;
             min-width: 300px;
+            background-color: rgba(255, 255, 255, 0);
         }
         
         .toast-custom {
@@ -290,11 +290,6 @@
             border-left-color: #17a2b8;
             background-color: rgba(23, 162, 184, 0.1);
         }
-        .nav-item{
-            margin-bottom: 0.5em;
-            /* border-bottom: 1px solid rgba(128, 128, 128, 0.219); */
-        }
-        
         
         .toast-header-custom {
             background-color: transparent;
@@ -322,7 +317,35 @@
             from { width: 100%; }
             to { width: 0%; }
         }
-        
+
+
+        /* Add this to your CSS */
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Optional: Fade out animation when closing */
+.toast {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* If you want the toasts to stack vertically with some spacing */
+.toast-container > .toast {
+    margin-bottom: 0.75rem;
+}
+
+/* If you want a bounce effect when appearing */
+@keyframes bounceIn {
+    0% { transform: translateX(100%) scale(0.7); opacity: 0; }
+    70% { transform: translateX(0) scale(1.05); }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.toast.show {
+    animation: bounceIn 0.5s ease-out;
+}
+
         /* Responsive Adjustments */
         @media (max-width: 991.98px) {
             .carousel-container {
@@ -542,17 +565,30 @@
 
     <!-- Toast Messages -->
     {% if messages %}
-    <div class="toast-container">
+    <div class="toast-container position-fixed top-4 end-0" style="z-index: 1100; margin-right: 5px;">
         {% for message in messages %}
-        <div class="toast toast-custom show {% if message.tags %}toast-{{ message.tags }}{% endif %}" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header-custom d-flex justify-content-between">
-                <div class="toast-body-custom">
+        <div class="toast align-items-center text-white border-0 show
+            {% if message.tags == 'success' %}bg-success
+            {% elif message.tags == 'error' %}bg-danger
+            {% elif message.tags == 'warning' %}bg-warning
+            {% elif message.tags == 'info' %}bg-info
+            {% else %}bg-primary{% endif %}"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            
+            <div class="d-flex">
+                <div class="toast-body">
                     {{ message }}
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-progress">
-                <div class="progress-bar-custom {% if message.tags == 'success' %}bg-success{% elif message.tags == 'error' %}bg-danger{% elif message.tags == 'warning' %}bg-warning{% elif message.tags == 'info' %}bg-info{% else %}bg-primary{% endif %}"></div>
+            <div class="progress bg-white bg-opacity-25" style="height: 4px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated 
+                    {% if message.tags == 'success' %}bg-white
+                    {% elif message.tags == 'error' %}bg-white
+                    {% elif message.tags == 'warning' %}bg-dark
+                    {% elif message.tags == 'info' %}bg-dark
+                    {% else %}bg-light{% endif %}"
+                    style="width: 100%; animation: progress 5s linear forwards;"></div>
             </div>
         </div>
         {% endfor %}

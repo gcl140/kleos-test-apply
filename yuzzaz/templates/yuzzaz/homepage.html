@@ -1,7 +1,3 @@
-
-
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +110,18 @@
       <div class="max-w-4xl mx-auto text-center mb-12">
         <!-- Info Alerts -->
         <div class="space-y-3 mb-8">
+        
+<!-- Info 3: Deadline warning with countdown -->
+<div class="bg-primary-light/20 border-l-4 border-red-500 p-4 text-left rounded-r-lg mb-4">
+  <div class="flex items-start">
+    <i class="fas fa-exclamation-triangle text-red-500 mt-1 mr-3"></i>
+    <p class="text-sm">
+      The deadline for regular consideration is approaching: <strong>June 26th</strong>.
+      <span id="countdown" class="font-semibold text-red-600 ml-1"></span>
+    </p>
+  </div>
+</div>
+
           <div class="bg-primary-light/20 border-l-4 border-secondary-light p-4 text-left rounded-r-lg">
             <div class="flex items-start">
               <i class="fas fa-circle-info text-secondary-light mt-1 mr-3"></i>
@@ -123,12 +131,50 @@ For example, to apply for an internship, register under "Apply as an intern" to 
 If you already have an account, logging in will take you directly to the saved progress of the application type you initially registered for.              </p>
             </div>
           </div>
-          <div class="bg-primary-light/20 border-l-4 border-secondary-light p-4 text-left rounded-r-lg">
-            <div class="flex items-start">
-              <i class="fas fa-circle-info text-secondary-light mt-1 mr-3"></i>
-              <p class="text-sm">Interns are also members of the senior cohort program, with the added responsibility of supporting office operations.</p>
-            </div>
-          </div>
+          
+
+<!-- Info 2: Account creation instructions -->
+<div class="bg-primary-light/20 border-l-4 border-secondary-light p-4 text-left rounded-r-lg mb-4">
+  <div class="flex items-start">
+    <i class="fas fa-circle-info text-secondary-light mt-1 mr-3"></i>
+    <p class="text-sm">
+      When creating an account, first choose your application type (Intern or Senior Cohort), then enter your credentials. Ensure your email is <strong> valid, accessible, and active </strong>. A confirmation code will be sent to it, and click the "Activate Account" link in that email to complete registration. Only then can you log in using the email and password you registered with.
+    </p>
+  </div>
+</div>
+
+<!-- Info 1: Intern note -->
+<div class="bg-primary-light/20 border-l-4 border-secondary-light p-4 text-left rounded-r-lg mb-4">
+  <div class="flex items-start">
+    <i class="fas fa-circle-info text-secondary-light mt-1 mr-3"></i>
+    <p class="text-sm">
+      Interns are also members of the senior cohort program, with the added responsibility of supporting office operations.
+    </p>
+  </div>
+</div>
+<!-- Countdown script -->
+<script>
+  const deadline = new Date("2025-06-26T23:59:59").getTime();
+  const countdownElem = document.getElementById("countdown");
+
+  const interval = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = deadline - now;
+
+    if (distance < 0) {
+      clearInterval(interval);
+      countdownElem.innerText = "Deadline passed.";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    
+    countdownElem.innerText = `(${days}d ${hours}h ${minutes}m left)`;
+  }, 1000);
+</script>
+
 
           <!--<div class="bg-primary-light/20 border-l-4 border-secondary-light p-4 text-left rounded-r-lg">-->
           <!--  <div class="flex items-start">-->

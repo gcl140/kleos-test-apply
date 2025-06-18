@@ -1,3 +1,4 @@
+from django.db.models import Q
 from application_cohort.views import get_application_for_cohort, get_form_progress_data
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -686,16 +687,100 @@ def preview_application_view(request):
 def application_submitted_view(request):
     return render(request, 'application_intern/application_submitted.html')
 
+# @login_required
+# @user_passes_test(is_staff_user)
+# def view_all_applications(request):
+#     cohort_applications = list(ApplicationCohort.objects.all())
+#     intern_applications = list(ApplicationIntern.objects.all())
+#     applications = cohort_applications + intern_applications
+#     applications_sorted = sorted(applications, key=lambda app: app.user.first_name.lower())
+
+#     context = {
+#         'applications': applications_sorted,
+#     }
+#   #  context = {
+#  #       'applications': applications,
+#   #      }
+#     return render(request, 'application_intern/view_all_applications.html', context)
+
+# @login_required
+# @user_passes_test(is_staff_user)
+# def view_all_applications(request):
+#     query = request.GET.get('q')
+
+#     if query:
+#         cohort_applications = ApplicationCohort.objects.filter(
+#             Q(first_name__icontains=query) |
+#             Q(middle_name__icontains=query) |
+#             Q(last_name__icontains=query) |
+#             Q(residency__icontains=query) |
+#             Q(email1__icontains=query) |
+#             Q(adv_school_name__icontains=query) |
+#             Q(email2__icontains=query)
+#         )
+#         intern_applications = ApplicationIntern.objects.filter(
+#             Q(first_name__icontains=query) |
+#             Q(middle_name__icontains=query) |
+#             Q(last_name__icontains=query) |
+#             Q(residency__icontains=query) |
+#             Q(email1__icontains=query) |
+#             Q(adv_school_name__icontains=query) |
+#             Q(email2__icontains=query)
+#         )
+#     else:
+#         cohort_applications = ApplicationCohort.objects.all()
+#         intern_applications = ApplicationIntern.objects.all()
+
+#     applications = list(cohort_applications) + list(intern_applications)
+#     applications_sorted = sorted(applications, key=lambda app: app.user.first_name.lower())
+
+#     context = {
+#         'applications': applications_sorted,
+#         'query': query,
+#     }
+#     return render(request, 'application_intern/view_all_applications.html', context)
+
 @login_required
 @user_passes_test(is_staff_user)
 def view_all_applications(request):
-    cohort_applications = list(ApplicationCohort.objects.all())
-    intern_applications = list(ApplicationIntern.objects.all())
-    applications = cohort_applications + intern_applications
+    query = request.GET.get('q')
+
+    if query:
+        cohort_applications = ApplicationCohort.objects.filter(
+            Q(first_name__icontains=query) |
+            Q(middle_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(residency__icontains=query) |
+            Q(email1__icontains=query) |
+            Q(adv_school_name__icontains=query) |
+            Q(tel1__icontains=query)
+        )
+        intern_applications = ApplicationIntern.objects.filter(
+            Q(first_name__icontains=query) |
+            Q(middle_name__icontains=query) |
+            Q(last_name__icontains=query) |
+            Q(residency__icontains=query) |
+            Q(email1__icontains=query) |
+            Q(adv_school_name__icontains=query) |
+            Q(tel1__icontains=query)
+        )
+    else:
+        cohort_applications = ApplicationCohort.objects.all()
+        intern_applications = ApplicationIntern.objects.all()
+
+    applications = list(cohort_applications) + list(intern_applications)
+
+    applications_sorted = sorted(
+        applications,
+        key=lambda app: (not app.submitted, app.user.first_name.lower())
+    )
+
     context = {
-        'applications': applications,
-        }
+        'applications': applications_sorted,
+        'query': query,
+    }
     return render(request, 'application_intern/view_all_applications.html', context)
+
 
 
 def preview_application_viewo(request, user_id):
