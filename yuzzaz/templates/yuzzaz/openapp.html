@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Toggle Application Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i class="fas fa-cogs text-blue-600"></i>
+            Manage Application Portal
+        </h2>
+
+        <form method="POST" onsubmit="return confirmToggle()" class="space-y-4">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="flex items-center justify-between">
+                <label for="id_is_portal_open" class="font-medium text-gray-800">
+                    Application Portal
+                </label>
+                {{ form.is_portal_open }}
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded flex items-center justify-center gap-2">
+                <i class="fas fa-save"></i>
+                Save Changes
+            </button>
+        </form>
+
+        {% if messages %}
+        <div class="mt-4 space-y-2">
+            {% for message in messages %}
+                <div class="p-3 rounded bg-green-100 text-green-800 flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function confirmToggle() {
+            const checkbox = document.getElementById('id_is_portal_open');
+            const action = checkbox.checked ? 'open' : 'close';
+            return confirm(`Are you sure you want to ${action} the portal?`);
+        }
+    </script>
+</body>
+</html>

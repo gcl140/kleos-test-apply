@@ -1,6 +1,5 @@
 from django import forms
-from .models import CustomUser
-
+from .models import CustomUser, ApplicationSettings
 
 class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -74,3 +73,12 @@ class BulkEmailForm(forms.Form):
         required=False,
         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
     )
+
+
+class ApplicationSettingsForm(forms.ModelForm):
+    class Meta:
+        model = ApplicationSettings
+        fields = ['is_portal_open']
+        widgets = {
+            'is_portal_open': forms.CheckboxInput(attrs={'class': 'form-checkbox'})
+        }

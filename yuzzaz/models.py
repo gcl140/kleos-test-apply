@@ -14,3 +14,16 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+
+class ApplicationSettings(models.Model):
+    is_portal_open = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "Portal Open" if self.is_portal_open else "Portal Closed"
+
+    @classmethod
+    def get_state(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj

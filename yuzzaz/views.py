@@ -1,3 +1,8 @@
+from django.utils.timezone import now
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.sessions.models import Session
+from .models import ApplicationSettings
+from .forms import ApplicationSettingsForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
@@ -29,48 +34,11 @@ from django.http import HttpResponseForbidden
 User = get_user_model()
 
 
-# def register(request, user_type):
-#     if request.method == "POST":
-#         form = UserRegistrationForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.is_active = False  # Deactivate account until email verification
-            
-#             # Set user type based on URL parameter
-#             if user_type == "intern":
-#                 user.is_intern = True
-#             else:
-#                 user.is_intern = False  # Default to cohort
-            
-#             user.save()
-
-#             # Send activation email
-#             current_site = get_current_site(request)
-#             mail_subject = "Activate your user account"
-#             message = render_to_string("yuzzaz/activate_account.html", {
-#                 'user': user,
-#                 'domain': current_site.domain,
-#                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#                 'token': account_activation_token.make_token(user),
-#                 'protocol': 'https' if request.is_secure() else 'http',
-#                 # 'current_year': datetime.datetime.now().year,
-#                 'current_year': datetime.now().year,
-
-#             })
-#             email = EmailMessage(mail_subject, message, to=[user.email])
-#             email.content_subtype = "html"  # Ensure the email content type is HTML
-#             email.send()
-
-#             messages.success(
-#                 request, f"Dear {user.first_name}, we have sent an activation link to your email. Please check your email to complete registration (Remember to check your spam too, you can't proceed without that email)."
-#             )
-#             return redirect('homepage')  # Redirect to login page
-#     else:
-#         form = UserRegistrationForm()
-
-#     return render(request, 'yuzzaz/register.html', {'form': form, 'user_type': user_type})
 
 def register(request, user_type):
+    if not ApplicationSettings.get_state().is_portal_open:
+        return redirect('homepage')
+
     if request.method == "POST":
         form = UserRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -108,25 +76,6 @@ def register(request, user_type):
         form = UserRegistrationForm()
 
     return render(request, 'yuzzaz/register.html', {'form': form, 'user_type': user_type})
-
-
-
-# Activate view: Handles the account activation via the token
-# def activate(request, uidb64, token):
-#     try:
-#         uid = force_str(urlsafe_base64_decode(uidb64))
-#         user = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         user = None
-
-#     if user is not None and account_activation_token.check_token(user, token):
-#         user.is_active = True
-#         user.save()
-#         messages.success(request, "Thank you for confirming your email. You can now log in.")
-#         return redirect('login')
-#     else:
-#         messages.error(request, "Activation link is invalid.")
-#         return redirect('homepage')
 
 def activate(request, uidb64, token):
     try:
@@ -181,76 +130,11 @@ def get_application_for_cohort(user):
         print("Retrieved an existing Cohort Application instance.")
     return application
 
-# def login(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-
-#         user = User.objects.filter(email=username).first()
-#         if user is not None and user.check_password(password):
-#             auth_login(request, user)
-#             messages.success(request, "You have successfully logged in.")
-
-#             # Check if the user is an intern or cohort and create their application instance
-#             if user.is_intern:
-#                 application = get_application_for_intern(user)
-#                 if application.submitted:
-#                     return redirect('intern_application_submitted_view')
-#                 return redirect('intern_intro_view')  # Replace with your actual URL name
-#             else:
-#                 application = get_application_for_cohort(user)
-#                 if application.submitted:
-#                     return redirect('application_submitted_view')
-#                 return redirect('intro_view')  # Replace with your actual URL name
-
-#         else:
-#             messages.error(request, "Invalid credentials, please try again.")
-
-#     return render(request, 'yuzzaz/login.html')
-
-
-# def login(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-
-#         user = authenticate(request, username=username, password=password)
-
-#         if user:
-#             if not user.is_active:
-#                 request.session['inactive_user_email'] = user.email
-#                 request.session['email_sent_time'] = datetime.now().isoformat()
-#                 messages.warning(request, "Your account is not activated. Please check your email or resend the activation link.")
-#                 return redirect('activation_sent')
-
-#             auth_login(request, user)
-#             messages.success(request, "You have successfully logged in.")
-
-#             if user.is_intern:
-#                 application = get_application_for_intern(user)
-#                 return redirect('intern_application_submitted_view' if application.submitted else 'intern_intro_view')
-#             else:
-#                 application = get_application_for_cohort(user)
-#                 return redirect('application_submitted_view' if application.submitted else 'intro_view')
-
-#         else:
-#             try:
-#                 user_obj = User.objects.get(email=username)
-#                 if not user_obj.is_active and user_obj.check_password(password):
-#                     request.session['inactive_user_email'] = user_obj.email
-#                     request.session['email_sent_time'] = datetime.now().isoformat()
-#                     messages.warning(request, "Your account is not activated. Please check your email or resend the activation link.")
-#                     return redirect('activation_sent')
-#             except User.DoesNotExist:
-#                 pass
-
-#             messages.error(request, "Invalid credentials, please try again.")
-
-#     return render(request, 'yuzzaz/login.html')
-
-from django.utils.timezone import now
 
 def login(request):
+    if not ApplicationSettings.get_state().is_portal_open:
+        return redirect('homepage')
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -288,10 +172,12 @@ def login(request):
 
 
 def homepage(request):
-    now = timezone.now()
-    open_date = timezone.make_aware(datetime(2025, 4, 26))
-    close_date = timezone.make_aware(datetime(2025, 6, 26))
-    portal_open = open_date <= now < close_date
+    # now = timezone.now()
+    # open_date = timezone.make_aware(datetime(2025, 4, 26))
+    # close_date = timezone.make_aware(datetime(2025, 6, 26))
+    # portal_open = open_date <= now < close_date
+
+    portal_open = ApplicationSettings.get_state().is_portal_open
     return render(request, 'yuzzaz/homepage.html', {
         'portal_open': portal_open
     })
@@ -491,3 +377,44 @@ def resend_activation_email(request):
         messages.error(request, "No inactive account found with that email.")
 
     return redirect('activation_sent')
+
+
+
+
+# @staff_member_required
+# def portal_settings_view(request):
+#     settings = ApplicationSettings.get_state()
+#     form = ApplicationSettingsForm(request.POST or None, instance=settings)
+
+#     if request.method == 'POST' and form.is_valid():
+#         form.save()
+#         if not settings.is_portal_open:
+#             # End all sessions
+#             Session.objects.all().delete()
+#         return redirect('intern_view_all_applications')  # your named url
+
+#     return render(request, 'yuzzaz/openapp.html', {'form': form})
+
+@staff_member_required
+def portal_settings_view(request):
+    settings = ApplicationSettings.get_state()
+    form = ApplicationSettingsForm(request.POST or None, instance=settings)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        if not settings.is_portal_open:
+            # Delete sessions of non-staff users only
+            for session in Session.objects.all():
+                data = session.get_decoded()
+                user_id = data.get('_auth_user_id')
+                try:
+                    user = User.objects.get(id=user_id)
+                    if not user.is_staff:
+                        session.delete()
+                except User.DoesNotExist:
+                    session.delete()  # remove orphan session just in case
+        messages.success("Portal has been updated successfully")
+        return redirect('intern_view_all_applications')
+
+    return render(request, 'yuzzaz/openapp.html', {'form': form})
+

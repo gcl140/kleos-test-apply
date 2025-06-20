@@ -22,6 +22,7 @@ urlpatterns = [
     
     path('activation-sent/', views.activation_sent, name='activation_sent'),
     path('resend-activation/', views.resend_activation_email, name='resend_activation_email'),
+    path('portal_settings_view/', views.portal_settings_view, name='portal_settings_view'),
 
 
 ]
